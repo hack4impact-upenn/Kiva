@@ -1,12 +1,13 @@
 var express = require('express');
 var app = express();
 var Project = require('./models/projects.js').Project;
+var Application = require('./models/application.js').Application;
 var mongoose = require("mongoose");
 
 var uristring =
 	process.env.MONGOLAB_URI ||
 	process.env.MONGOHQ_URL ||
-	'mongodb://localhost/express-projects';
+	'mongodb://localhost/kiva-project';
 
 mongoose.connect(uristring, function (err, res) {
   if (err) {
@@ -19,7 +20,6 @@ mongoose.connect(uristring, function (err, res) {
 //controllers
 var controller = require('./controllers/controller.js');
 app.use(express.static(__dirname + '/public'));
-
 
 app.use(express.bodyParser())
    .use(express.methodOverride())
@@ -38,13 +38,13 @@ app.get("/edit/:id", controller.edit);
 app.get("/admin", controller.admin);
 app.get("/submit", controller.submit);
 app.get("/tag/:tag", controller.filter_by_tag);
-app.post("/post", controller.create);
 app.get("/search/:tag", controller.search_tags);
 app.get("/searchOne/:id", controller.search_findOne);
 app.post("/update", controller.update_project);
 app.get("/image_upload/:id", controller.upload_page);
+app.get("/admin_submit", controller.submit_application);
 app.post("/upload", controller.upload);
+app.post("/post-application", controller.create_application);
 
 
-console.log("Listening on port 3000");
 module.exports = app

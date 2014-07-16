@@ -1,4 +1,5 @@
 var Project = require('../models/projects').Project;
+var Application = require('../models/application').Application;
 var Tag = require('../models/tag').Tag;
 var mongoose = require('mongoose');
 var async = require("async");
@@ -43,6 +44,11 @@ exports.admin = function(req, res) {
 		}
 	})
 };
+
+//Page: admin submit new review page
+exports.submit_application = function(req, res) {
+	res.render("admin_submit.ejs", {error: "lalal"});
+}
 
 //Page: submit page
 exports.submit = function(req, res) {
@@ -145,7 +151,7 @@ exports.search_tags = function(req, res) {
 			return res.send('options.ejs', {elements: tag_names});
 		}
 	});
-}
+};
 
 //finds single project based on id
 exports.search_findOne = function(req, res) {
@@ -153,42 +159,27 @@ exports.search_findOne = function(req, res) {
 	Project.queryById(id, function(err, project){
 		return res.send(project);
 	});
-}
+};
 
 
 //creates new project
-exports.create = function(req, res) {
-	var project = new Project({
-		app_name : req.body.app_name,
-		description : req.body.description,
-		demo_link : req.body.demo,
-		location : req.body.location,
-		technologies : req.body.technologies,
-		tags : req.body.tags,
-		builders : req.body.builders,
-		date : req.body.date,
-		contact : req.body.contact,
-		github_permis : req.body.github_permis,
-		github : req.body.github,
-		personal : req.body.personal,
-		approved : req.body.approved,
-		});
+exports.create_application = function(req, res) {
+	console.log("does this work");
+	var application = new Application({
+		organization_name: req.body.organization_name,
+		description: req.body.description,
+		token: req.body.token,
+		url: req.body.url,
+		organization_address: req.body.organization_address,
+		organization_url: req.body.organization_url
+	});
 
-	project.save(function(err, proj) {
-		if(err) {console.log(err)}
+	application.save(function(err, application) {
+		console.log(application);
+		if(err) {console.log(err);}
 		else {
-			var tags = req.body.tags.split(/,| /);
-			async.each(tags, function(tag_name, callback) {
-				var tag = new Tag({
-					tag: tag_name,
-					app_name : req.body.app_name
-				})
-				tag.save(callback());
-			}, function(err) {
-				if(err == null) {
-					res.redirect('/');
-				}
-			});
+			res.redirect('/admin');
 		}
 	});
-}
+};
+

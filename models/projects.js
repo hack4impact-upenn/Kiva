@@ -15,7 +15,7 @@ var setTags = function(tags) {
 		arr[i] = arr[i].toLowerCase();
 	}
 	return arr;
-}
+};
 
 var ProjectSchema = new Schema({
   app_name: { type: String, default: '', trim : true },
@@ -33,7 +33,7 @@ var ProjectSchema = new Schema({
   approved: { type: Number, default: '' },
   image: { type: String, default:''},
   submittedAt : {type: Date, default: Date.now}
-})
+});
 
 
 ProjectSchema.statics = {
@@ -47,11 +47,11 @@ ProjectSchema.statics = {
 	queryById: function(id, cb) {
 		this.find({_id: id}).exec(cb);
 	}
-}
+};
 
 var project = mongoose.model("Project", ProjectSchema);
 
 
 module.exports = {
 	Project : project
-}
+};
