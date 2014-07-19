@@ -8,8 +8,8 @@ var ApplicationSchema = new Schema({
   url: {type: String, default: ''},
   organization_address: { type: String, default: ''},
   organization_url: { type: String, default: '' },
-  num_reviews: { type: Number, default: 0 },
-  open_to_review: {type: Boolean, default: 1},
+  num_reviews: { type: Number, default: 2 },
+  open_to_review: {type: Boolean, default: true},
   reviews_in_progress: [Schema.Types.ObjectId],
   reviews_submitted: [Schema.Types.ObjectId],
   date_submitted: {type: Date, default: Date.now}
@@ -31,8 +31,12 @@ ApplicationSchema.statics = {
 		this.update({ _id: app_id }, 
 			{ $pull: {'reviews_in_progress': review_id}}, 
 			cb);
-	}
-};
+	},
+	
+	get_min_reviewed_application: function(cb) {
+		this.findOne({"open_to_review": true}).sort({"num_reviews":1}).exec(cb);
+		}
+	};
 
 var application = mongoose.model("Application", ApplicationSchema);
 

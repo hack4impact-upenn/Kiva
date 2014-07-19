@@ -15,6 +15,8 @@ var VolunteerSchema = new Schema({
   finished_training: {type: Boolean, default: 1},
   reviews_completed: [Schema.Types.ObjectId],
   current_review: {type: Schema.Types.ObjectId},
+  is_admin: {type: Boolean, default: false},
+
 });
 
 //# of applications?

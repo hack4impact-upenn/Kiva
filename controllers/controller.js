@@ -3,47 +3,109 @@ var Application = require('../models/application').Application;
 var Volunteer = require('../models/volunteer').Volunteer;
 var Tag = require('../models/tag').Tag;
 var mongoose = require('mongoose');
+var SHA3 = require("crypto-js/sha3");
 var async = require("async");
-var knox = require('knox');
 var fs=require('fs');
 var sys=require('sys');
 var credentials = require("../config.json");
 
-var client = knox.createClient({
-	key: credentials.accessKeyId,
-	secret: credentials.secretAccessKey,
-	bucket: 'penn-open-source'
-});
-
 var ObjectId= mongoose.Types.ObjectId;
 
-//Page: homepage
+
+
+/*--------------  General Functions ----------- */
+
 exports.index = function(req, res) {
-	Project.list(function (err, projects) {
-		if(err) {
-			return res.send(404);
-		} else {
-			return res.render("main.ejs", {projects: projects});
-		}
-	})
+	res.render("index.ejs");
+}
+
+exports.login = function(req, res) {
+	var email = req.body.email;
+	var password = SHA3(req.body.password).toString();
+	Volunteer.findOne({'email_address': email, 'password':password}, 
+		function(err, volunteer) {
+			if(volunteer != null) {
+					console.log(volunteer);
+					//need to add some logic in case there is no error, but there is also no data
+					req.session.admin = volunteer.is_admin;
+					req.session.logged = true;
+					console.log("Volunteer_id to string: " + (volunteer._id).toString());
+					req.session.volunteerId = ObjectId(volunteer._id.toString());
+					req.session.email = volunteer.email_address;
+					if(req.session.admin) {
+						res.send(404);
+					//	res.redirect('/admin/home');
+					} else {
+						res.redirect('/volunteer/home');
+					}
+			} else {
+				if(err) {
+					console.log(err)
+				}
+				res.send(404);
+			}
+		});
 };
 
-//Page: image upload page
-exports.upload_page = function(req, res) {
-	res.render("image.ejs", {id: req.params.id});
+/*--------------  Volunteer Story ----------------- */
+
+//Volunteer Pages
+exports.volunteer_signup_page = function(req, res) {
+	res.render("volunteer_signup.ejs", {error: "lalal"});
 };
 
+exports.volunteer_home = function(req, res) {
+	if(req.session.logged) {
+		console.log(req.session.volunteerId);
+		console.log(req.session.email);
+		Application.get_min_reviewed_application(function(err, next_app) {
+			console.log(next_app);
+			res.render('homepage.ejs');
+		});
+	} else {
+		res.redirect('/');
+	}
+};
 
+//Volunteer Helper Functions
 
-//Page: admin page
-exports.admin = function(req, res) {
-	Project.list(function (err, projects) {
-		if(err) {
-			return res.send(404);
-		} else {
-			return res.render("admin.ejs", {projects: projects});
+exports.create_volunteer = function(req, res) {
+	console.log("does this work");
+	var volunteer = new Volunteer({
+		first_name: req.body.first_name,
+		last_name: req.body.last_name,
+		email_address: req.body.email_address,
+		password: SHA3(req.body.password).toString(),
+		linked_in: req.body.linked_in,
+		resume_link: req.body.resume_link,
+		why_kiva:  req.body.why_kiva,
+		what_skills: req.body.what_skills
+	});
+	volunteer.save(function(err, volunteer) {
+		console.log(volunteer);
+		if(err) {console.log(err);}
+		else {
+			res.redirect('/admin');
 		}
-	})
+	});
+};
+
+/*--------------  Admin Story ------------------ */
+
+//Admin Pages
+exports.view_applications = function(req, res) {
+	Application.find( function(err, applications) {
+		console.log(applications);
+			return res.render("main.ejs", {applications: applications});
+	});
+};
+
+exports.view_one_application = function(req, res) {
+	var id = req.params.id;
+	Application.find({"_id": ObjectId(id)}, function(err, application){
+		console.log(application);
+		return res.render("main.ejs");
+	});
 };
 
 //Page: admin submit new application page
@@ -51,67 +113,31 @@ exports.submit_application = function(req, res) {
 	res.render("admin_submit.ejs", {error: "lalal"});
 }
 
-//Page: submit page
-exports.submit = function(req, res) {
-	res.render("submit.ejs", {error: "lalal"});
-}
+//Admin Helpers
 
-//Page: filters images by tag
-exports.filter_by_tag = function(req, res) {
-	var tag_name = req.params.tag;
-	Tag.list(tag_name, function(err, project_names) {
-		if(err) {
-			return res.send(404);
-		} else {
-			var arr_projects = []
-			for(var i=0; i<project_names.length; i++) {
-				if(project_names[i] !== '') {
-					arr_projects.push(project_names[i].app_name);
-				}
-			}
-			Project.queryMultipleByName(arr_projects, function(err, projects) {
-				if(err) {
-					return res.send(404);
-				} else { 
-					console.log("querying multiple projects already")
-
-					return res.render("main.ejs", {projects: projects});
-				}
-			});
-		}
+//creates new application
+exports.create_application = function(req, res) {
+	console.log("does this work");
+	var application = new Application({
+		organization_name: req.body.organization_name,
+		description: req.body.description,
+		token: req.body.token,
+		url: req.body.url,
+		organization_address: req.body.organization_address,
+		organization_url: req.body.organization_url
 	});
-}
 
-//opens edit page for a single project
-exports.edit = function(req, res) {
-		Project.queryById(req.params.id, function(err, project) {
-			return res.render("edit.ejs", {projects: project[0]});
-		});
-	}
-
-
-/*--------------  Helper functions ----------- */
-
-
-//handles upload function
-exports.upload = function(req, res) {
-		var id = req.body.id;
-		console.log(id);
-		fs.readFile(req.files.image.path, function(err, data) {
-			console.log(req.files.image.path);
-			client.putFile(req.files.image.path, 'images/' + id + ".jpg", {'Content-Type': 'image/jpeg', 'x-amz-acl':'public-read'}, function(err, result) {
-				if (err) { 
-					console.log('Failed to upload file to Amazon S3'); 
-					console.log(err);
-				return res.send(404);
-			} else { 
-				console.log('Uploaded to Amazon S3');
-				return res.redirect('/');
-			}		
-		});
+	application.save(function(err, application) {
+		console.log(application);
+		if(err) {console.log(err);}
+		else {
+			res.redirect('/admin');
+		}
 	});
 };
 
+
+/*------- extra functions -----------*/
 
 
 //handles update for an edit page
@@ -142,95 +168,10 @@ exports.update_project = function(req, res) {
 	}); 
 }
 
-//for autocomplete in tags
-exports.search_tags = function(req, res) {
-	var tag_name = req.params.tag;
-	Tag.search(tag_name, function(err, tag_names) {
-		if(err) {
-			return res.send(404);
-		} else {
-			return res.send('options.ejs', {elements: tag_names});
-		}
-	});
-};
-
-//finds single project based on id
-exports.search_findOne = function(req, res) {
-	var id = req.params.id;
-	Project.queryById(id, function(err, project){
-		return res.send(project);
-	});
-};
-
-//User Functions
-
-//Page: admin submit new application page
-exports.volunteer_signup_page = function(req, res) {
-	res.render("volunteer_signup.ejs", {error: "lalal"});
-};
-
-
-exports.create_volunteer = function(req, res) {
-	console.log("does this work");
-	var volunteer = new Volunteer({
-		first_name: req.body.first_name,
-		last_name: req.body.last_name,
-		email_address: req.body.email_address,
-		password: req.body.password,
-		linked_in: req.body.linked_in,
-		resume_link: req.body.resume_link,
-		why_kiva:  req.body.why_kiva,
-		what_skills: req.body.what_skills
-	});
-	volunteer.save(function(err, volunteer) {
-		console.log(volunteer);
-		if(err) {console.log(err);}
-		else {
-			res.redirect('/admin');
-		}
-	});
-};
-
-//Admin Functions
-
-exports.view_applications = function(req, res) {
-	Application.find( function(err, applications) {
-		console.log(applications);
-			return res.render("main.ejs", {applications: applications});
-	});
-};
-
-exports.view_one_application = function(req, res) {
-	var id = req.params.id;
-	Application.find({"_id": ObjectId(id)}, function(err, application){
-		console.log(application);
-		return res.render("main.ejs");
-	});
-};
-
-//Page: admin submit new application page
-exports.submit_application = function(req, res) {
-	res.render("admin_submit.ejs", {error: "lalal"});
-}
-
-//creates new project
-exports.create_application = function(req, res) {
-	console.log("does this work");
-	var application = new Application({
-		organization_name: req.body.organization_name,
-		description: req.body.description,
-		token: req.body.token,
-		url: req.body.url,
-		organization_address: req.body.organization_address,
-		organization_url: req.body.organization_url
-	});
-
-	application.save(function(err, application) {
-		console.log(application);
-		if(err) {console.log(err);}
-		else {
-			res.redirect('/admin');
-		}
-	});
-};
+//opens edit page for a single project
+exports.edit = function(req, res) {
+		Project.queryById(req.params.id, function(err, project) {
+			return res.render("edit.ejs", {projects: project[0]});
+		});
+	}
 

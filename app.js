@@ -21,34 +21,38 @@ mongoose.connect(uristring, function (err, res) {
 var controller = require('./controllers/controller.js');
 app.use(express.static(__dirname + '/public'));
 
+app.use(express.logger("default"));
+app.use( express.cookieParser() );
+app.use(express.session({secret:'session'}));
+
+
 app.use(express.bodyParser())
    .use(express.methodOverride())
    .use(app.router)
    .use(express.multipart());
 
-app.use(express.logger("default"));
+
+
 
 var port = Number(process.env.PORT || 5000);
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
 
+//app.get("/edit/:id", controller.edit);
+//app.get("/tag/:tag", controller.filter_by_tag);
+//app.post("/update", controller.update_project);
+
+//General
 app.get("/", controller.index);
-app.get("/edit/:id", controller.edit);
-app.get("/admin", controller.admin);
-app.get("/submit", controller.submit);
-app.get("/tag/:tag", controller.filter_by_tag);
-app.get("/search/:tag", controller.search_tags);
-app.get("/searchOne/:id", controller.search_findOne);
-app.post("/update", controller.update_project);
-app.get("/image_upload/:id", controller.upload_page);
-app.post("/upload", controller.upload);
+app.post("/login", controller.login);
 
-//User Pages
-app.post("/users/submit-volunteer", controller.create_volunteer);
-app.get("/users/sign-up", controller.volunteer_signup_page);
+//Volunteer
+app.post("/volunteer/submit-volunteer", controller.create_volunteer);
+app.get("/volunteer/sign-up", controller.volunteer_signup_page);
+app.get("/volunteer/home", controller.volunteer_home)
 
-//Admin Pages
+//Admin
 app.get("/admin_submit", controller.submit_application);
 app.post("/post-application", controller.create_application);
 app.get("/admin_applications", controller.view_applications);
