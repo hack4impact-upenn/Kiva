@@ -26,84 +26,19 @@
   <body>
 
 
- <div id="banner">
-          <div id="title">
-            <h1>Penn Open Source</h1>
-              
-            <a href="http://www.pennlabs.org"> <img src="/labs2.png" width=50px height=50px /> </a>
-            <ul id="nav"> 
-              <a href=""><li> Home </li> </a>
-              <a href="#projects"><li> Projects </li></a>
-              <a href=""><li> FAQ </li></a>
-              <a href="/submit"><li> Submit </li></a>
-            </ul>
+    <div id="applications">
 
-           </div>
-  </div>
-
-<div id="container">
-
-    <div id="about" >
-      <p>Penn Open Source is a Penn Labs initiative dedicated to student-developers at the University of Pennsylvania. Year after year, Penn students demonstrate their ability to tinker, hack and innovate by working on incredibly creative projects. Penn Open Source aims to be a home for all the projects - a way for Penn developers to reach users and a way for up-and-coming developers to get inspiration for projects of their own. Check out their projects below!</p>
-
-      <p> Interested in submitting a project? Feel free to fill out the application! We'll be in touch soon. </o>
-        <a href="/submit"><button> Submit your project! </button></a>
-    </div>
-
-    <div id="featured" >
-      <div id="featured-title">
-        <h1> App of the Week: </h1>
-        <div class="underline_divider"></div>
-      </div>
-    </div>
-
-</div>
-
-    <div id="projects">
-
-    <% projects.forEach(function(project, index){ %>
-  
-        <% if (project.approved == 1) { %>
-              <div class="project" id= <%= project._id %> >
-                <div class="app_image">
-                   <img width='300px' height='300px' src= <%= "https://s3-us-west-2.amazonaws.com/penn-open-source/images/" + project._id + ".jpg" %> /> 
-                   
-                        <div class="app_description">
-                                 
-                              
-                                <p> <%= project.description %> </p>
-                              
-                                   <a href=<%= project.demo_link %>> <div class="view">
-                                    View App
-                                </div> </a>
-
-
-
-                                  <div class="tags">
-                                    <span>
-                                     <% if (project.github_permis == 'yes') { %>
-                                        <p> <a href= <%= project.github %> > Source Code </a> </p>
-                                      <% } %>
-
-                                      <p> Tags:    
-                                      <% var array = project.tags.split(","); %>
-                                      <% for(var i=0; i<array.length; i++) { %>
-                                      <a href =  <%= '/tag/' + array[i].trim() %> ><%= array[i] %></a>  
-                                      <% } %>
-                                    </p></span>
-                                  </div>
-                        </div>
-                 </div>
-
-                 <div class="app_title">
-                    <span><h2> <a href=<%= project.demo_link %>> <%= project.app_name %></a> </h2></span>    
-                    <br />
-                    <h3> <%= project.builders %>  </h3> 
-                 </div>
-
-              </div>
-        <% } %> 
+    <% applications.forEach(function(application){ %>
+        <div class="application" id= <%= application._id %> >
+            <p> <%= application.organization_name %> </p>
+            <p> <%= application.reviews_in_progress.length %> open reviews </p>
+            <p> <%= application._id %> </p>
+        </div>
     <% }) %>
+
+
+
+
     </div>
 
   </body>

@@ -42,9 +42,17 @@ app.get("/search/:tag", controller.search_tags);
 app.get("/searchOne/:id", controller.search_findOne);
 app.post("/update", controller.update_project);
 app.get("/image_upload/:id", controller.upload_page);
-app.get("/admin_submit", controller.submit_application);
 app.post("/upload", controller.upload);
+
+//User Pages
+app.post("/users/submit-volunteer", controller.create_volunteer);
+app.get("/users/sign-up", controller.volunteer_signup_page);
+
+//Admin Pages
+app.get("/admin_submit", controller.submit_application);
 app.post("/post-application", controller.create_application);
+app.get("/admin_applications", controller.view_applications);
+app.get("/admin/application/:id", controller.view_one_application);
 
 
 module.exports = app

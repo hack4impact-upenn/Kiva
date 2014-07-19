@@ -1,5 +1,6 @@
 var Project = require('../models/projects').Project;
 var Application = require('../models/application').Application;
+var Volunteer = require('../models/volunteer').Volunteer;
 var Tag = require('../models/tag').Tag;
 var mongoose = require('mongoose');
 var async = require("async");
@@ -45,7 +46,7 @@ exports.admin = function(req, res) {
 	})
 };
 
-//Page: admin submit new review page
+//Page: admin submit new application page
 exports.submit_application = function(req, res) {
 	res.render("admin_submit.ejs", {error: "lalal"});
 }
@@ -161,6 +162,56 @@ exports.search_findOne = function(req, res) {
 	});
 };
 
+//User Functions
+
+//Page: admin submit new application page
+exports.volunteer_signup_page = function(req, res) {
+	res.render("volunteer_signup.ejs", {error: "lalal"});
+};
+
+
+exports.create_volunteer = function(req, res) {
+	console.log("does this work");
+	var volunteer = new Volunteer({
+		first_name: req.body.first_name,
+		last_name: req.body.last_name,
+		email_address: req.body.email_address,
+		password: req.body.password,
+		linked_in: req.body.linked_in,
+		resume_link: req.body.resume_link,
+		why_kiva:  req.body.why_kiva,
+		what_skills: req.body.what_skills
+	});
+	volunteer.save(function(err, volunteer) {
+		console.log(volunteer);
+		if(err) {console.log(err);}
+		else {
+			res.redirect('/admin');
+		}
+	});
+};
+
+//Admin Functions
+
+exports.view_applications = function(req, res) {
+	Application.find( function(err, applications) {
+		console.log(applications);
+			return res.render("main.ejs", {applications: applications});
+	});
+};
+
+exports.view_one_application = function(req, res) {
+	var id = req.params.id;
+	Application.find({"_id": ObjectId(id)}, function(err, application){
+		console.log(application);
+		return res.render("main.ejs");
+	});
+};
+
+//Page: admin submit new application page
+exports.submit_application = function(req, res) {
+	res.render("admin_submit.ejs", {error: "lalal"});
+}
 
 //creates new project
 exports.create_application = function(req, res) {
