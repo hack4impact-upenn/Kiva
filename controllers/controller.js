@@ -1,6 +1,7 @@
 var Project = require('../models/projects').Project;
 var Application = require('../models/application').Application;
 var Volunteer = require('../models/volunteer').Volunteer;
+var Review = require('../models/review').Review;
 var Tag = require('../models/tag').Tag;
 var mongoose = require('mongoose');
 var SHA3 = require("crypto-js/sha3");
@@ -33,7 +34,7 @@ exports.login = function(req, res) {
 					req.session.volunteerId = ObjectId(volunteer._id.toString());
 					req.session.email = volunteer.email_address;
 					if(req.session.admin) {
-						res.send(404);
+						res.send(404);2
 					//	res.redirect('/admin/home');
 					} else {
 						res.redirect('/volunteer/home');
@@ -58,9 +59,32 @@ exports.volunteer_home = function(req, res) {
 	if(req.session.logged) {
 		console.log(req.session.volunteerId);
 		console.log(req.session.email);
+
 		Application.get_min_reviewed_application(function(err, next_app) {
 			console.log(next_app);
-			res.render('homepage.ejs');
+			res.render('homepage.ejs', {next_app: next_app});
+		});
+	} else {
+		res.redirect('/');
+	}
+};
+
+exports.edit_review = function(req, res) {
+	if(req.session.logged){
+		review_id = req.params.id;
+		Review.findOne({"_id" : review_id}, function(err, review){
+			if(err) {
+				console.log(err);
+				res.send(404);
+			} else {
+				Application.findOne({"_id" : review.organization_id}, function(err, application) {
+					if(err) {
+						console.log(err);
+						res.send(404);
+					}
+					res.render('review.ejs', {review: review, application: application});
+				});
+			}
 		});
 	} else {
 		res.redirect('/');
@@ -68,6 +92,89 @@ exports.volunteer_home = function(req, res) {
 };
 
 //Volunteer Helper Functions
+exports.create_review = function(req, res) {
+	console.log("creating review");
+	org_id = req.params.id;
+	console.log(req.session.volunteerId);
+	var review = new Review({
+		reviewer_id: req.session.volunteerId,
+		organization_id: org_id,
+	});
+
+	review.save(function(err, review) {
+		console.log(review);
+		console.log(review._id);
+		Application.add_review_in_progress(org_id, review._id, function(err) {
+			if(err) { 
+				console.log(err)
+			} else {
+				res.redirect('/review/edit/' + review._id);
+			}
+		});
+	});
+};
+
+
+exports.save_review = function(req, res) {
+	console.log(req.params.id);
+	Review.update({"_id": ObjectId(req.params.id)},
+			{
+				clear_social_impact: req.body.clear_social_impact,
+				kiva_fit: req.body.kiva_fit,
+				sustainable_model: req.body.sustainable_model,
+				kiva_fit_comments: req.body.kiva_fit_comments,
+				q_1: req.body.q_1,
+				q_2: req.body.q_2,
+				q_3: req.body.q_3,
+				recommend_rating: req.body.recommend_rating,
+				other_comments: req.body.other_comments
+			}, function(err, numAffected) {
+				if(err) {
+					console.log(err);
+					res.send(404);
+				} else {
+					console.log(numAffected);
+					res.send(200);
+				}
+			}
+		);
+};
+
+exports.submit_review = function(req, res) {
+	//needs to mark review as submitted, remove it from review_in_progress,
+	//and add it to the reviews submitted section
+
+	var org_id = req.body.org_id;
+	console.log("submitting");
+	Review.update({"_id": ObjectId(req.params.id)},
+		{
+			submitted: true,
+		}, function(err, numAffected) {
+			if(err) {
+				console.log(err);
+				res.send(404);
+			} else {
+				Application.submit_review(org_id, req.params.id, function(err, numAffected2) {
+					if(err) {
+						console.log(err);
+						res.send(404);
+					} else {
+						console.log(numAffected2 + "submitted in the application");
+						Application.remove_review_in_progress(org_id, req.params.id, function(err, numAffected3) {
+							if(err) {
+								console.log(err);
+								res.send(404);
+							} else {
+								console.log(numAffected3);
+								res.send(200);
+							}
+						});
+					}
+				});
+			}
+		}
+	);
+};
 
 exports.create_volunteer = function(req, res) {
 	console.log("does this work");

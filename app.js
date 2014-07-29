@@ -50,13 +50,19 @@ app.post("/login", controller.login);
 //Volunteer
 app.post("/volunteer/submit-volunteer", controller.create_volunteer);
 app.get("/volunteer/sign-up", controller.volunteer_signup_page);
-app.get("/volunteer/home", controller.volunteer_home)
+app.get("/volunteer/home", controller.volunteer_home);
+app.post("/review/create/:id", controller.create_review);
+app.get("/review/edit/:id", controller.edit_review);
+app.post("/review/save/:id", controller.save_review);
+app.post("/review/submit/:id", controller.submit_review);
+
 
 //Admin
 app.get("/admin_submit", controller.submit_application);
 app.post("/post-application", controller.create_application);
 app.get("/admin_applications", controller.view_applications);
 app.get("/admin/application/:id", controller.view_one_application);
+
 
 
 module.exports = app

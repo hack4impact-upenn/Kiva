@@ -23,6 +23,7 @@ var VolunteerSchema = new Schema({
 
 VolunteerSchema.statics = {
 	//approve volunteer
+  //check if volunteer has a review open
 };
 
 var volunteer = mongoose.model("Volunteer", VolunteerSchema);

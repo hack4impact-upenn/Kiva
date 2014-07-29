@@ -8,7 +8,7 @@ var ApplicationSchema = new Schema({
   url: {type: String, default: ''},
   organization_address: { type: String, default: ''},
   organization_url: { type: String, default: '' },
-  num_reviews: { type: Number, default: 2 },
+  num_reviews: { type: Number, default: 0 },
   open_to_review: {type: Boolean, default: true},
   reviews_in_progress: [Schema.Types.ObjectId],
   reviews_submitted: [Schema.Types.ObjectId],
@@ -23,11 +23,14 @@ ApplicationSchema.statics = {
 			cb);
 	},
 	submit_review: function (app_id, review_id, cb) {
+		console.log(app_id);
 		this.update({ _id: app_id }, 
-			{ $push: {'reviews_submitted': review_id}}, 
-			cb)	
+			{ $push: {'reviews_submitted': review_id}, 
+			$inc: {'num_reviews': 1}}, 
+			cb);
 	},
 	remove_review_in_progress: function(app_id, review_id, cb) {
+		console.log(app_id);
 		this.update({ _id: app_id }, 
 			{ $pull: {'reviews_in_progress': review_id}}, 
 			cb);

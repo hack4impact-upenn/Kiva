@@ -21,7 +21,20 @@
 
   <body>
    
-volunteer home portal
+    Volunteer Home Portal
+
+<div id= <%= next_app._id %> >
+  <p> <%= next_app._id %> </p>
+  <p> Organization Name: <%= next_app.organization_name %> </p>
+  <p> Organization URL: <%= next_app.organization_url %> </p>
+  <p> Address: <%= next_app.organization_address %> </p>
+  <p> Reviews Submitted: <%= next_app.reviews_submitted.length %> </p>
+  <form method="POST" action=<%= '/review/create/' + next_app._id %>>
+    <input type='submit' value="Create Review">
+  </form>
+
+</div>
+
   </body>
 
 
