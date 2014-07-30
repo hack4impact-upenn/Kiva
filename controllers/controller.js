@@ -69,6 +69,7 @@ exports.volunteer_home = function(req, res) {
 	}
 };
 
+//open a review for editing
 exports.edit_review = function(req, res) {
 	if(req.session.logged){
 		review_id = req.params.id;
@@ -92,6 +93,8 @@ exports.edit_review = function(req, res) {
 };
 
 //Volunteer Helper Functions
+
+//creates new review based on org id
 exports.create_review = function(req, res) {
 	console.log("creating review");
 	org_id = req.params.id;
@@ -244,7 +247,7 @@ exports.create_application = function(req, res) {
 };
 
 
-/*------- extra functions -----------*/
+/*------- extra functions not used for this project -----------*/
 
 
 //handles update for an edit page

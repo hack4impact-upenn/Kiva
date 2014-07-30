@@ -19,13 +19,12 @@ mongoose.connect(uristring, function (err, res) {
 
 //controllers
 var controller = require('./controllers/controller.js');
-app.use(express.static(__dirname + '/public'));
 
+//other boiler plate
+app.use(express.static(__dirname + '/public'));
 app.use(express.logger("default"));
 app.use( express.cookieParser() );
 app.use(express.session({secret:'session'}));
-
-
 app.use(express.bodyParser())
    .use(express.methodOverride())
    .use(app.router)
@@ -38,10 +37,6 @@ var port = Number(process.env.PORT || 5000);
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
-
-//app.get("/edit/:id", controller.edit);
-//app.get("/tag/:tag", controller.filter_by_tag);
-//app.post("/update", controller.update_project);
 
 //General
 app.get("/", controller.index);
@@ -65,4 +60,4 @@ app.get("/admin/application/:id", controller.view_one_application);
 
 
 
-module.exports = app
+module.exports = app;
