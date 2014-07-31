@@ -35,7 +35,7 @@ exports.login = function(req, res) {
 					req.session.email = volunteer.email_address;
 					if(req.session.admin) {
 						res.send(404);
-					//	res.redirect('/admin/home');
+						res.redirect('/admin/home');
 					} else {
 						res.redirect('/volunteer/home');
 					}
@@ -191,6 +191,7 @@ exports.create_volunteer = function(req, res) {
 		last_name: req.body.last_name,
 		email_address: req.body.email_address,
 		password: SHA3(req.body.password).toString(),
+		//add confirm password
 		linked_in: req.body.linked_in,
 		resume_link: req.body.resume_link,
 		why_kiva:  req.body.why_kiva,
@@ -249,6 +250,40 @@ exports.create_application = function(req, res) {
 			res.redirect('/admin');
 		}
 	});
+};
+
+//loads admin homepage
+exports.admin_home = function(req, res) {
+
+};
+
+//loads admin signup page
+exports.admin_signup_page = function(req, res) {
+	res.render("admin_signup.ejs", {error: "lalal"});
+};
+
+//create admin account
+exports.create_admin = function(req, res) {
+	var admin = new Volunteer({
+		first_name: req.body.first_name,
+		last_name: req.body.last_name,
+		email_address: req.body.email_address,
+		password: SHA3(req.body.password).toString(),
+		is_admin: true
+		//add support for confirm password
+	});
+	/*if (password.value != password2.value) {
+		console.log('Passwords do not match.');
+		res.render('/');
+	} else {*/
+		admin.save(function(err, admin) {
+			console.log(admin);
+			if(err) {console.log(err);}
+			else {
+				res.redirect('/volunteer/home');
+			}
+		});
+	//}
 };
 
 
