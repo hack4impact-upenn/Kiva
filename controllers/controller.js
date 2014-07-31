@@ -1,8 +1,6 @@
-var Project = require('../models/projects').Project;
 var Application = require('../models/application').Application;
 var Volunteer = require('../models/volunteer').Volunteer;
 var Review = require('../models/review').Review;
-var Tag = require('../models/tag').Tag;
 var mongoose = require('mongoose');
 var SHA3 = require("crypto-js/sha3");
 var async = require("async");
@@ -251,7 +249,7 @@ exports.create_application = function(req, res) {
 
 
 //handles update for an edit page
-exports.update_project = function(req, res) {
+/*exports.update_project = function(req, res) {
 
 	updates = {
 		app_name : req.body.app_name,
@@ -283,5 +281,5 @@ exports.edit = function(req, res) {
 		Project.queryById(req.params.id, function(err, project) {
 			return res.render("edit.ejs", {projects: project[0]});
 		});
-	}
+	} */
 
