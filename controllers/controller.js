@@ -19,7 +19,7 @@ exports.index = function(req, res) {
 }
 
 exports.login = function(req, res) {
-	var email = req.body.email;
+	var email = req.body.email_address;
 	var password = SHA3(req.body.password).toString();
 	Volunteer.findOne({'email_address': email, 'password':password}, 
 		function(err, volunteer) {
@@ -32,14 +32,14 @@ exports.login = function(req, res) {
 					req.session.volunteerId = ObjectId(volunteer._id.toString());
 					req.session.email = volunteer.email_address;
 					if(req.session.admin) {
-						res.send(404);2
+						res.send(404);
 					//	res.redirect('/admin/home');
 					} else {
 						res.redirect('/volunteer/home');
 					}
 			} else {
 				if(err) {
-					console.log(err)
+					console.log(err);
 				}
 				res.send(404);
 			}
@@ -47,6 +47,16 @@ exports.login = function(req, res) {
 };
 
 /*--------------  Volunteer Story ----------------- */
+
+
+//load volunteer
+exports.load_volunteer = function(req, res) {
+	console.log("ajax call is working");
+	Volunteer.findOne({"_id": req.session.volunteerId}, function(err, volunteer) {
+		res.send(volunteer);
+	});
+};
+
 
 //Volunteer Pages
 exports.volunteer_signup_page = function(req, res) {
@@ -57,7 +67,6 @@ exports.volunteer_home = function(req, res) {
 	if(req.session.logged) {
 		console.log(req.session.volunteerId);
 		console.log(req.session.email);
-
 		Application.get_min_reviewed_application(function(err, next_app) {
 			console.log(next_app);
 			res.render('homepage.ejs', {next_app: next_app});

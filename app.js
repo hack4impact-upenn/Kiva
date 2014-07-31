@@ -42,6 +42,7 @@ app.get("/", controller.index);
 app.post("/login", controller.login);
 
 //Volunteer
+app.get("/volunteer/load", controller.load_volunteer);
 app.post("/volunteer/submit-volunteer", controller.create_volunteer);
 app.get("/volunteer/sign-up", controller.volunteer_signup_page);
 app.get("/volunteer/home", controller.volunteer_home);

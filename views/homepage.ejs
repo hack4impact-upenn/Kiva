@@ -14,7 +14,18 @@
 
     <title>Submit an Application</title>
     <script>
-            
+      
+
+    var load_application = function() {
+        $.getJSON('/volunteer/load', function(volunteer) {
+            console.log(volunteer);
+        });
+    }
+
+    window.onload() {
+        load_application();
+    }
+
     </script>
 
   </head>
