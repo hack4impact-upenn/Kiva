@@ -21,6 +21,8 @@ exports.index = function(req, res) {
 exports.login = function(req, res) {
 	var email = req.body.email_address;
 	var password = SHA3(req.body.password).toString();
+	console.log("email is" + email);
+	console.log("password is " + password);
 	Volunteer.findOne({'email_address': email, 'password':password}, 
 		function(err, volunteer) {
 			if(volunteer != null) {
@@ -37,9 +39,12 @@ exports.login = function(req, res) {
 					} else {
 						res.redirect('/volunteer/home');
 					}
+				} else if (volunteer == null) {
+					console.log(volunteer);
 			} else {
 				if(err) {
-					console.log(err);
+				} else {
+					console.log('something went horribly wrong');
 				}
 				res.send(404);
 			}
@@ -202,7 +207,7 @@ exports.create_volunteer = function(req, res) {
 		console.log(volunteer);
 		if(err) {console.log(err);}
 		else {
-			res.redirect('/admin');
+			res.redirect('/volunteer/home');
 		}
 	});
 };

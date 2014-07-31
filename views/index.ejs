@@ -12,7 +12,7 @@
     <script src="//code.jquery.com/jquery-1.9.1.js"></script>
     <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
-    <title>Submit an Application</title>
+    <title>Login</title>
     <script>
             
     </script>
@@ -22,19 +22,24 @@
   <body>
    
 <div id="form">
-   <h1> Login </h1>
+  <center>
+  <h1>Kiva Volunteer Beta</h1>
+   <h2> Login </h2>
     <form action="/login" method="POST">
-    <label for="email"> Email Address </label>
-    <input type="text" name="email" size="20" class="form-control" placeholder=""><br>
+    <input type="text" name="email_address" size="25" class="form-control" placeholder="Email"><br>
 
-    <label for="password"> Password </label>
-    <input type="password" name="password" size="80" class="form-control" placeholder=""><br>
+    <input type="password" name="password" size="25" class="form-control" placeholder="Password"><br>
 
-    <input type="submit" />
+    <input type="submit" value="Login" />
 
   </form>
-</div>
 
+  <form action="/volunteer/sign-up" method="GET">
+    <input type="submit" value="Sign Up to Volunteer"/>
+  </form>
+
+</div>
+</center>
   </body>
 
 
