@@ -1,6 +1,5 @@
 var express = require('express');
 var app = express();
-var Project = require('./models/projects.js').Project;
 var Application = require('./models/application.js').Application;
 var mongoose = require("mongoose");
 
