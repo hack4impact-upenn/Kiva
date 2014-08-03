@@ -24,6 +24,17 @@ var VolunteerSchema = new Schema({
 VolunteerSchema.statics = {
 	//approve volunteer
   //check if volunteer has a review open
+  add_review_in_progress: function (volunteer_id, review_id, cb) {
+    this.update({ _id: volunteer_id },
+      { $set: {'current_review': review_id} },
+      cb);
+  },
+
+  remove_review_in_progress: function (volunteer_id, cb) {
+    this.update({ _id: volunteer_id },
+      { $set: {'current_review': null} },
+      cb);
+  }
 };
 
 var volunteer = mongoose.model("Volunteer", VolunteerSchema);

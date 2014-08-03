@@ -14,17 +14,43 @@
 
     <title>Submit an Application</title>
     <script>
-      
+     
 
-    var load_application = function() {
+    var load_review = function() {
         $.getJSON('/volunteer/load', function(volunteer) {
             console.log(volunteer);
+            if(volunteer.current_review == null) {
+                console.log("generate a new review for them");
+                //pulls new review  
+                $.getJSON('/volunteer/get_min_reviewed_application', function(review) {
+                    console.log('review pulled');
+                    $('#review').append(
+                        "<p>" + review["organization_name"] + "</p>" +
+                        "<p>" + review["num_reviews"] + "</p>" +
+                        "<p>" + review["organization_url"] + "</p>" +
+                        "<p>" + review["description"] + "</p>" + 
+                        "<form method='POST' action='/review/create/" + review["_id"] + "'>" + 
+                        "<input type=submit value='Create Review'>" + 
+                        "</form>"
+                        );
+                });
+            } else {
+                console.log("generate old review");
+                console.log(volunteer.current_review);
+                //TODO: load information of the pending review?
+                $('#review').append(
+                        "<p> You have one review pending. </p>" + 
+                        "<a href='/review/edit/" + volunteer.current_review + "'>" +
+                        "Complete Review </a>"
+                );
+            }
         });
-    }
+    };
 
-    window.onload() {
-        load_application();
-    }
+
+    $( document ).ready(function() {
+        var review_info = load_review();
+    });
 
     </script>
 
@@ -34,15 +60,9 @@
    
     Volunteer Home Portal
 
-<div id= <%= next_app._id %> >
-  <p> <%= next_app._id %> </p>
-  <p> Organization Name: <%= next_app.organization_name %> </p>
-  <p> Organization URL: <%= next_app.organization_url %> </p>
-  <p> Address: <%= next_app.organization_address %> </p>
-  <p> Reviews Submitted: <%= next_app.reviews_submitted.length %> </p>
-  <form method="POST" action=<%= '/review/create/' + next_app._id %>>
-    <input type='submit' value="Create Review">
-  </form>
+    <div id="review">
+    </div>
+
 
 </div>
 

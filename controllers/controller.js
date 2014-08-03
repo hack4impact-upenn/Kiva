@@ -37,9 +37,10 @@ exports.login = function(req, res) {
 						res.send(404);
 					//	res.redirect('/admin/home');
 					} else {
+						console.log("redirecting to volunteer homepage");
 						res.redirect('/volunteer/home');
 					}
-				} else if (volunteer == null) {
+				} else if (volunteer === null) {
 					console.log(volunteer);
 			} else {
 				if(err) {
@@ -53,6 +54,12 @@ exports.login = function(req, res) {
 
 /*--------------  Volunteer Story ----------------- */
 
+exports.get_min_reviewed_application = function(req, res) {
+		Application.get_min_reviewed_application(function (err, application) {
+			console.log(application);
+			res.send(application);
+		});
+	};
 
 //load volunteer
 exports.load_volunteer = function(req, res) {
@@ -72,10 +79,7 @@ exports.volunteer_home = function(req, res) {
 	if(req.session.logged) {
 		console.log(req.session.volunteerId);
 		console.log(req.session.email);
-		Application.get_min_reviewed_application(function(err, next_app) {
-			console.log(next_app);
-			res.render('homepage.ejs', {next_app: next_app});
-		});
+		res.render('homepage.ejs');
 	} else {
 		res.redirect('/');
 	}
@@ -120,10 +124,18 @@ exports.create_review = function(req, res) {
 		console.log(review);
 		console.log(review._id);
 		Application.add_review_in_progress(org_id, review._id, function(err) {
-			if(err) { 
-				console.log(err)
+			if(err) {
+				console.log(err);
 			} else {
-				res.redirect('/review/edit/' + review._id);
+				Volunteer.add_review_in_progress(req.session.volunteerId, review._id, function(err) {
+					if(err) {
+						console.log(err);
+						res.send(404);
+					} else {
+						console.log("review saved");
+						res.redirect('/review/edit/' + review._id);
+					}
+				});
 			}
 		});
 	});
@@ -158,7 +170,6 @@ exports.save_review = function(req, res) {
 exports.submit_review = function(req, res) {
 	//needs to mark review as submitted, remove it from review_in_progress,
 	//and add it to the reviews submitted section
-
 	var org_id = req.body.org_id;
 	console.log("submitting");
 	Review.update({"_id": ObjectId(req.params.id)},
@@ -181,7 +192,13 @@ exports.submit_review = function(req, res) {
 								res.send(404);
 							} else {
 								console.log(numAffected3);
-								res.send(200);
+								Volunteer.remove_review_in_progress(req.session.volunteerId, function(err) {
+									if(err) {
+										console.log(err);
+									} else {
+										res.send(200);
+									}
+								});
 							}
 						});
 					}
