@@ -12,7 +12,8 @@ var ApplicationSchema = new Schema({
   open_to_review: {type: Boolean, default: true},
   reviews_in_progress: [Schema.Types.ObjectId],
   reviews_submitted: [Schema.Types.ObjectId],
-  date_submitted: {type: Date, default: Date.now}
+  date_submitted: {type: Date, default: Date.now},
+  score_sum: {type: Number, default: 0}
 });
 
 
@@ -23,7 +24,7 @@ ApplicationSchema.statics = {
 			cb);
 	},
 	submit_review: function (app_id, review_id, cb) {
-		console.log(app_id);
+		console.log("application.submit_review reached");
 		this.update({ _id: app_id }, 
 			{ $push: {'reviews_submitted': review_id}, 
 			$inc: {'num_reviews': 1}}, 

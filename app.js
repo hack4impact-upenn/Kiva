@@ -47,11 +47,12 @@ app.get("/volunteer/load", controller.load_volunteer);
 app.post("/volunteer/submit-volunteer", controller.create_volunteer);
 app.get("/volunteer/sign-up", controller.volunteer_signup_page);
 app.get("/volunteer/home", controller.volunteer_home);
-app.post("/review/create/:id", controller.create_review);
-app.get("/review/edit/:id", controller.edit_review);
-app.post("/review/save/:id", controller.save_review);
-app.post("/review/submit/:id", controller.submit_review);
-
+app.post("/review/create/:id", controller.create_review); // org_id here
+app.get("/review/edit/:id", controller.edit_review); // review id
+app.post("/review/save/:id", controller.save_review); // review id
+app.post("/review/submit/:id", controller.submit_review); // review id
+app.get("/review/completed/:org_id", controller.completed_review_page); //org_id
+app.get("/review/completed/load/:org_id", controller.load_completed_reviews);
 
 //Admin
 app.get("/admin/sign-up", controller.admin_signup_page);
