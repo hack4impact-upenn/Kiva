@@ -111,8 +111,6 @@ exports.completed_review_page = function(req, res) {
 	res.render("reviewed_application.ejs", {org_id: org_id});
 };
 
-
-
 exports.get_min_reviewed_application = function(req, res) {
 		Application.get_min_reviewed_application(function (err, application) {
 			console.log(application);
@@ -123,7 +121,9 @@ exports.get_min_reviewed_application = function(req, res) {
 
 //open a review for editing
 exports.edit_review = function(req, res) {
-	if(req.session.logged){
+	res.render('review.ejs', {review_id: req.params.id});
+};
+/*	if(req.session.logged){
 		review_id = req.params.id;
 		Review.findOne({"_id" : review_id}, function(err, review){
 			if(err) {
@@ -142,7 +142,7 @@ exports.edit_review = function(req, res) {
 	} else {
 		res.redirect('/');
 	}
-};
+};*/
 
 //Volunteer Helper Functions
 
@@ -177,6 +177,17 @@ exports.create_review = function(req, res) {
 	});
 };
 
+exports.load_unfinished_review = function(req, res) {
+	Review.findById(req.params.id, function(err, review) {
+		if(err) {
+			console.log(err);
+			res.send(404);
+		} else {
+			res.send(review);
+		}
+	})
+};
+
 
 exports.save_review = function(req, res) {
 	console.log(req.params.id);
@@ -206,7 +217,8 @@ exports.save_review = function(req, res) {
 exports.submit_review = function(req, res) {
 	//TODO: Add the review to the user's submitted list
 	//TODO: This is massive. refactoring needed?
-	var org_id = req.body.org_id;
+	var org_id = req.body.organization_id;
+	console.log(org_id);
 	console.log("submitting");
 	async.parallel(
 		[
@@ -317,7 +329,7 @@ exports.submit_review = function(req, res) {
 
 exports.load_completed_reviews = function(req, res) {
 	var org_id = req.params.org_id;
-	Review.find({"organization_id": org_id}, function(err, reviews) {
+	Review.find({"organization_id": org_id, "submitted": true}, function(err, reviews) {
 		if(err) {console.log(err)}
 			res.send(reviews);
 	});

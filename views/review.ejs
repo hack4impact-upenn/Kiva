@@ -24,28 +24,37 @@
                 
 
                 <label for="clear_social_impact"> Does this company have a clear social impact? </label>
-                <input type="radio" name="clear_social_impact" value=true size="20" class="form-control" placeholder="ie. PennApps S14">
-                <input type="radio" name="clear_social_impact" value=false size="20" class="form-control" placeholder="ie. PennApps S14">
+                <input type="radio" name="clear_social_impact" value=true size="20" class="form-control">
+                <input type="radio" name="clear_social_impact" value=false size="20" class="form-control">
+                <br />
 
-                <label for="sustainable_model"> Is there a clear savings/revenue model to repay the loan? </label>
-                <input type="text" name="sustainable_model" size="20" class="form-control" placeholder=""><br>
+                <label for="sustainable_model"> Is there a clear savings/revenue model to repay the loan? </label>            
+               <input type="radio" name="sustainable_model" value=true size="20" class="form-control">
+                <input type="radio" name="sustainable_model" value=false size="20" class="form-control">
+                <br />
+
+
 
                 <label for="kiva_fit"> Is there a good fit with the Kiva model? </label>
-                <input type="text" name="kiva_fit" size="80" class="form-control" placeholder=""><br>
+               <input type="radio" name="kiva_fit" value=true size="20" class="form-control">
+                <input type="radio" name="kiva_fit" value=false size="20" class="form-control">
+                <br />
+
 
                 <label for="kiva_fit_comments"> If not a good fit, why? </label>
-                <input type="text" name="kiva_fit_comments" size="20" class="form-control" placeholder=""><br>
+                <input type="text" id="kiva_fit_comments" name="kiva_fit_comments" size="20" class="form-control" placeholder=""><br>
 
                 <p> Please list the top three questions you would want to ask about to determine this candidate's eligibility and fit for a Kiva loan? </p>
 
                 <label for="q_1"> Q1) </label>
-                <input type="text" name="q_1" size="20" class="form-control" placeholder=""><br>
+                <input type="text" id="q_1" name="q_1" size="20" class="form-control" placeholder=""><br>
+
 
                 <label for="q_2"> Q2) </label>
-                <input type="text" name="q_2" size="20" class="form-control" placeholder=""><br>
+                <input id="q_2" name="q_2" type="text"  size="20" class="form-control" placeholder=""><br>
 
                 <label for="q_3"> Q3) </label>
-                <input type="text" name="q_3" size="20" class="form-control" placeholder=""><br>
+                <input type="text" id="q_3" name="q_3" size="20" class="form-control" placeholder=""><br>
 
 
                 <label for="recommend_rating"> How excited would you be to recommend this application for the next stage in the approval process? </label>
@@ -57,9 +66,9 @@
                 <br>
 
                 <label for="other_comments"> Any other comments or concerns you wish to address? </label>
-                <input type="text" name="other_comments" size="20" class="form-control" placeholder=""><br>
+                <input type="text" id="other_comments" name="other_comments" size="20" class="form-control" placeholder=""><br>
 
-                <input type="hidden" name="org_id" value= <%= review.organization_id %>>
+                <input type="hidden" name="organization_id" id="organization_id">
 
                 <input type="button" value="Save" name="save_review" onclick="askForSave()" />
                 <input type="button" value="Submit" name="submit_review" onclick="askForSubmit()" />
@@ -72,12 +81,41 @@
             <!---- //stackoverflow.com/questions/16660734/html-form-with-multiple-actions ---!>
             var form=document.getElementById("review");
             function askForSave() {
-                form.action='<%= "/review/save/" + review._id %>';
+                form.action='<%= "/review/save/" + review_id %>';
                 form.submit();
             };
             function askForSubmit() {
-                form.action='<%= "/review/submit/" + review._id %>';
+                form.action='<%= "/review/submit/" + review_id %>';
                 form.submit();
             };
+
+            function load_review() {
+                     var form=document.getElementById("review");
+                     $.getJSON('<%= "/review/load/" + review_id %>', function(review) {   $.each(review, function(name, val) {
+                                    console.log(name + ":" + val);
+                                    switch(name)
+                                    {
+                                        case ("clear_social_impact"):
+                                        case ("kiva_fit"):
+                                        case("sustainable_model"):  
+                                            var i = val ? 0 : 1;                                        
+                                            $('input[name=' + name + ']:nth(' + i + ')').attr('checked', true);
+                                            break;
+                                        case ("recommend_rating"):
+                                            $('input[name=' + name + ']:nth('+ (val-1) + ')').attr('checked', true);
+                                            break;
+                                        default:
+                                            $("#" + name).val(val);
+                                            break;
+                                    }
+                            });
+                     });
+            };
+
+            $( document ).ready(function() {
+                load_review();
+             });
+
+
         </script>
 </html>

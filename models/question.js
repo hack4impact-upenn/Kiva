@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var QuestionSchema = new Schema({
   reviewer_id: {type: Schema.Types.ObjectId},
   organization_id: {type: Schema.Types.ObjectId},
-  question: {type: String, default: ''},
+  question_text: {type: String, default: ''},
   votes: {type: Number, default:0},
 });
 

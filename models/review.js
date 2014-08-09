@@ -30,7 +30,6 @@ ReviewSchema.statics = {
 
 var review = mongoose.model("Review", ReviewSchema);
 
-
 module.exports = {
 	Review : review
 };

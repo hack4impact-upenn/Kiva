@@ -30,8 +30,6 @@ app.use(express.bodyParser())
    .use(express.multipart());
 
 
-
-
 var port = Number(process.env.PORT || 5000);
 app.listen(port, function() {
   console.log("Listening on " + port);
@@ -50,6 +48,7 @@ app.get("/volunteer/home", controller.volunteer_home);
 app.post("/review/create/:id", controller.create_review); // org_id here
 app.get("/review/edit/:id", controller.edit_review); // review id
 app.post("/review/save/:id", controller.save_review); // review id
+app.get("/review/load/:id", controller.load_unfinished_review);
 app.post("/review/submit/:id", controller.submit_review); // review id
 app.get("/review/completed/:org_id", controller.completed_review_page); //org_id
 app.get("/review/completed/load/:org_id", controller.load_completed_reviews);
@@ -62,7 +61,5 @@ app.get("/admin/home", controller.admin_home);
 app.post("/post-application", controller.create_application);
 app.get("/admin_applications", controller.view_applications);
 app.get("/admin/application/:id", controller.view_one_application);
-
-
 
 module.exports = app;

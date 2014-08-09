@@ -10,36 +10,41 @@
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
-        <title>Submit an Application</title>
+        <title>Thanks for completing your review!</title>
     
     </head>
 
     <body>
-        <div id="applicant documents">
-        what happens when someone finishes the review. 
-
-
+        <div id="reviews">
         </div>
-
-       
     </body>
 
 <script>
     var org_id = "<%= org_id %>";
     console.log(org_id);
+
+    var load_page = function() {
+        load_completed_reviews();
+        load_org_info();
+   }
+
     var load_completed_review = function() {
-        var review_counter=0;
-        var score_sum = 0;
         $.getJSON('/review/completed/load/' + org_id, function(reviews) {
-            $.each(reviews, function(index, value) {
-                console.log(value);
-                review_counter += 1;
-            });
+             $.each(reviews, function(index, review) {
+                console.log(review);
+                 $('#reviews').append(
+                    "<p> Clear Social Impact: " + review["clear_social_impact"] + "</p>" +
+                    "<p> Kiva Fit: " + review["kiva_fit"] + "</p>" +
+                    "<p> Sustainable Business Model: " + review["sustainable_model"] + "</p>" +
+                    "<p> Recommended Rating: " + review["recommend_rating"] + "</p>" + 
+                   "<br />"
+                    );
+            }); 
         });
     }
-    
     $( document ).ready(function() {
         var review_info = load_completed_review();
     });
+
 </script>
 </html>
