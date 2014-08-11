@@ -49,6 +49,17 @@
 
 
     $( document ).ready(function() {
+        $.getJSON('/volunteer/load', function(volunteer) {
+            if (!volunteer.finished_training) {
+                console.log('get training first.');
+                $('#training').append($('<a>')
+                                        .attr('href', '/volunteer/training')
+                                        .html('Get training first'));
+            }
+            else {
+                console.log('finished training is true');
+            }
+        });
         var review_info = load_review();
     });
 
@@ -59,6 +70,8 @@
   <body>
    
     Volunteer Home Portal
+
+    <div id="training"></div>
 
     <div id="review">
     </div>
