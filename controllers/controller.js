@@ -103,6 +103,36 @@ exports.volunteer_home = function(req, res) {
 	}
 };
 
+exports.volunteer_training = function(req, res) {
+	if(req.session.logged) {
+		console.log(req.session.volunteerId);
+		console.log(req.session.email);
+		res.render('training.ejs');
+	} else {
+		res.redirect('/');
+	}
+};
+
+exports.volunteer_finished_training = function(req, res) {
+	if(req.session.logged) {
+		var id = req.session.volunteerId;
+		console.log('volunteer id: ' + id);
+		Volunteer.findOne({"_id": req.session.volunteerId}, function(err, volunteer) {
+			console.log("old volunteer: " + volunteer);
+			volunteer.finished_training = true;
+			console.log("new volunteer: " + volunteer);
+
+			volunteer.save(function(err, volunteer) {
+				if(err) {console.log(err);}
+				else {
+					res.redirect('/volunteer/home');
+				}
+			});
+		});
+	} else {
+		res.redirect('/');
+	}
+};
 
 //TODO: after a review is completed, we need to be directed to a page that loads all reviews for a specific org_id. search all reviews for a specific org_id. 
 //TODO: Then load all the questions. 
