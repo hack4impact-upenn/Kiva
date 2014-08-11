@@ -45,6 +45,8 @@ app.get("/volunteer/load", controller.load_volunteer);
 app.post("/volunteer/submit-volunteer", controller.create_volunteer);
 app.get("/volunteer/sign-up", controller.volunteer_signup_page);
 app.get("/volunteer/home", controller.volunteer_home);
+app.get("/volunteer/training", controller.volunteer_training);
+app.get("/volunteer/finished-training", controller.volunteer_finished_training);
 app.post("/review/create/:id", controller.create_review); // org_id here
 app.get("/review/edit/:id", controller.edit_review); // review id
 app.post("/review/save/:id", controller.save_review); // review id
