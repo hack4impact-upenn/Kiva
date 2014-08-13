@@ -17,7 +17,7 @@ var ReviewSchema = new Schema({
   q_1: {type: String, default: ''},
   q_2: {type: String, default: ''},
   q_3: {type: String, default: ''},
-  recommend_rating: {type: Number, min:1, max:5},
+  recommend_rating: {type: Number, min:1, max:5, default: 1},
   //1 is bad, 5 is good
   other_comments: {type: String, trim: true},
   submitted: {type: Boolean, default: false}

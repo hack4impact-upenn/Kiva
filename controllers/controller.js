@@ -17,7 +17,7 @@ var ObjectId= mongoose.Types.ObjectId;
 
 exports.index = function(req, res) {
 	res.render("index.ejs");
-}
+};
 
 exports.login = function(req, res) {
 	var email = req.body.email_address;
@@ -43,6 +43,7 @@ exports.login = function(req, res) {
 					}
 				} else if (volunteer === null) {
 					console.log(volunteer);
+					res.render("index.ejs", {errors: "error"});
 			} else {
 				if(err) {
 				} else {
@@ -52,6 +53,16 @@ exports.login = function(req, res) {
 			}
 		});
 };
+
+//load_application
+exports.load_application = function(req, res) {
+	var org_id = req.params.org_id;
+	Application.findOne({"_id": ObjectId(org_id)}, function(err, application){
+		console.log(application);
+		res.send(application);
+	});
+};
+
 
 /*--------------  Volunteer Story ----------------- */
 
@@ -73,7 +84,12 @@ exports.create_volunteer = function(req, res) {
 		console.log(volunteer);
 		if(err) {console.log(err);}
 		else {
-			res.redirect('/volunteer/home');
+			req.session.admin = volunteer.is_admin;
+			req.session.logged = true;
+			console.log("Volunteer_id to string: " + (volunteer._id).toString());
+			req.session.volunteerId = ObjectId(volunteer._id.toString());
+			req.session.email = volunteer.email_address;
+			res.redirect('/volunteer/training');
 		}
 	});
 };
@@ -120,9 +136,9 @@ exports.volunteer_finished_training = function(req, res) {
 		Volunteer.findOne({"_id": req.session.volunteerId}, function(err, volunteer) {
 			console.log("old volunteer: " + volunteer);
 			volunteer.finished_training = true;
-			console.log("new volunteer: " + volunteer);
 
 			volunteer.save(function(err, volunteer) {
+				console.log("new volunteer: " + volunteer);
 				if(err) {console.log(err);}
 				else {
 					res.redirect('/volunteer/home');
@@ -238,7 +254,7 @@ exports.save_review = function(req, res) {
 					res.send(404);
 				} else {
 					console.log(numAffected);
-					res.send(200);
+					res.redirect('/review/edit/' + req.params.id);
 				}
 			}
 		);
@@ -342,13 +358,24 @@ exports.submit_review = function(req, res) {
 					});
 			},
 			function(callback) {
-				//update average score
-				Application.update({"_id": org_id}, {$inc: {score_sum: req.body.recommend_rating}}, function(err) {
+				//update average score/counts
+				console.log(req.body.kiva_fit);
+				var kiva_fit = (req.body.kiva_fit === 'true' ? 1 : 0); 
+				var clear_social_impact = (req.body.clear_social_impact === 'true' ? 1 : 0); 
+				var sustainable_model = (req.body.sustainable_model === 'true' ? 1 : 0); 
+				console.log("kiva fit:" + kiva_fit);
+
+				Application.update({"_id": org_id}, 
+					{$inc: {score_sum: req.body.recommend_rating,
+							kiva_fit_count: kiva_fit, 
+							sustainable_model_count: sustainable_model, 
+							clear_social_impact_count: clear_social_impact}
+						}, function(err) {
 					if (err) {return callback(err)};
 					console.log("score updated");
 					callback(err);
 				})
-			}
+			},
 		], function(err) {
 			if (err) {res.send(404);};
 			console.log("submission complete");

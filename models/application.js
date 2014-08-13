@@ -13,7 +13,10 @@ var ApplicationSchema = new Schema({
   reviews_in_progress: [Schema.Types.ObjectId],
   reviews_submitted: [Schema.Types.ObjectId],
   date_submitted: {type: Date, default: Date.now},
-  score_sum: {type: Number, default: 0}
+  score_sum: {type: Number, default: 0},
+  kiva_fit_count: {type: Number, default: 0},
+  sustainable_model_count: {type: Number, default: 0},
+  clear_social_impact_count: {type: Number, default: 0}
 });
 
 

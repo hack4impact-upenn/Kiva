@@ -15,6 +15,9 @@
     </head>
 
     <body>
+        <div id="data">
+        </div>
+
         <div id="reviews">
         </div>
     </body>
@@ -24,9 +27,24 @@
     console.log(org_id);
 
     var load_page = function() {
-        load_completed_reviews();
+        load_completed_review();
         load_org_info();
    }
+
+   //would like to refactor later
+   var load_org_info = function() {
+    $.getJSON("/load_application/" + org_id, function(application) {
+        $('#data').append(
+                    "<p>" +  application.kiva_fit_count + " out of " + application.num_reviews + " thought " + application.organization_name + " fit in with Kiva's culture. </p>" + 
+
+                    "<p>" +  application.sustainable_model_count + " out of " + application.num_reviews + " thought " + application.organization_name + " has a sustainable business model. </p>" + 
+
+                    "<p>" +  application.clear_social_impact_count + " out of " + application.num_reviews + " thought " + application.organization_name + " has a clear social impact. </p>" + 
+
+                    "<p> Average rating was: " + (application.score_sum/application.num_reviews).toFixed(1) + " out of 5.0 </p>" 
+                    );
+    });
+   };
 
     var load_completed_review = function() {
         $.getJSON('/review/completed/load/' + org_id, function(reviews) {
@@ -43,7 +61,7 @@
         });
     }
     $( document ).ready(function() {
-        var review_info = load_completed_review();
+        load_page();
     });
 
 </script>

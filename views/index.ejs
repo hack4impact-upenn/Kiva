@@ -1,50 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       
 
-     <link href="" rel="stylesheet" type="text/css">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <link href="/kiva_style.css" rel="stylesheet" type="text/css">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
-    <title>Login</title>
-    <script>
+        <title>Login</title>
+        <script>
             
-    </script>
+        </script>
 
-  </head>
+    </head>
 
-  <body>
-   
-<div id="form">
-  <center>
-  <h1>Kiva Volunteer Beta</h1>
-   <h2> Login </h2>
-    <form action="/login" method="POST">
-    <input type="text" name="email_address" size="25" class="form-control" placeholder="Email"><br>
+    <body>
 
-    <input type="password" name="password" size="25" class="form-control" placeholder="Password"><br>
+        <% include banner %>
 
-    <input type="submit" value="Login" />
-
-  </form>
-
-  <form action="/volunteer/sign-up" method="GET">
-    <input type="submit" value="Sign Up to Volunteer"/>
-  </form>
-
-  <form action="/admin/sign-up" method="GET">
-    <input type="submit" value="Admins Only"/>
-  </form>
-
-</div>
-</center>
-  </body>
+        <div id="container">
 
 
-  </html>
+            <div id="blurb">
+                <h2> Empower people around the world. </h2>
+                <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce fringilla ipsum ipsum, tempus fringilla turpis adipiscing eu. Phasellus ac elit nec urna ultrices fermentum. Ut a urna at erat pharetra imperdiet. Integer vitae lacus quam. Duis laoreet dui vitae velit ultrices, id scelerisque felis scelerisque. Quisque blandit sit amet libero eget bibendum. Nam vestibulum accumsan molestie. Nulla facilisi. Vivamus pretium lorem ut sem ultricies, sed fringilla lectus mollis.
+                </p>
+
+            </div>
+
+            <div id="form">
+ 
+                <h2> Login </h2>
+                <form action="/login" method="POST">
+                    <input type="text" name="email_address" size="25" class="form-control" placeholder="Email"><br>
+                    <input type="password" name="password" size="25" class="form-control" placeholder="Password"><br>
+                    <input type="submit" value="Login" />
+                  </form>
+
+                <form action="/volunteer/sign-up" method="GET">
+                    <input type="submit" value="Sign Up to Volunteer"/>
+                </form>
+
+                <form action="/admin/sign-up" method="GET">
+                    <input type="submit" value="Admins Only"/>
+                </form>
+            </div>
+
+        </div>
+        <% include footer %>
+
+
+    </body>
+
+</html>
