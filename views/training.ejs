@@ -1,49 +1,16 @@
 <html>
 <head>
+	
+    <link href="/kiva_style.css" rel="stylesheet" type="text/css">
+
 	<style>
-		body {
-			font-family: arial;
-			background-color: white
-		}
+		
 		h1, h2, p {
 			text-align: center;
 			margin: 5;
 			color: #587F3A;
 		}
-		a {
-			background-color: #B1FF75;
-			display: block;
-			margin-bottom: 1%;
-			margin-left: auto;
-			margin-right: auto;
-			width: 50%;
-			padding-left: 1%;
-			padding: 1%;
-			color: black;
-			text-decoration: none;
-			border-radius: 5px;
-			z-index: -1;
-		}
-		a:visited {
-			color: #3C8A0C;
-		}
-		a:hover {
-			background-color: #B1DF75
-		}
-		button, .submit {
-			background-color: #587F3A;
-			color: white;
-			width: 400px;
-			padding: 2px;
-			text-align: center;
-			margin-right: auto;
-			margin-left: auto;
-			display: block;
-			font-size: 100%;
-		}
-		.submit:hover {
-			background-color: #58AF3A
-		}
+		
 	</style>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<title>Kiva Investment Advisors - Training</title>
@@ -67,55 +34,64 @@
 		]
 
 		$(document).ready(function() {
-			for (c in content) {
-				$('body').append($('<a>')
-							.attr('href', content[c][2])
-							.attr('target', '_blank')
-							.append($('<div>')
-								.attr('id', 'title'+c)
-								.attr('class', 'block')
-								.append($('<b>').text(content[c][0]))
-								.append($('<div>')
-									.attr('class', 'info')
-									.text(content[c][1]))));
-			}
 
-			var submitText = 'I have carefully reviewed all the training material.';
-			
-			$('body').append($('<button>')
-								.text(submitText)
-								.click(function() {
-									$('#quiz').css('visibility', '');
-								}));
-			$('#quiz').append($('<form>')
-								.attr('id', 'submit')
-								.append($('<input>')
-									.attr('type', 'submit')
-									.attr('value', "Submit")
-									.attr('class', 'submit'))
-								.submit(function(event){
-									var ans1 = $('#ans1').val();
-									var ans2 = $('#ans2').val();
-									var ans3 = $('#ans3').val();
-									var ans4 = $('#ans4').val();
-									if (ans1 != 'red' || ans2 != '3' |
-											ans3 !='hack' || ans4 !='hack') {
-										alert('Sorry, one or more of your answers are incorrect. Make sure to review all the materials first.');
-									}
-									else {
-										$('#submit').attr('action', '/volunteer/finished-training')
-												.attr('method', 'get').submit();
-									}
-								}));
-			
+			$.getJSON('/volunteer/load', function(volunteer) {
+	            for (c in content) {
+					$('#training').append($('<a>')
+						.attr('href', content[c][2])
+						.attr('target', '_blank')
+						.append($('<div>')
+							.attr('id', 'title'+c)
+							.attr('class', 'block')
+							.append($('<b>').text(content[c][0]))
+							.append($('<div>')
+								.attr('class', 'info')
+								.text(content[c][1]))));
+				}
+
+        		if (!volunteer.finished_training) {
+    				console.log('get training first.');
+					var submitText = 'I have carefully reviewed all the training material.';			
+					$('body').append($('<button>')
+										.text(submitText)
+										.click(function() {
+											$('#quiz').css('visibility', '');
+										}));
+					$('#quiz').append($('<form>')
+										.attr('id', 'submit')
+										.append($('<input>')
+											.attr('type', 'submit')
+											.attr('value', "Submit")
+											.attr('class', 'submit'))
+										.submit(function(event){
+											var ans1 = $('#ans1').val();
+											var ans2 = $('#ans2').val();
+											var ans3 = $('#ans3').val();
+											var ans4 = $('#ans4').val();
+											if (ans1 != 'red' || ans2 != '3' |
+													ans3 !='hack' || ans4 !='hack') {
+												alert('Sorry, one or more of your answers are incorrect. Make sure to review all the materials first.');
+											} else {
+												$('#submit').attr('action', '/volunteer/finished-training')
+														.attr('method', 'get').submit();
+											}
+										})
+									);
+				}
+			});
 		});
+
 	</script>
 </head>
 <body>
-
+	<% include banner %>
 	<h1>Kiva Investment Advisors</h1>
 	<h2>Training Page</h2>
-	<p>Please review all the training material before proceeding.</p>
+	
+	<div id="training">
+		<p>Please review all the training material.</p>
+	</div>
+
 	<div style="z-index:1; position:absolute; left:25%; display:block; height: 40%; width: 40%; background-color:#B1DF75; opacity:0.95; margin-top:3%; visibility:hidden;
 	border-style:solid; padding:5%"
 	id="quiz">
@@ -125,7 +101,6 @@
 		<br>Write 'hack'<input id="ans3"></input>
 		<br>Write 'hack'<input id="ans4"></input>
 	</div>
-
 </body>
 
 <html>

@@ -150,7 +150,7 @@ exports.volunteer_finished_training = function(req, res) {
 	}
 };
 
-//TODO: after a review is completed, we need to be directed to a page that loads all reviews for a specific org_id. search all reviews for a specific org_id. 
+//TODO: 
 //TODO: Then load all the questions. 
 exports.completed_review_page = function(req, res) {
 	org_id = req.params.org_id;
@@ -159,8 +159,12 @@ exports.completed_review_page = function(req, res) {
 
 exports.get_min_reviewed_application = function(req, res) {
 		Application.get_min_reviewed_application(function (err, application) {
-			console.log(application);
-			res.send(application);
+			if(application === null) {
+				res.send({"data" : "none"});
+			} else {
+				console.log("application: " + application);
+				res.send(application);
+			}
 		});
 	};
 

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
    
 
-     <link href="" rel="stylesheet" type="text/css">
+    <link href="/kiva_style.css" rel="stylesheet" type="text/css">
     <meta name="description" content="">
     <meta name="author" content="">
     <script src="//code.jquery.com/jquery-1.9.1.js"></script>
@@ -22,17 +22,24 @@
             if(volunteer.current_review == null) {
                 console.log("generate a new review for them");
                 //pulls new review  
-                $.getJSON('/volunteer/get_min_reviewed_application', function(review) {
-                    console.log('review pulled');
-                    $('#review').append(
-                        "<p>" + review["organization_name"] + "</p>" +
-                        "<p>" + review["num_reviews"] + "</p>" +
-                        "<p>" + review["organization_url"] + "</p>" +
-                        "<p>" + review["description"] + "</p>" + 
-                        "<form method='POST' action='/review/create/" + review["_id"] + "'>" + 
-                        "<input type=submit value='Create Review'>" + 
-                        "</form>"
-                        );
+                $.getJSON('/volunteer/get_min_reviewed_application', function(data) {
+                    console.log("does it reach here");
+                    console.log(data);
+                    if(data.data !== "none") {
+                            $('#review').append(
+                                "<p>" + data["organization_name"] + "</p>" +
+                                "<p>" + data["num_reviews"] + "</p>" +
+                                "<p>" + data["organization_url"] + "</p>" +
+                                "<p>" + data["description"] + "</p>" + 
+                                "<form method='POST' action='/review/create/" + data["_id"] + "'>" + 
+                                "<input type=submit value='Create Review'>" + 
+                                "</form>"
+                                );
+                    } else {
+                          $('#review').append(
+                             "<p> There are currently no reviews for you to complete. </p>"
+                             )
+                    }
                 });
             } else {
                 console.log("generate old review");
@@ -58,17 +65,19 @@
             }
             else {
                 console.log('finished training is true');
+                load_review();
             }
         });
-        var review_info = load_review();
     });
 
     </script>
 
   </head>
 
-  <body>
-   
+<body>
+    <% include banner %>   
+
+
     Volunteer Home Portal
 
     <div id="training"></div>
@@ -78,6 +87,9 @@
 
 
 </div>
+
+    <% include footer %>   
+
 
   </body>
 
