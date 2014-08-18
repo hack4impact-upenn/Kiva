@@ -16,7 +16,11 @@ var ObjectId= mongoose.Types.ObjectId;
 /*--------------  General Functions ----------- */
 
 exports.index = function(req, res) {
-	res.render("index.ejs");
+	if(req.session.logged) {
+		res.redirect('/volunteer/home');
+	} else {
+		res.render("index.ejs");
+	}
 };
 
 exports.login = function(req, res) {
