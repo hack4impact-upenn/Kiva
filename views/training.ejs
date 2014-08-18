@@ -52,7 +52,7 @@
         		if (!volunteer.finished_training) {
     				console.log('get training first.');
 					var submitText = 'I have carefully reviewed all the training material.';			
-					$('body').append($('<button>')
+					$('#content').append($('<button>')
 										.text(submitText)
 										.click(function() {
 											$('#quiz').css('visibility', '');
@@ -94,7 +94,7 @@
 			<p>Please review all the training material.</p>
 		</div>
 
-		<div style="z-index:1; position:absolute; left:25%; display:block; height: 40%; width: 40%; background-color:#B1DF75; opacity:0.95; margin-top:3%; visibility:hidden;
+		<div class="popup" style="z-index:1; position:absolute; left:25%; display:block; height: 40%; width: 40%; background-color:#B1DF75; opacity:0.95; margin-top:3%; visibility:hidden;
 		border-style:solid; padding:5%"
 		id="quiz">
 			Please answer these questions:
@@ -105,7 +105,7 @@
 		</div>
 		</div>
 
-		<% include banner %>
+		<% include footer %>
 	</div>
 </body>
 

@@ -134,3 +134,8 @@ html, body {
 			background-color: #58AF3A
 		}
 
+.popup {
+	position: absolute;
+	top: 20%;
+}
+
