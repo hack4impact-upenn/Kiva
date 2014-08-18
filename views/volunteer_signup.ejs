@@ -11,10 +11,29 @@
         <meta name="author" content="">
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
         <title>Become a Volunteer Today!</title>
         <script>
-                
+            $(document).ready(function() {
+                var checked = false;
+                // validate every field is completed
+                $('#signup-submit').on('submit', function(event, elem){
+                    if (!checked) {
+                        event.preventDefault();
+                        checked = true;
+                        $('#signup-form input').each(function(i, e) {
+                            console.log($(e).val());
+                            if ($(e).val() == '' && $(e).attr('type') != 'submit') {
+                                console.log('Please complete all fields');
+                                $('#msg').css('display', '');
+                                checked = false;
+                            }
+                        });
+                        if (checked) $('#signup-submit').submit();
+                    }
+                });
+            });                
         </script>
 
     </head>
@@ -25,7 +44,7 @@
 
     <div id="signup-form">
 
-        <form action="/volunteer/submit-volunteer" method="POST">
+        <form id="signup-submit" action="/volunteer/submit-volunteer" method="POST">
             <label for="first_name"> First Name </label>
             <input type="text" name="first_name" size="20" class="form-control" placeholder=""><br>
 
@@ -51,7 +70,9 @@
             <label for="what_skills"> What skills do you possess that make you a qualified reviewer? </label>
             <input type="text" name="what_skills" size="100" class="form-control" placeholder=""><br>
 
-            <input type="submit" />
+            <div id="msg" style="display:none;color:red"><b>Please complete all fields.</b></div>
+
+            <input type="submit" class="btn btn-primary">
         </form>
     </div>   
     
