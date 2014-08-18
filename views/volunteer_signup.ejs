@@ -22,14 +22,24 @@
                     if (!checked) {
                         event.preventDefault();
                         checked = true;
+                        var field = true;
                         $('#signup-form input').each(function(i, e) {
                             console.log($(e).val());
-                            if ($(e).val() == '' && $(e).attr('type') != 'submit') {
-                                console.log('Please complete all fields');
+                            if ($(e).attr('type')!='submit' && $(e).val() == '') {
                                 $('#msg').css('display', '');
                                 checked = false;
+                                field = false;
                             }
                         });
+                        if (field) $('#msg').css('display', 'none');
+                        console.log("checkbox: " + $('#checkbox').prop("checked"));
+                        if (!$('#checkbox').prop("checked")) {
+                            $('#msg2').css('display', '');
+                                checked = false;
+                        } else {
+                            $('#msg2').css('display', 'none');
+                        }
+                        console.log(checked);
                         if (checked) $('#signup-submit').submit();
                     }
                 });
@@ -45,32 +55,33 @@
     <div id="signup-form">
 
         <form id="signup-submit" action="/volunteer/submit-volunteer" method="POST">
-            <label for="first_name"> First Name </label>
-            <input type="text" name="first_name" size="20" class="form-control" placeholder=""><br>
+            <input type="text" name="first_name" size="20" class="form-control" placeholder="First Name"><br>
 
-            <label for="last_name"> Last Name </label>
-            <input type="text" name="last_name" size="20" class="form-control" placeholder=""><br>
+            <input type="text" name="last_name" size="20" class="form-control" placeholder="Last Name"><br>
 
+            <input type="text" name="email_address" size="20" class="form-control" placeholder="Email Address"><br>
 
-            <label for="email_address"> Email Address </label>
-            <input type="text" name="email_address" size="20" class="form-control" placeholder=""><br>
+            <input type="password" name="password" size="20" class="form-control" placeholder="Password"><br>
 
-            <label for="password"> Password </label>
-            <input type="password" name="password" size="20" class="form-control" placeholder=""><br>
+            <input type="text" name="linked_in" size="20" class="form-control" placeholder="Linkedin Profile"><br>
 
-            <label for="linked_in"> Linkedin Profile </label>
-            <input type="text" name="linked_in" size="20" class="form-control" placeholder=""><br>
-
-            <label for="resume_link"> Link to Most Recent Resume </label>
-            <input type="text" name="resume_link" size="20" class="form-control" placeholder=""><br>
+            <input type="text" name="resume_link" size="20" class="form-control" placeholder="Link to Most Recent Resume"><br>
 
             <label for="why_kiva"> Why are you interested in becoming a volunteer for Kiva? </label>
-            <input type="text" name="resume_link" size="100" class="form-control" placeholder=""><br>
+            <input type="text" name="resume_link" size="100" class="form-control" placeholder="">
 
             <label for="what_skills"> What skills do you possess that make you a qualified reviewer? </label>
-            <input type="text" name="what_skills" size="100" class="form-control" placeholder=""><br>
+            <input type="text" name="what_skills" size="100" class="form-control" placeholder="">
+
+            <div class="checkbox" style="margin-left:3px">
+                <label>
+                <input type="checkbox" id="checkbox"><b>I have already read and signed this <a href='https://secure.echosign.com/public/esign?aid=X4IJG3J7C2K6P4Q&eid=X4IKRJG854F2TXD&' target="_blank">volunteer agreement.</a></b>
+                </label>
+            </div>
 
             <div id="msg" style="display:none;color:red"><b>Please complete all fields.</b></div>
+
+            <div id="msg2" style="display:none;color:red"><b>Make sure to sign the volunteer agreement.</b></div>
 
             <input type="submit" class="btn btn-primary">
         </form>
