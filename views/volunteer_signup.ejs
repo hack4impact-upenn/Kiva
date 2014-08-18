@@ -50,10 +50,11 @@
 
     <body>
 
+    <div id="wrapper">
     <% include banner %>
 
+    <div id="content">
     <div id="signup-form">
-
         <form id="signup-submit" action="/volunteer/submit-volunteer" method="POST">
             <input type="text" name="first_name" size="20" class="form-control" placeholder="First Name"><br>
 
@@ -85,9 +86,11 @@
 
             <input type="submit" class="btn btn-primary">
         </form>
+    </div><br><br>
     </div>   
     
     <% include footer %>
+    </div>
 
 
     </body>
