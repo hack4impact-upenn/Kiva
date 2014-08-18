@@ -11,6 +11,8 @@
         <meta name="author" content="">
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
 
         <title>Login</title>
         <script>
@@ -35,19 +37,19 @@
 
             <div id="form">
  
-                <h2> Login </h2>
-                <form action="/login" method="POST">
-                    <input type="text" name="email_address" size="25" class="form-control" placeholder="Email"><br>
+                <h2>Login</h2>
+                <form action="/login" method="POST" class="kiva-form">
+                    <input type="text" name="email_address" size="25" class="form-control" placeholder="Email">
                     <input type="password" name="password" size="25" class="form-control" placeholder="Password"><br>
-                    <input type="submit" value="Login" />
-                  </form>
+                    <input type="submit" class="btn btn-primary" value="Login" />
+                </form>
 
                 <form action="/volunteer/sign-up" method="GET">
-                    <input type="submit" value="Sign Up to Volunteer"/>
+                    <input type="submit" class="btn btn-primary" value="Sign Up to Volunteer"/>
                 </form>
 
                 <form action="/admin/sign-up" method="GET">
-                    <input type="submit" value="Admins Only"/>
+                    <input type="submit" class="btn btn-primary" value="Admins Only"/>
                 </form>
             </div>
 
