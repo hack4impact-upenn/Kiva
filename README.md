@@ -1,4 +1,0 @@
-Kiva
-====
-
-Kiva Crowdsourcing Project
