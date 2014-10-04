@@ -1,0 +1,233 @@
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+  margin:0;
+  padding:0;
+   font-family: 'Lato', sans-serif;
+}
+
+
+@font-face {
+  font-family: 'Bebas Neue';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../fonts/BebasNeue.ttf');
+}
+
+#banner {
+  background-color: #2d3038;
+  margin: 0;
+  padding-bottom: 0px;
+  padding-top: 0px;
+  border-bottom: 2px solid black;
+  height: 50px;
+}
+
+ul{
+	display: inline-block;
+	float: right;
+	margin-right: 90px;
+}
+
+#nav li {
+	display: inline-block;
+	margin-left: 15px;
+}
+
+#nav a {
+	color: white;
+}
+
+
+#banner img {
+	float: right;
+	display: inline-block;
+	margin-right: 20px;
+
+}
+
+#title {
+  margin: 0px;
+  color: white;
+  text-align: left;
+  word-wrap: break-all;
+  padding: 0px;
+
+}
+
+#title h1, #title h2 {
+  text-align: left;
+  font-family: "Bebas Neue",sans-serif;
+  font-weight: 300;
+  padding-left: 20px;
+  padding-right: 30px;
+  font-size: 2.5em;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin: 0px;
+   display: inline-block;
+}
+
+#title h2 {
+	display: inline;
+	font-size: 2em;
+	font-style: italic;
+	float: right;
+}
+
+
+
+#about {
+	height: 350px;
+	float: left;
+	margin: 0px;
+	padding: 20px 20px 0px 20px;
+	width: 30%;
+	text-align: center;
+
+}
+
+#featured {
+	float: right;
+	border-left: 1px solid black;
+	height: 350px;
+	margin: 0px;
+	padding: 20px 20px 0px 20px;
+	width: 60%;
+}
+
+#container {
+	width: 100%;
+	height: 370px;
+	border-bottom: 2px solid black;
+
+}
+
+.underline_divider {
+  text-align: center;
+  border-bottom: 10px solid #2d3038;
+  width: 90px;
+  margin: 10px 10px 10px 10px;
+  margin-bottom: 80px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+#featured-title {
+	font-family: "Bebas Neue",sans-serif;
+	float: left;
+	padding-left: 30px;
+}
+
+#featured-title .underline_divider {
+	float: left;
+	 margin: 0px;
+
+}
+
+.app_image {
+	position: relative;
+	width: 100%;
+}
+
+.app_description {
+	position: absolute;
+	display: none;
+	top: 0px;
+	text-align: left;
+	background-color: rgba(0, 0, 0, 0.7);
+	width: 260px;
+	color: white;
+	font-family: Lato;
+	height: 260px;
+	padding: 20px;
+}
+
+.view {
+	margin: auto;
+	text-decoration: none;
+	border:2px solid white; 
+	border-radius: 10px;
+	width: 100px;
+	padding: 10px;
+	text-align: center;
+}
+
+.view-background {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+.app_description a {
+	text-decoration: none;
+	font-size: 1em;
+	color: white;
+	font-style: normal;
+	font-family: 'Lato', sans-serif;
+}
+
+.app_description span {
+	padding: 0px 0px 0px 5px;
+
+}
+
+.tags{
+	font-size: 1em;
+	color: white;
+	text-decoration: none;
+}
+
+.tags a { 
+	font-size: 1em;
+	color: white;
+	padding: 0px 1px;	
+	text-decoration: underline;
+}
+
+.tags span {
+	position: absolute;
+	bottom: 0;
+}
+
+.app_title a {
+	text-decoration: none;
+	font-size: 1em;
+	color: black;
+	font-style: normal;
+}
+
+.app_title h2 {
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+.app_title h3{
+	margin: -10px 0px 0px 0px;
+	padding: 0px;
+	text-align: center;
+	font-size: 1em;
+	color: gray;
+}
+
+.project {
+  display: inline-block;
+  box-sizing: border-box;
+  width: auto;
+  margin-left: 25px;
+  margin-right: 25px;
+  margin-top: 5px;
+  margin-bottom: 50px;
+  text-align: left;
+  vertical-align: top;
+  height: auto;
+}
+
+
+#projects{
+  text-align: center;
+  margin-top:100px;
+  margin-bottom:100px;
+}

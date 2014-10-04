@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+
+     <link href="" rel="stylesheet" type="text/css">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+    <title>Submit an Application</title>
+    <script>
+            
+    </script>
+
+  </head>
+
+  <body>
+   
+<div id="form">
+
+    <form action="/post-application" method="POST">
+    <label for="organization_name"> Organization Name </label>
+    <input type="text" name="organization_name" size="20" class="form-control" placeholder=""><br>
+
+    <label for="description"> Brief Description </label>
+    <input type="text" name="description" size="80" class="form-control" placeholder=""><br>
+
+
+    <label for="token"> API Token to access documents? </label>
+    <input type="text" name="token" size="20" class="form-control" placeholder=""><br>
+
+    <label for="url"> URL to access documents </label>
+    <input type="text" name="url" size="20" class="form-control" placeholder=""><br>
+
+    <label for="organization_address"> What is the address of the organization? </label>
+    <input type="text" name="organization_address" size="20" class="form-control" placeholder="ie. PennApps S14"><br>
+
+    <label for="organization_url"> Organization Home Page? </label>
+    <input type="text" name="organization_url" size="20" class="form-control" placeholder="ie. Python/Flask"><br>
+
+    <input type="submit" />
+
+  </form>
+
+  </body>
+
+
+  </html>

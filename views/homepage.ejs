@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+
+    <link href="/kiva_style.css" rel="stylesheet" type="text/css">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+
+    <title>Submit an Application</title>
+    <script>
+     
+
+    var load_review = function() {
+        $.getJSON('/volunteer/load', function(volunteer) {
+            console.log(volunteer);
+            if(volunteer.current_review == null) {
+                console.log("generate a new review for them");
+                //pulls new review  
+                $.getJSON('/volunteer/get_min_reviewed_application', function(data) {
+                    console.log("does it reach here");
+                    console.log(data);
+                    if(data.data !== "none") {
+                            $('#review').append(
+                                "<p>" + data["organization_name"] + "</p>" +
+                                "<p>" + data["num_reviews"] + "</p>" +
+                                "<p>" + data["organization_url"] + "</p>" +
+                                "<p>" + data["description"] + "</p>" + 
+                                "<form method='POST' action='/review/create/" + data["_id"] + "'>" + 
+                                "<input type=submit value='Create Review'>" + 
+                                "</form>"
+                                );
+                    } else {
+                          $('#review').append(
+                             "<p> There are currently no reviews for you to complete. </p>"
+                             )
+                    }
+                });
+            } else {
+                console.log("generate old review");
+                console.log(volunteer.current_review);
+                //TODO: load information of the pending review?
+                $('#review').append(
+                        "<p> You have one review pending. </p>" + 
+                        "<a href='/review/edit/" + volunteer.current_review + "'>" +
+                        "Complete Review </a>"
+                );
+            }
+        });
+    };
+
+
+    $( document ).ready(function() {
+        $.getJSON('/volunteer/load', function(volunteer) {
+            if (!volunteer.finished_training) {
+                console.log('get training first.');
+                $('#training').append($('<a>')
+                                        .attr('href', '/volunteer/training')
+                                        .html('Get training first'));
+            }
+            else {
+                console.log('finished training is true');
+                load_review();
+            }
+        });
+    });
+
+    </script>
+
+  </head>
+
+<body>
+    <% include banner %>   
+
+
+    Volunteer Home Portal
+
+    <div id="training"></div>
+
+    <div id="review">
+    </div>
+
+
+</div>
+
+    <% include footer %>   
+
+
+  </body>
+
+
+  </html>
