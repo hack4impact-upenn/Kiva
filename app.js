@@ -39,6 +39,7 @@ app.listen(port, function() {
 app.get("/", controller.index);
 app.post("/login", controller.login);
 app.get("/load_application/:org_id", controller.load_application);
+app.get("/logout", controller.logout);
 
 //Volunteer
 app.get("/volunteer/get_min_reviewed_application", controller.get_min_reviewed_application);

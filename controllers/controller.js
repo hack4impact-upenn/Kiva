@@ -58,6 +58,13 @@ exports.login = function(req, res) {
 		});
 };
 
+//logs out
+exports.logout = function(req, res) {
+	req.session.logged = false;
+	req.session.username = "";
+	return res.redirect("/");
+};
+
 //load_application
 exports.load_application = function(req, res) {
 	var org_id = req.params.org_id;
