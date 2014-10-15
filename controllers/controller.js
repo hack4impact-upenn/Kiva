@@ -413,11 +413,15 @@ exports.load_completed_reviews = function(req, res) {
 
 //Admin Pages
 exports.view_applications = function(req, res) {
-	Application.find( function(err, applications) {
+	Application.find( {}, {"_id": 1, "organization_name": 1, "reviews_in_progress": 1, 
+		"score_sum": 1, "reviews_submitted": 1, "kiva_fit_count":1, "sustainable_model_count": 1,
+		"clear_social_impact_count": 1, "num_reviews": 1, "open_to_review": 1},
+		function(err, applications) {
 		console.log(applications);
 			return res.render("main.ejs", {applications: applications});
 	});
 };
+
 
 exports.view_one_application = function(req, res) {
 	var id = req.params.id;

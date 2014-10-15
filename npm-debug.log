@@ -1,21 +1,88 @@
 0 info it worked if it ends with ok
-1 verbose cli [ 'node', '/usr/local/bin/npm', 'install' ]
-2 info using npm@1.4.14
-3 info using node@v0.10.29
-4 error install Couldn't read dependencies
-5 error Failed to parse json
-5 error Unexpected string
-6 error File: /Users/Dhruv/Documents/workspace/kiva/package.json
-7 error Failed to parse package.json data.
-7 error package.json must be actual JSON, not just JavaScript.
-7 error
-7 error This is not a bug in npm.
-7 error Tell the package author to fix their package.json file. JSON.parse
-8 error System Darwin 13.3.0
-9 error command "node" "/usr/local/bin/npm" "install"
-10 error cwd /Users/Dhruv/Documents/workspace/kiva
-11 error node -v v0.10.29
-12 error npm -v 1.4.14
-13 error file /Users/Dhruv/Documents/workspace/kiva/package.json
-14 error code EJSONPARSE
-15 verbose exit [ 1, true ]
+1 verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'sorttable' ]
+2 info using npm@1.4.23
+3 info using node@v0.10.31
+4 verbose node symlink C:\Program Files\nodejs\\node.exe
+5 verbose readDependencies using package.json deps
+6 verbose cache add [ 'sorttable', null ]
+7 verbose cache add name=undefined spec="sorttable" args=["sorttable",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: 'sorttable',
+8 verbose parsed url   path: 'sorttable',
+8 verbose parsed url   href: 'sorttable' }
+9 silly lockFile 829fc2d4-sorttable sorttable
+10 verbose lock sorttable C:\Users\Rodrigo\AppData\Roaming\npm-cache\829fc2d4-sorttable.lock
+11 silly lockFile 829fc2d4-sorttable sorttable
+12 silly lockFile 829fc2d4-sorttable sorttable
+13 verbose addNamed [ 'sorttable', '' ]
+14 verbose addNamed [ null, '*' ]
+15 silly lockFile 068f77bb-sorttable sorttable@
+16 verbose lock sorttable@ C:\Users\Rodrigo\AppData\Roaming\npm-cache\068f77bb-sorttable.lock
+17 silly addNameRange { name: 'sorttable', range: '*', hasData: false }
+18 verbose request where is /sorttable
+19 verbose request registry https://registry.npmjs.org/
+20 verbose request id 33d9d33eadc2f4b0
+21 verbose url raw /sorttable
+22 verbose url resolving [ 'https://registry.npmjs.org/', './sorttable' ]
+23 verbose url resolved https://registry.npmjs.org/sorttable
+24 verbose request where is https://registry.npmjs.org/sorttable
+25 info trying registry request attempt 1 at 19:40:16
+26 http GET https://registry.npmjs.org/sorttable
+27 http 404 https://registry.npmjs.org/sorttable
+28 verbose headers { date: 'Wed, 15 Oct 2014 23:40:05 GMT',
+28 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+28 verbose headers   'content-type': 'application/json',
+28 verbose headers   'cache-control': 'max-age=0',
+28 verbose headers   'content-length': '52',
+28 verbose headers   'accept-ranges': 'bytes',
+28 verbose headers   via: '1.1 varnish',
+28 verbose headers   age: '0',
+28 verbose headers   'x-served-by': 'cache-atl6224-ATL',
+28 verbose headers   'x-cache': 'MISS',
+28 verbose headers   'x-cache-hits': '0',
+28 verbose headers   'x-timer': 'S1413416405.754484,VS0,VE160',
+28 verbose headers   'keep-alive': 'timeout=10, max=50',
+28 verbose headers   connection: 'Keep-Alive' }
+29 silly registry.get cb [ 404,
+29 silly registry.get   { date: 'Wed, 15 Oct 2014 23:40:05 GMT',
+29 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+29 silly registry.get     'content-type': 'application/json',
+29 silly registry.get     'cache-control': 'max-age=0',
+29 silly registry.get     'content-length': '52',
+29 silly registry.get     'accept-ranges': 'bytes',
+29 silly registry.get     via: '1.1 varnish',
+29 silly registry.get     age: '0',
+29 silly registry.get     'x-served-by': 'cache-atl6224-ATL',
+29 silly registry.get     'x-cache': 'MISS',
+29 silly registry.get     'x-cache-hits': '0',
+29 silly registry.get     'x-timer': 'S1413416405.754484,VS0,VE160',
+29 silly registry.get     'keep-alive': 'timeout=10, max=50',
+29 silly registry.get     connection: 'Keep-Alive' } ]
+30 silly lockFile 068f77bb-sorttable sorttable@
+31 silly lockFile 068f77bb-sorttable sorttable@
+32 error 404 404 Not Found: sorttable
+32 error 404
+32 error 404 'sorttable' is not in the npm registry.
+32 error 404 You should bug the author to publish it
+32 error 404 It was specified as a dependency of 'kiva-crowd-source'
+32 error 404
+32 error 404 Note that you can also install from a
+32 error 404 tarball, folder, or http url, or git url.
+33 error System Windows_NT 6.2.9200
+34 error command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "sorttable"
+35 error cwd C:\Users\Rodrigo\Documents\GitHub\Kiva
+36 error node -v v0.10.31
+37 error npm -v 1.4.23
+38 error code E404
+39 verbose exit [ 1, true ]

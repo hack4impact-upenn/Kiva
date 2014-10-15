@@ -27,16 +27,33 @@
 
 
     <div id="applications">
+  <table style="width:100%">
+  <tr>
+    <th>Name</td>
+    <th>Avg. Rating</td>
+    <th>Kiva Fit</td>
+    <th>Business Model</td>
+    <th>Social Impact</td>    
+    <th>Reviews Submitted</td>   
+    <th>Open to review</td> 
+  </tr>
+
 
     <% applications.forEach(function(application){ %>
-        <div class="application" id= <%= application._id %> >
-            <p> <%= application.organization_name %> </p>
-            <p> <%= application.reviews_in_progress.length %> open reviews </p>
-            <p> <%= application._id %> </p>
-        </div>
-    <% }) %>
+     <tr>
+            <td> <%= application.organization_name %> </td>
+            <td> <%= application.score_sum %> </td>
+            <td> <%= application.kiva_fit_count %> </td>
+            <td> <%= application.sustainable_model_count %> </td>
+            <td> <%= application.clear_social_impact_count %> </td>
+            <td> <%= application.reviews_submitted.length %> </td>     
+            <td> <%= application.open_to_review %> </td>            
+     </tr>
 
-    </div>
+    <% }) %>
+   </table>
+
+
 
   </body>
 
