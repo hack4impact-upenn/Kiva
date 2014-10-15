@@ -24,21 +24,25 @@
   </head>
 
   <body>
-
-
-    <div id="applications">
-
-    <% applications.forEach(function(application){ %>
-        <div class="application" id= <%= application._id %> >
-            <p> <%= application.organization_name %> </p>
-            <p> <%= application.reviews_in_progress.length %> open reviews </p>
-            <p> <%= application._id %> </p>
-        </div>
-    <% }) %>
-
+    
+    <div id = "applications">
     </div>
 
-  </body>
+    <div id = "volunteers">
+    </div>
+  
+    <%# Ajax call for applications %>
+    <script type="text/javascript">
+      
+    </script>
 
+    <%# Ajax call for volunteers %>
+    <script type="text/javascript">
+      $.get('admin_volunteers', function( data ) {
+        $('#volunteers').html( data );
+      });
+    </script>
+
+  </body>
 
   </html>

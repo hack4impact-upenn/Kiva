@@ -412,11 +412,15 @@ exports.load_completed_reviews = function(req, res) {
 /*--------------  Admin Story ------------------ */
 
 //Admin Pages
-exports.view_applications = function(req, res) {
+exports.admin_main_view = function(req, res) {
 	Application.find( function(err, applications) {
 		console.log(applications);
 			return res.render("main.ejs", {applications: applications});
 	});
+};
+
+exports.view_volunteers = function(req, res) {
+	res.send("Sending something through Ajax!");
 };
 
 exports.view_one_application = function(req, res) {
