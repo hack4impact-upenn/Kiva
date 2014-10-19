@@ -8,19 +8,22 @@ html, body {
 #left {
 	float: left;
 	width: 50%;
-}
-
-
-#doc {
-	float: left;
-	width: 100%;
-	height: 600px;
+	height: 500px;
 }
 
 #right {
 	float: right;
 	width: 50%;
+	height: 1000px;
+	overflow: scroll;
 }
+
+#doc {
+	float: left;
+	width: 100%;
+	height: 1000px;
+}
+
 
 #wrapper {
 	min-height:100%;
