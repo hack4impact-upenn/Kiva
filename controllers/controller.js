@@ -8,6 +8,7 @@ var async = require("async");
 var fs=require('fs');
 var sys=require('sys');
 var credentials = require("../config.json");
+var request = require('request');
 
 var ObjectId= mongoose.Types.ObjectId;
 
