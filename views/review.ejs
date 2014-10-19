@@ -23,16 +23,12 @@
             <div class="dropdown">
                 <h2>Organizaton name</h2>
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-                    Dropdown
+                    Documents
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li class="document" role="presentation"><a role="menuitem" tabindex="-1" link="https://docs.google.com/a/seas.upenn.edu/file/d/0B8Qgkyip5NRDSG82Ylk3MUdhU1U/edit">Doc 1</a></li>
-                    <li class = document role="presentation"><a role="menuitem" tabindex="-1" link="https://docs.google.com/a/seas.upenn.edu/file/d/0B8Qgkyip5NRDUkhEM1I0Zm1ZaUU/edit">Doc 2</a></li>
-                    <li class = document role="presentation"><a role="menuitem" tabindex="-1" link="https://docs.google.com/a/seas.upenn.edu/file/d/0B8Qgkyip5NRDWkNDcGVxUXVQVVk/edit">Doc 3</a></li>
-                </ul>
+                <ul id="link-dropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"></ul>
             </div>
-            <iframe id="doc" src ="https://docs.google.com/a/seas.upenn.edu/file/d/0B8Qgkyip5NRDSG82Ylk3MUdhU1U/edit"></iframe>
+            <iframe id="doc" src =""></iframe>
 
         </div>
 
@@ -136,24 +132,27 @@
             };
 
             function load_links() {
-                $.getJSON("/review/organization_data/" + $('#organization_id').val(), function(links) {  
-                    console.log('hello' + links)
-                    $.each(links, function(name, val) {
-                        console.log(name + ":" + val);
-                                    
+                $.getJSON("/review/organization_data/" + $('#organization_id').val(), function(data) {  
+                    data = JSON.parse(data);
+                    console.log(data.links);
+                    var html = "";
+                    $.each(data.links, function(i, item) {
+                        html += '<li class="document" role="presentation"><a role="menuitem" tabindex="-1" link="' +  item.link + '">' + item.name + '</a></li>'                                    
                     });
+                    $('#link-dropdown').html(html)
+                    dropdown()
                 });
             };
 
             function dropdown() {
                 $('.document > a').click(function(){
                     $('#doc').attr('src', $(this).attr('link'))
+                    $('#doc').show();
                 });
             }
 
             $( document ).ready(function() {
                 load_review();
-                dropdown();
              });
 
 
