@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/kiva_style.css" rel="stylesheet" type="text/css">
         <meta name="description" content="">
@@ -18,15 +19,31 @@
         <div id="applicant documents">
         </div>
 
+        <div id="left">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                    Dropdown
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li class="document" role="presentation"><a role="menuitem" tabindex="-1" link="https://docs.google.com/a/seas.upenn.edu/file/d/0B8Qgkyip5NRDSG82Ylk3MUdhU1U/edit">Doc 1</a></li>
+                    <li class = document role="presentation"><a role="menuitem" tabindex="-1" link="https://docs.google.com/a/seas.upenn.edu/file/d/0B8Qgkyip5NRDUkhEM1I0Zm1ZaUU/edit">Doc 2</a></li>
+                    <li class = document role="presentation"><a role="menuitem" tabindex="-1" link="https://docs.google.com/a/seas.upenn.edu/file/d/0B8Qgkyip5NRDWkNDcGVxUXVQVVk/edit">Doc 3</a></li>
+                </ul>
+            </div>
+            <iframe id="doc" src = "http://www.w3schools.com/tags/tag_iframe.asp"></iframe>
+
+        </div>
+
         <div id="right">
-        <div id="form">
+        <div id="review-form">
 
             <form id="review" action="" method="POST">
                 
 
                 <label for="clear_social_impact"> Does this company have a clear social impact? </label>
-                <input type="radio" name="clear_social_impact" value=true size="20" class="form-control">
-                <input type="radio" name="clear_social_impact" value=false size="20" class="form-control">
+                <input type="radio" name="clear_social_impact" value=true class="form-control">Yes
+                <input type="radio" name="clear_social_impact" value=false class="form-control">No
                 <br />
 
                 <label for="sustainable_model"> Is there a clear savings/revenue model to repay the loan? </label>            
@@ -79,6 +96,7 @@
             </form>
           </div>
       </div>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     </body>
         <script>
             <!---- //stackoverflow.com/questions/16660734/html-form-with-multiple-actions ---!>
@@ -115,8 +133,15 @@
                      });
             };
 
+            function dropdown() {
+                $('.document > a').click(function(){
+                    $('#doc').attr('src', $(this).attr('link'))
+                });
+            }
+
             $( document ).ready(function() {
                 load_review();
+                dropdown();
              });
 
 
