@@ -56,6 +56,7 @@ app.get("/review/load/:id", controller.load_unfinished_review);
 app.post("/review/submit/:id", controller.submit_review); // review id
 app.get("/review/completed/:org_id", controller.completed_review_page); //org_id
 app.get("/review/completed/load/:org_id", controller.load_completed_reviews);
+app.get("/review/application_data", controller.load_application_data)
 
 //Admin
 app.get("/admin/sign-up", controller.admin_signup_page);
