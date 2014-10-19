@@ -136,7 +136,7 @@
             };
 
             function load_links() {
-                $.getJSON("/review/application_data/" + $('#organization_id').val(), function(links) {  
+                $.getJSON("/review/organization_data/" + $('#organization_id').val(), function(links) {  
                     console.log('hello' + links)
                     $.each(links, function(name, val) {
                         console.log(name + ":" + val);
