@@ -208,11 +208,12 @@ exports.edit_review = function(req, res) {
 
 //Volunteer Helper Functions
 
-exports.load_application_data = function(req, res) {
+exports.load_organization_data = function(req, res) {
 	console.log("loading application data");
 	request('https://api.myjson.com/bins/1a2tl', function (error, response, body) {
 	  	if (!error && response.statusCode == 200) {
 	    	res.json(body)
+	    }
 	});
 }
 
