@@ -8,7 +8,8 @@ html, body {
 #left {
 	float: left;
 	width: 50%;
-	height: 500px;
+	height: 1000px;
+	border-right:2px solid
 }
 
 #right {
@@ -101,8 +102,8 @@ html, body {
 }
 
 #review-form {
-	border-radius: 3px;
-	border: 1px solid black;
+	/*border-radius: 3px;
+	border: 1px solid black;*/
 	padding: 10px;
 	margin-left: 10px;
 }
