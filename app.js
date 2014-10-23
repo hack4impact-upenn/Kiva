@@ -66,4 +66,5 @@ app.post("/post-application", controller.create_application);
 app.get("/admin_applications", controller.view_applications);
 app.get("/admin/application/:id", controller.view_one_application);
 
+app.get("/admin/pull_applications", controller.send_applications);
 module.exports = app;

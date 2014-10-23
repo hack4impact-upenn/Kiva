@@ -1,21 +1,27 @@
 <!DOCTYPE html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
    
-
-     <link href="" rel="stylesheet" type="text/css">
+    <link href="/kiva_style.css" rel="stylesheet" type="text/css">
     <meta name="description" content="">
     <meta name="author" content="">
     <script src="//code.jquery.com/jquery-1.9.1.js"></script>
     <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="sorttable.js"></script>
 
     <title>Submit an Application</title>
     <script>
       
-      
+        <% $.getJSON( "/admin/pull_applications", function( data ) {
+           $.each(data, function(value)){
+            console.log(value);
+          }     
+
+        }); %>
 
     </script>
 
@@ -24,10 +30,11 @@
   </head>
 
   <body>
+ 
 
 
-    <div id="applications">
-  <table style="width:100%">
+  <div id="applications">
+  <table style="width:100%" class = "sortable">
   <tr>
     <th>Name</td>
     <th>Avg. Rating</td>
@@ -39,18 +46,7 @@
   </tr>
 
 
-    <% applications.forEach(function(application){ %>
-     <tr>
-            <td> <%= application.organization_name %> </td>
-            <td> <%= application.score_sum %> </td>
-            <td> <%= application.kiva_fit_count %> </td>
-            <td> <%= application.sustainable_model_count %> </td>
-            <td> <%= application.clear_social_impact_count %> </td>
-            <td> <%= application.reviews_submitted.length %> </td>     
-            <td> <%= application.open_to_review %> </td>            
-     </tr>
 
-    <% }) %>
    </table>
 
 
