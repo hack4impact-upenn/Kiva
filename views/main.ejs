@@ -11,47 +11,85 @@
     <meta name="author" content="">
     <script src="//code.jquery.com/jquery-1.9.1.js"></script>
     <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-    <script src="sorttable.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.3/css/jquery.dataTables.css">
+  
+
+    <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+
+    <script src="sorttable.js" type="text/javascript"></script>
+
 
     <title>Submit an Application</title>
-    <script>
-      
-        <% $.getJSON( "/admin/pull_applications", function( data ) {
-           $.each(data, function(value)){
-            console.log(value);
-          }     
-
-        }); %>
-
-    </script>
+  </head> 
 
 
 
-  </head>
-
-  <body>
- 
-
-
-  <div id="applications">
-  <table style="width:100%" class = "sortable">
-  <tr>
-    <th>Name</td>
-    <th>Avg. Rating</td>
-    <th>Kiva Fit</td>
-    <th>Business Model</td>
-    <th>Social Impact</td>    
-    <th>Reviews Submitted</td>   
-    <th>Open to review</td> 
-  </tr>
-
-
-
-   </table>
-
-
+  <body>    
+      <table border = "1" style="width:100%"  id="appsTable" >
+        <tr>
+          <th>Name</td>
+          <th>Avg. Rating</td>
+          <th>Kiva Fit</td>
+          <th>Business Model</td>
+          <th>Social Impact</td>    
+          <th>Number of reviews</td>   
+          <th>Open to review</td> 
+        </tr>
+      </table>
 
   </body>
 
+      <script>
+      var load_apps = function() {
+         $.getJSON( "/admin/pull_applications", function( data ) {
+          var rows = '';
+          var table = document.getElementById("appsTable");
+           $.each(data, function(index, value){
+            var row = '<tr>';
+            row += '<td>' + value["organization_name" ] + '</td>';
+            row += '<td>' + (value.num_reviews == 0 ? "No reviews yet" : value.score_sum/(value.num_reviews)) + '</td>';
+            row += '<td>' + value["kiva_fit_count" ] + '</td>';
+            row += '<td>' + value["sustainable_model_count" ] + '</td>';
+            row += '<td>' + value["clear_social_impact_count" ] + '</td>';
+            row += '<td>' + value["num_reviews" ] + '</td>';
+            row += '<td>' + value["open_to_review" ] + '</td>';
+            rows += row + '<tr>';
+
+
+           
+       /*
+          var row = table.insertRow(table.rows.length);
+          var cellName = row.insertCell(0);
+          var cellAvgRating = row.insertCell(1);
+          var cellKivaFit = row.insertCell(2);
+          var cellBusinessModel = row.insertCell(3);
+          var cellSocialImpact= row.insertCell(4);
+          var cellNumberOfReviews = row.insertCell(5);
+          var cellOpenToReview = row.insertCell(6);
+
+          cellName.innerHTML = value.organization_name;
+          cellAvgRating.innerHTML = value.num_reviews == 0 ? "No reviews yet" : value.score_sum/(value.num_reviews);
+          cellKivaFit.innerHTML = value.kiva_fit_count;
+          cellBusinessModel.innerHTML = value.sustainable_model_count;
+          cellSocialImpact.innerHTML = value.clear_social_impact_count;
+          cellNumberOfReviews.innerHTML = value.num_reviews;
+          cellOpenToReview.innerHTML = value.open_to_review;
+          */
+
+          });     
+          $(table).append(rows);
+        }); 
+      };
+
+
+      $( document ).ready(function() {
+        load_apps();  
+        var table = document.getElementById("appsTable");
+        sorttable.makeSortable(table);
+      });     
+
+    </script>
 
   </html>
