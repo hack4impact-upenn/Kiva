@@ -31,13 +31,14 @@
                             $('#review').append(
                                 "<div id='review-display'>" + 
                                 "<p>" + "<h2>" + data["organization_name"] + "</h2>" + "</p>" +
-                                "<p>" + "Number of reviewers: " + data["num_reviews"] + "</p>" +
+                                "<p>" + "<h4>" + "Reviews to date: " + data["num_reviews"] + "</h4>" + "</p>" +
                                 "<p>" + "<a href=" + data["organization_url"] + ">Homepage</a>" + "</p>" + //
-                                "<p>" + data["description"] + "</p>" + 
-                                "<\div>" +
+                                "<p>" + data["description"] + "</p>" +
+                                "<p><h2>Help get this application on track</h2><p>" +
                                 "<form method='POST' action='/review/create/" + data["_id"] + "'>" + 
-                                "<input type=submit value='Create Review'>" + 
-                                "</form>"
+                                "<input type='submit' class='btn btn-primary' value='Create Review'>" + 
+                                "</form>" +
+                                "</div>"
                                 );
                     } else {
                           $('#review').append(
@@ -50,9 +51,15 @@
                 console.log(volunteer.current_review);
                 //TODO: load information of the pending review?
                 $('#review').append(
-                        "<p> You have one review pending. </p>" + 
+                        "<p> You have one review pending. </p>" +
+                        /*"<div id='review-display'>" + 
+                        "<p>" + "<h2>" + data["organization_name"] + "</h2>" + "</p>" +
+                        "<p>" + "<h4>" + "Reviews to date: " + data["num_reviews"] + "</h4>" + "</p>" +
+                        "<p>" + "<a href=" + data["organization_url"] + ">Homepage</a>" + "</p>" + //
+                        "<p>" + data["description"] + "</p>" +*/
                         "<a href='/review/edit/" + volunteer.current_review + "'>" +
-                        "Complete Review </a>"
+                        "Complete Review </a>" +
+                        "</div>"
                 );
             }
         });
@@ -81,7 +88,15 @@
 <body>
     <% include banner %>   
 
-
+    <style>
+        
+        h2{
+            text-align: center;
+            margin: 5;
+            color: #587F3A;
+        }
+        
+    </style>
     <h2>Volunteer Home Portal</h2>
 
     <div id="training"></div>
