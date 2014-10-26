@@ -31,9 +31,9 @@
                             $('#review').append(
                                 "<div id='review-display'>" + 
                                 "<p>" + "<h2>" + data["organization_name"] + "</h2>" + "</p>" +
-                                "<p>" + "<h4>" + "Reviews to date: " + data["num_reviews"] + "</h4>" + "</p>" +
-                                "<a href='" + data["organization_url"] + "'  id='homepage-button' class='btn btn-primary'>Homepage</a>" + 
                                 "<p>" + data["description"] + "</p>" +
+                                "<a href='" + data["organization_url"] + "'  id='homepage-button' class='btn btn-primary'>Homepage</a>" + 
+                                "<p>" + "<h4>" + "Reviews to date: " + data["num_reviews"] + "</h4>" + "</p>" +
                                 "<p><h2>Help get this application on track!</h2><p>" +
                                 "<form method='POST' action='/review/create/" + data["_id"] + "'>" + 
                                 "<input type='submit' id='review-button' class='btn btn-primary' value='Create Review'>" + 
@@ -49,21 +49,41 @@
             } else {
                 console.log("generate old review");
                 console.log(volunteer.current_review);
-                //TODO: load information of the pending review?
                 $('#review').append(
-                        "<p> You have one review pending. </p>" +
-                        /*"<div id='review-display'>" + 
-                        "<p>" + "<h2>" + data["organization_name"] + "</h2>" + "</p>" +
-                        "<p>" + "<h4>" + "Reviews to date: " + data["num_reviews"] + "</h4>" + "</p>" +
-                        "<p>" + "<a href=" + data["organization_url"] + ">Homepage</a>" + "</p>" + //
-                        "<p>" + data["description"] + "</p>" +*/
-                        "<a href='/review/edit/" + volunteer.current_review + "'>" +
-                        "Complete Review </a>" +
-                        "</div>"
-                );
+                    "<p> You have one review pending. </p>" +
+                    "<a href='/review/edit/" + volunteer.current_review + "''>" +
+                    "Complete Review</a>" + 
+                    "</div>"
+                     );
+             };
+         });
+     };
+
+/*
+                //pulls old review
+                $.getJSON('/volunteer/load_unfinished_review', function(data) {
+                    console.log("does it reach here");
+                    console.log(data);
+                    if(data.data !== "none") {
+
+                            //TODO: load information of the pending review?
+                            $('#review').append(
+                                //"<p> You have one review pending. </p>" +
+                                "<div id='review-display'>" +
+                                "<p>" + "<h2>" + data["organization_name"] + "</h2>" + "</p>" +
+                                "<p>" + data["description"] + "</p>" +
+                                "<a href='" + data["organization_url"] + "'  id='homepage-button' class='btn btn-primary'>Homepage</a>" + 
+                                "<p>" + "<h4>" + "Reviews to date: " + data["num_reviews"] + "</h4>" + "</p>" +
+                                "<p><h2>Keep up the good work!</h2><p>" +
+                                "<a href='/review/edit/" + volunteer.current_review + "' id='review-button' class='btn btn-primary'>Complete Review</a>" +
+                                //"</div>"
+                                "</div>"
+                                );
+                    }
+                });
             }
         });
-    };
+    };*/
 
 
     $( document ).ready(function() {
@@ -90,12 +110,12 @@
 
     <style>
         
-        h4{
+        h2, h4{
             text-align: center;
             margin: 5;
             color: green;
         }
-        h1, h2{
+        h1{
             text-align: center;
             margin: 5;
             color: LimeGreen;
