@@ -16,6 +16,16 @@
 
     <script src="sorttable.js" type="text/javascript"></script>
 
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.3/css/jquery.dataTables.css">
+  
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+  
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+
+
 
     <title>Submit an Application</title>
   </head> 
@@ -23,6 +33,12 @@
 
 
   <body onload="init()">  
+
+
+
+
+
+
     <ul id="tabs">
   <li><a href="#apps">Applications</a></li>
   <li><a href="#volunteers">Volunteers</a></li>
@@ -32,8 +48,9 @@
   <h2>Application Dashboard</h2>
   <div>
     <p>Here is the application dashboard</p>
-    <table border = "1" style="width:100%"  id="appsTable" >
-        <tr>
+    <table id="appsTable" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
           <th>Name</td>
           <th>Avg. Rating</td>
           <th>Kiva Fit</td>
@@ -41,8 +58,13 @@
           <th>Social Impact</td>    
           <th>Number of reviews</td>   
           <th>Open to review</td> 
-        </tr>
-      </table>
+            </tr>
+        </thead>
+ 
+
+    </table>
+
+
   </div>
 </div>
 
@@ -56,67 +78,11 @@
 
 
   <!--
-    <div class="tabs">
-    <ul class="tab-links">
-        <li class="active"><a href="#tab1">Tab #1</a></li>
-        <li><a href="#tab2">Tab #2</a></li>
-        <li><a href="#tab3">Tab #3</a></li>
-        <li><a href="#tab4">Tab #4</a></li>
-    </ul>
- 
-    <div class="tab-content">
-        <div id="tab1" class="tab active">
-            <p>Tab #1 content goes here!</p>
-            <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis.</p>
-            <table border = "1" style="width:100%"  id="appsTable" >
-        <tr>
-          <th>Name</td>
-          <th>Avg. Rating</td>
-          <th>Kiva Fit</td>
-          <th>Business Model</td>
-          <th>Social Impact</td>    
-          <th>Number of reviews</td>   
-          <th>Open to review</td> 
-        </tr>
-      </table>
-        </div>
- 
-        <div id="tab2" class="tab">
-            <p>Tab #2 content goes here!</p>
-            <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
-        </div>
- 
-        <div id="tab3" class="tab">
-            <p>Tab #3 content goes here!</p>
-            <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum ri.</p>
-        </div>
- 
-        <div id="tab4" class="tab">
-            <p>Tab #4 content goes here!</p>
-            <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
-        </div>
-    </div>
-</div>
+  
 
 
 
 
-
-
-
- 
-</div>
-      <table border = "1" style="width:100%"  id="appsTable" >
-        <tr>
-          <th>Name</td>
-          <th>Avg. Rating</td>
-          <th>Kiva Fit</td>
-          <th>Business Model</td>
-          <th>Social Impact</td>    
-          <th>Number of reviews</td>   
-          <th>Open to review</td> 
-        </tr>
-      </table>
 
 --> 
   </body>
@@ -124,7 +90,35 @@
       <script>
       var load_apps = function() {
          $.getJSON( "/admin/pull_applications", function( data ) {
-          var rows = '';
+            console.log(data);
+
+            var data2 = {"data" : data};
+            console.log(JSON.stringify(data2));
+            var table = document.getElementById("appsTable");
+            console.log($(table));
+            console.log(jQuery.type(data));
+            var string = JSON.stringify(data);
+         $(table).dataTable( {
+        "data": data,
+        "columns": [
+            { "data": "organization_name" },
+            { "data": "score_sum" },
+            { "data": "kiva_fit_count" },
+            { "data": "sustainable_model_count" },
+            { "data": "clear_social_impact_count" },
+            { "data": "num_reviews" },
+            { "data": "open_to_review" }
+
+        ]
+        
+    } );
+
+
+
+
+             });
+      }
+          /*var rows = '';
           var table = document.getElementById("appsTable");
            $.each(data, function(index, value){
             var row = '<tr>';
@@ -137,7 +131,7 @@
             row += '<td>' + value["open_to_review" ] + '</td>';
             rows += row + '<tr>';
 
-
+        */
            
        /*
           var row = table.insertRow(table.rows.length);
@@ -158,16 +152,18 @@
           cellOpenToReview.innerHTML = value.open_to_review;
           */
 
-          });     
+         /* });     
           $(table).append(rows);
         }); 
-      };
+      }; */
 
 
       $( document ).ready(function() {
-        load_apps();  
-        var table = document.getElementById("appsTable");
+         load_apps();  
+        
+        /*
         sorttable.makeSortable(table);
+        */
       });     
 
     </script>
