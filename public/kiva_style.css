@@ -8,22 +8,23 @@ html, body {
 #left {
 	float: left;
 	width: 50%;
-	height: 1000px;
+	height: 600px;
 	border-right:2px solid
 }
 
 #right {
 	float: right;
 	width: 50%;
-	height: 1000px;
+	height: 600px;
 	overflow: scroll;
+	border-bottom: 2px solid
 }
 
 #doc {
 	display: none;
 	float: left;
 	width: 100%;
-	height: 1000px;
+	height: 500px;
 }
 
 #org-info {
