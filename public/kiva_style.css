@@ -27,6 +27,16 @@ html, body {
 	height: 500px;
 }
 
+#review-display {
+	width: 40%;
+	float: left;
+	border-radius: 3px;
+	border: 1px solid black;
+	padding: 10px;
+	text-align: center;
+}
+
+
 #org-info {
 
 }

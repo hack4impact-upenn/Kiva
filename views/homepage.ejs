@@ -29,10 +29,12 @@
                     console.log(data);
                     if(data.data !== "none") {
                             $('#review').append(
-                                "<p>" + data["organization_name"] + "</p>" +
-                                "<p>" + data["num_reviews"] + "</p>" +
-                                "<p>" + data["organization_url"] + "</p>" +
+                                "<div id='review-display'>" + 
+                                "<p>" + "<h2>" + data["organization_name"] + "</h2>" + "</p>" +
+                                "<p>" + "Number of reviewers: " + data["num_reviews"] + "</p>" +
+                                "<p>" + "<a href=" + data["organization_url"] + ">Homepage</a>" + "</p>" + //
                                 "<p>" + data["description"] + "</p>" + 
+                                "<\div>" +
                                 "<form method='POST' action='/review/create/" + data["_id"] + "'>" + 
                                 "<input type=submit value='Create Review'>" + 
                                 "</form>"
@@ -80,7 +82,7 @@
     <% include banner %>   
 
 
-    Volunteer Home Portal
+    <h2>Volunteer Home Portal</h2>
 
     <div id="training"></div>
 
