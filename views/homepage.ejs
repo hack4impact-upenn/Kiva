@@ -32,11 +32,11 @@
                                 "<div id='review-display'>" + 
                                 "<p>" + "<h2>" + data["organization_name"] + "</h2>" + "</p>" +
                                 "<p>" + "<h4>" + "Reviews to date: " + data["num_reviews"] + "</h4>" + "</p>" +
-                                "<p>" + "<a href=" + data["organization_url"] + ">Homepage</a>" + "</p>" + //
+                                "<a href='" + data["organization_url"] + "'  id='homepage-button' class='btn btn-primary'>Homepage</a>" + 
                                 "<p>" + data["description"] + "</p>" +
-                                "<p><h2>Help get this application on track</h2><p>" +
+                                "<p><h2>Help get this application on track!</h2><p>" +
                                 "<form method='POST' action='/review/create/" + data["_id"] + "'>" + 
-                                "<input type='submit' class='btn btn-primary' value='Create Review'>" + 
+                                "<input type='submit' id='review-button' class='btn btn-primary' value='Create Review'>" + 
                                 "</form>" +
                                 "</div>"
                                 );
@@ -90,14 +90,20 @@
 
     <style>
         
-        h2{
+        h4{
             text-align: center;
             margin: 5;
-            color: #587F3A;
+            color: green;
         }
+        h1, h2{
+            text-align: center;
+            margin: 5;
+            color: LimeGreen;
+        }
+
         
     </style>
-    <h2>Volunteer Home Portal</h2>
+    <h2>Welcome, username!</h2>
 
     <div id="training"></div>
 

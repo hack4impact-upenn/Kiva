@@ -28,16 +28,27 @@ html, body {
 }
 
 #review-display {
-	width: 40%;
+	width: 50%;
 	float: left;
 	border-radius: 3px;
-	border: 1px solid black;
+	border: 1px solid green;
 	padding: 10px;
 	text-align: center;
 	margin: 5;
 	/*color: #587F3A;*/
 }
 
+#homepage-button {
+	background-color: green;
+	width: 35%;
+	margin-bottom: 2px;
+}
+
+#review-button {
+	background-color: green;
+	width: 50%;
+	margin-bottom: 2px;
+}
 
 #org-info {
 
