@@ -180,6 +180,13 @@ exports.get_min_reviewed_application = function(req, res) {
 		});
 	};
 
+exports.get_completed_applications = function(req, res) {
+	Review.find({"reviewer_id": req.session.volunteerId, "submitted": true}, function(err, reviews) {
+		if(err) {console.log(err)}
+			res.send(reviews);
+	});
+}
+
 
 //open a review for editing
 exports.edit_review = function(req, res) {
