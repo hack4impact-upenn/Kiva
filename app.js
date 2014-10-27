@@ -66,7 +66,7 @@ app.post("/post-application", controller.create_application);
 app.get("/admin_applications", controller.view_applications);
 app.get("/admin/application/:id", controller.view_one_application);
 app.post("/admin/volunteer/approve", controller.approve_volunteer);
-
+app.post("/admin/volunteer/deny", controller.deny_volunteer);
 app.get("/admin/pull_applications", controller.send_applications);
 app.get("/admin/pull_volunteers_unapp", controller.send_volunteers_unapp);
 app.get("/admin/pull_volunteers_app", controller.send_volunteers_app);

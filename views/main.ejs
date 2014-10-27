@@ -95,10 +95,9 @@
             <tr>
           <th>First name</td>
           <th>Last name</td>
-          <th>Finished training?</td>
-          <th>Business Model</td>
-          <th>Current review</td>    
           <th># of completed reviews</td>
+          <th>Current review</td>    
+          <th>Completed training?</td>
             </tr>
         </thead>
      </table>
@@ -147,6 +146,10 @@
           console.log($(table));
           console.log(jQuery.type(data));
           var string = JSON.stringify(data);
+
+          $.each( data, function( key, value ) {
+            value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
+          });
          
           $(table).dataTable({
             "data": data,
@@ -182,13 +185,25 @@
             value.resume_link = '<a href = "' + value.resume_link + 
                 '" target="_blank">' + value.first_name + '\'s resume</a>';
             
+            //Escaping the " signs in the text
+            //var escape = require('escape-html');
+            //value.why_kiva = escape(value.why_kiva);
+            value.why_kiva = value.why_kiva.replace(/"/g, '&quot;');
+
             value.why_kiva = '<!-- Button trigger modal -->' +
                 '<a class="modal-button" data-toggle="modal"' +
                 ' data-target="#myModal" content="' + value.why_kiva + '">' +
                 value.first_name + '\'s response' + '</a>'
               
-            value.approve_vol = 'dope!';
-            value.deny_vol = 'nope!';
+            value.approve_vol = '<form class="volunteer-approve" action="/admin/volunteer/approve" method="post">' +
+                                    '<input type="hidden" name="id" value="' + value._id + '" />' +
+                                    '<input type="submit" class="btn btn-primary">' +
+                                '</form>';
+            
+            value.deny_vol = '<form class="volunteer-deny" action="/admin/volunteer/deny" method="post">' +
+                                    '<input type="hidden" name="id" value="' + value._id + '" />' +
+                                    '<input type="submit" class="btn btn-primary">' +
+                             '</form>';
           });
             
           console.log(data);
@@ -220,6 +235,11 @@
           console.log($(table));
           console.log(jQuery.type(data));
           var string = JSON.stringify(data);
+
+          $.each( data, function( key, value ) {
+            value.reviews_completed = value.reviews_completed.length;
+            value.finished_training = (value.finished_training) ? 'yes' : 'no';
+          });
             
           $(table).dataTable({
             "data": data,
@@ -227,16 +247,18 @@
             "columns": [
               { "data": "first_name" },
               { "data": "last_name" },
-              { "data": "finished_training" },
               { "data": "reviews_completed" },
               { "data": "current_review" },
+              { "data": "finished_training" },
+
             ]
         
           });
         });
-      }    
+      } 
 
     </script>
+
     <script type="text/javascript">
     
 
@@ -257,30 +279,46 @@
       }
 
       // Assign onclick events to the tab links, and
-      // highlight the first tab
-      var i = 0;
+      // highlight the last clicked tab (retrieve from local storage)
+      var lastTab = undefined;
 
+      if(typeof(Storage) !== "undefined") {
+        
+        if (localStorage.lastTab) {
+          lastTab = localStorage.lastTab;
+        }
+
+      }
+
+      var i = 0;
       for ( var id in tabLinks ) {
         tabLinks[id].onclick = showTab;
         tabLinks[id].onfocus = function() { this.blur() };
-        if ( i == 0 ) tabLinks[id].className = 'selected';
-        i++;
+        console.log($(tabLinks[id]).attr('href'));
+        
+        if (lastTab == undefined && i == 0) {
+          lastTab = $(tabLinks[id]).attr('href');
+        };
+
+        if ( $(tabLinks[id]).attr('href') == lastTab ) tabLinks[id].className = 'selected';
       }
 
       // Hide all content divs except the first
-      var i = 0;
 
       for ( var id in contentDivs ) {
-        if ( i != 0 ) contentDivs[id].className = 'tabContent hide';
-        i++;
+        if ( tabLinks[id].className != 'selected' ) contentDivs[id].className = 'tabContent hide';
       }
     }
 
     function showTab() {
       var selectedId = getHash( this.getAttribute('href') );
 
+      if(typeof(Storage) !== "undefined") {
+        localStorage.lastTab = "#" + selectedId;
+      }
       // Highlight the selected tab, and dim all others.
       // Also show the selected content div, and hide all others.
+
       for ( var id in contentDivs ) {
         if ( id == selectedId ) {
           tabLinks[id].className = 'selected';
@@ -311,11 +349,20 @@
       load_apps();
       load_vols_unapp();
       load_vols_app();
+
+      $('.volunteer-approve').on('submit', function(event, elem){
+        $('.volunteer-approve').submit();
+      });
+
+      $('.volunteer-deny').on('submit', function(event, elem){
+        $('.volunteer-deny').submit();
+      });
+
     });
         
-    $( "body" ).delegate( ".modal-button", "click", function() {
-      $(".modal-body").html($(this).attr('content'));
-    });   
+    $( 'body' ).delegate( '.modal-button', 'click', function() {
+      $('.modal-body').html($(this).attr('content'));
+    });
     
     </script>
 

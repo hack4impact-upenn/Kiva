@@ -505,9 +505,22 @@ exports.approve_volunteer = function(req, res) {
 				console.log(json);
 				res.send("approved!");
 			});
+			res.redirect('/admin_applications');
 		}
 		res.send(err);
 		});
+};
+
+exports.deny_volunteer = function(req, res) {
+	Volunteer.findOneAndUpdate({"_id": new ObjectId(req.body.id)},
+		{approved: null}, function(err, data) {
+		if(!err) {
+			console.log(data);
+			// Send a rejection email?
+			res.redirect('/admin_applications');
+		}
+		res.send(err);
+	});
 };
 
 //loads admin homepage
