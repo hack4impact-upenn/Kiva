@@ -11,7 +11,11 @@ var VolunteerSchema = new Schema({
   why_kiva: {type: String, default: ''},
   what_skills: {type: String, default: ''},
   terms_accepted: {type: Boolean, default: 1},
+<<<<<<< HEAD
   approved: {type: Boolean, default: 0},
+=======
+  approved: {type: Boolean, default: 1}, //0 = not checked, 1 = approved, 2 = rejected
+>>>>>>> approve_volunteers
   finished_training: {type: Boolean, default: false},
   reviews_completed: [Schema.Types.ObjectId],
   current_review: {type: Schema.Types.ObjectId, default: []},

@@ -8,7 +8,7 @@ var async = require("async");
 var fs=require('fs');
 var sys=require('sys');
 var credentials = require("../config.json");
-
+var sendgrid  = require('sendgrid')('hack4impact', 'dhruvmadethis1');
 var ObjectId= mongoose.Types.ObjectId;
 
 
@@ -412,6 +412,10 @@ exports.load_completed_reviews = function(req, res) {
 
 /*--------------  Admin Story ------------------ */
 
+
+
+
+
 //Admin Pages
 exports.view_applications = function(req, res) {
 	res.render("main.ejs", {error: "lalal"});	
@@ -456,7 +460,7 @@ exports.view_one_application = function(req, res) {
 //Page: admin submit new application page
 exports.submit_application = function(req, res) {
 	res.render("admin_submit.ejs", {error: "lalal"});
-}
+};
 
 //Admin Helpers
 
@@ -479,6 +483,31 @@ exports.create_application = function(req, res) {
 			res.redirect('/admin');
 		}
 	});
+};
+
+exports.approve_volunteer = function(req, res) {
+	Volunteer.findOneAndUpdate({"_id": new ObjectId(req.body.id)},
+		{approved: 1}, function(err, data) {
+		if(!err) {
+			console.log(data);
+			var email = new sendgrid.Email({
+					to: data.email_address,
+					from: 'kiva@kiva.com',
+					bcc: 'dhwari@@gmail.com',
+					subject:'Volunteer Approved!',
+				});
+			email.setHtml('<p>Dear'  + data.first_name + '<br /> Thanks for signing up to be a volunteer! '+ 
+			 			'Feel free to visit the app and login to get started. The first two things to do are to' + 
+			 			'go through the tutorials and fill out the confidentiality form.' + 
+			 			'<br /> Thanks, <br /> Folks at Kiva</p>');
+			sendgrid.send(email, function(err, json) {
+				if (err) { return console.error(err); }
+				console.log(json);
+				res.send("approved!");
+			});
+		}
+		res.send(err);
+		});
 };
 
 //loads admin homepage
