@@ -24,6 +24,10 @@
   
     <!-- DataTables -->
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+    
+    <!-- Bootstrap -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 
 
@@ -47,7 +51,6 @@
     <div class="tabContent" id="apps">
   <h2>Application Dashboard</h2>
   <div>
-    <p>Here is the application dashboard</p>
     <table id="appsTable" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
@@ -60,22 +63,67 @@
           <th>Open to review</td> 
             </tr>
         </thead>
- 
-
-    </table>
-
-
+     </table>
   </div>
 </div>
 
 <div class="tabContent" id="volunteers">
   <h2>Volunteer Dashboard</h2>
+  
   <div>
-    <p>Here is the volunteer dashboard</p>
-
+    <h3>Unprocessed volunteers</h3>
+    <table id="volsTableUnapp" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+          <th>First name</td>
+          <th>Last name</td>
+          <th>LinkedIn</td>
+          <th>Resume</td>
+          <th>Why Kiva?</td>    
+          <th>Skills</td>   
+          <th>Approve</td>   
+          <th>Deny</td> 
+            </tr>
+        </thead>
+     </table>
   </div>
+  
+  <div>
+    <h3>Approved volunteers</h3>
+    <table id="volsTableApp" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+          <th>First name</td>
+          <th>Last name</td>
+          <th>Finished training?</td>
+          <th>Business Model</td>
+          <th>Current review</td>    
+          <th># of completed reviews</td>
+            </tr>
+        </thead>
+     </table>
+  </div>
+  
 </div>
 
+<!-- A modal to show ""Why Kiva essays -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Why Kiva?</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <!--
   
@@ -87,84 +135,106 @@
 --> 
   </body>
 
-      <script>
+    <script>
+ 
+      // Ajax call for applications data
       var load_apps = function() {
-         $.getJSON( "/admin/pull_applications", function( data ) {
-            console.log(data);
-
-            var data2 = {"data" : data};
-            console.log(JSON.stringify(data2));
-            var table = document.getElementById("appsTable");
-            console.log($(table));
-            console.log(jQuery.type(data));
-            var string = JSON.stringify(data);
-         $(table).dataTable( {
-        "data": data,
-        "columns": [
-            { "data": "organization_name" },
-            { "data": "score_sum" },
-            { "data": "kiva_fit_count" },
-            { "data": "sustainable_model_count" },
-            { "data": "clear_social_impact_count" },
-            { "data": "num_reviews" },
-            { "data": "open_to_review" }
-
-        ]
-        
-    } );
-
-
-
-
-             });
-      }
-          /*var rows = '';
+        $.getJSON( "/admin/pull_applications", function( data ) {
+          console.log(data);
+          var data2 = {"data" : data};
+          console.log(JSON.stringify(data2));
           var table = document.getElementById("appsTable");
-           $.each(data, function(index, value){
-            var row = '<tr>';
-            row += '<td>' + value["organization_name" ] + '</td>';
-            row += '<td>' + (value.num_reviews == 0 ? "No reviews yet" : value.score_sum/(value.num_reviews)) + '</td>';
-            row += '<td>' + value["kiva_fit_count" ] + '</td>';
-            row += '<td>' + value["sustainable_model_count" ] + '</td>';
-            row += '<td>' + value["clear_social_impact_count" ] + '</td>';
-            row += '<td>' + value["num_reviews" ] + '</td>';
-            row += '<td>' + value["open_to_review" ] + '</td>';
-            rows += row + '<tr>';
-
-        */
-           
-       /*
-          var row = table.insertRow(table.rows.length);
-          var cellName = row.insertCell(0);
-          var cellAvgRating = row.insertCell(1);
-          var cellKivaFit = row.insertCell(2);
-          var cellBusinessModel = row.insertCell(3);
-          var cellSocialImpact= row.insertCell(4);
-          var cellNumberOfReviews = row.insertCell(5);
-          var cellOpenToReview = row.insertCell(6);
-
-          cellName.innerHTML = value.organization_name;
-          cellAvgRating.innerHTML = value.num_reviews == 0 ? "No reviews yet" : value.score_sum/(value.num_reviews);
-          cellKivaFit.innerHTML = value.kiva_fit_count;
-          cellBusinessModel.innerHTML = value.sustainable_model_count;
-          cellSocialImpact.innerHTML = value.clear_social_impact_count;
-          cellNumberOfReviews.innerHTML = value.num_reviews;
-          cellOpenToReview.innerHTML = value.open_to_review;
-          */
-
-         /* });     
-          $(table).append(rows);
-        }); 
-      }; */
-
-
-      $( document ).ready(function() {
-         load_apps();  
+          console.log($(table));
+          console.log(jQuery.type(data));
+          var string = JSON.stringify(data);
+         
+          $(table).dataTable({
+            "data": data,
+            
+            "columns": [
+              { "data": "organization_name" },
+              { "data": "score_sum" },
+              { "data": "kiva_fit_count" },
+              { "data": "sustainable_model_count" },
+              { "data": "clear_social_impact_count" },
+              { "data": "num_reviews" },
+              { "data": "open_to_review" }
+            ]
         
-        /*
-        sorttable.makeSortable(table);
-        */
-      });     
+          });
+        });
+      }
+      
+      // ajax call for unprocessed volunteers data
+      var load_vols_unapp = function() {
+        $.getJSON( "/admin/pull_volunteers_unapp", function( data ) {
+          console.log(data);
+          var data2 = {"data" : data};
+          console.log(JSON.stringify(data2));
+          var table = document.getElementById("volsTableUnapp");
+          console.log($(table));
+          console.log(jQuery.type(data));
+          var string = JSON.stringify(data);
+        
+          $.each( data, function( key, value ) {
+            value.linked_in = '<a href = "' + value.linked_in + 
+                '" target="_blank">' + value.first_name + '\'s LinkedIn</a>';
+            value.resume_link = '<a href = "' + value.resume_link + 
+                '" target="_blank">' + value.first_name + '\'s resume</a>';
+            
+            value.why_kiva = '<!-- Button trigger modal -->' +
+                '<a class="modal-button" data-toggle="modal"' +
+                ' data-target="#myModal" content="' + value.why_kiva + '">' +
+                value.first_name + '\'s response' + '</a>'
+              
+            value.approve_vol = 'dope!';
+            value.deny_vol = 'nope!';
+          });
+            
+          console.log(data);
+          $(table).dataTable({
+            "data": data,
+            
+            "columns": [
+              { "data": "first_name" },
+              { "data": "last_name" },
+              { "data": "linked_in" },
+              { "data": "resume_link" },
+              { "data": "why_kiva" },
+              { "data": "what_skills" },
+              { "data": "approve_vol" },
+              { "data": "deny_vol" }
+            ]
+        
+          });
+        });
+      }    
+
+      // ajax call for approved volunteers data
+      var load_vols_app = function() {
+        $.getJSON( "/admin/pull_volunteers_app", function( data ) {
+          console.log(data);
+          var data2 = {"data" : data};
+          console.log(JSON.stringify(data2));
+          var table = document.getElementById("volsTableApp");
+          console.log($(table));
+          console.log(jQuery.type(data));
+          var string = JSON.stringify(data);
+            
+          $(table).dataTable({
+            "data": data,
+            
+            "columns": [
+              { "data": "first_name" },
+              { "data": "last_name" },
+              { "data": "finished_training" },
+              { "data": "reviews_completed" },
+              { "data": "current_review" },
+            ]
+        
+          });
+        });
+      }    
 
     </script>
     <script type="text/javascript">
@@ -215,6 +285,7 @@
         if ( id == selectedId ) {
           tabLinks[id].className = 'selected';
           contentDivs[id].className = 'tabContent';
+                      
         } else {
           tabLinks[id].className = '';
           contentDivs[id].className = 'tabContent hide';
@@ -236,6 +307,16 @@
       return url.substring( hashPos + 1 );
     }
 
+    $( document ).ready(function() {
+      load_apps();
+      load_vols_unapp();
+      load_vols_app();
+    });
+        
+    $( "body" ).delegate( ".modal-button", "click", function() {
+      $(".modal-body").html($(this).attr('content'));
+    });   
+    
     </script>
 
   </html>

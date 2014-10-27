@@ -80,6 +80,7 @@ exports.load_application = function(req, res) {
 
 exports.create_volunteer = function(req, res) {
 	console.log("does this work");
+    console.log(req.body.why_kiva);
 	var volunteer = new Volunteer({
 		first_name: req.body.first_name,
 		last_name: req.body.last_name,
@@ -428,7 +429,22 @@ exports.send_applications= function(req, res) {
 	});
 };
 
+exports.send_volunteers_unapp= function(req, res) {
+	Volunteer.find( {approved: false},
+		function(err, volunteers) {
+		console.log(volunteers);
+		res.send(volunteers);
+	});
+};
 
+exports.send_volunteers_app= function(req, res) {
+	Volunteer.find( {approved: true},
+		function(err, volunteers) {
+		console.log(volunteers);
+		res.send(volunteers);
+	});
+};
+            
 exports.view_one_application = function(req, res) {
 	var id = req.params.id;
 	Application.find({"_id": ObjectId(id)}, function(err, application){
