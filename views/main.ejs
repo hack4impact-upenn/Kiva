@@ -197,12 +197,12 @@
               
             value.approve_vol = '<form class="volunteer-approve" action="/admin/volunteer/approve" method="post">' +
                                     '<input type="hidden" name="id" value="' + value._id + '" />' +
-                                    '<input type="submit" class="btn btn-primary">' +
+                                    '<input type="submit" value="Approve" class="btn btn-primary">' +
                                 '</form>';
             
             value.deny_vol = '<form class="volunteer-deny" action="/admin/volunteer/deny" method="post">' +
                                     '<input type="hidden" name="id" value="' + value._id + '" />' +
-                                    '<input type="submit" class="btn btn-primary">' +
+                                    '<input type="submit" value="Deny" class="btn btn-primary">' +
                              '</form>';
           });
             
