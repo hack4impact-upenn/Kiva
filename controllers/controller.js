@@ -9,6 +9,7 @@ var fs=require('fs');
 var sys=require('sys');
 var credentials = require("../config.json");
 var sendgrid  = require('sendgrid')('hack4impact', 'dhruvmadethis1');
+var request = require('request');
 var ObjectId= mongoose.Types.ObjectId;
 
 
@@ -207,6 +208,15 @@ exports.edit_review = function(req, res) {
 };*/
 
 //Volunteer Helper Functions
+
+exports.load_organization_data = function(req, res) {
+	console.log("loading application data");
+	request('https://api.myjson.com/bins/1a2tl', function (error, response, body) {
+	  	if (!error && response.statusCode == 200) {
+	    	res.json(body)
+	    }
+	});
+}
 
 //creates new review based on org id
 exports.create_review = function(req, res) {
