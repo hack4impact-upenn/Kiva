@@ -170,7 +170,8 @@
       
       // ajax call for unprocessed volunteers data
       var load_vols_unapp = function() {
-        $.getJSON( "/admin/pull_volunteers_unapp", function( data ) {
+        var approval = false;
+        $.getJSON( "/admin/pull_volunteers" + approval, function( data ) {
           console.log(data);
           var data2 = {"data" : data};
           console.log(JSON.stringify(data2));
@@ -227,7 +228,8 @@
 
       // ajax call for approved volunteers data
       var load_vols_app = function() {
-        $.getJSON( "/admin/pull_volunteers_app", function( data ) {
+        var approval = true;
+        $.getJSON( "/admin/pull_volunteers" + approval, function( data ) {
           console.log(data);
           var data2 = {"data" : data};
           console.log(JSON.stringify(data2));

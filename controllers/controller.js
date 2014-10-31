@@ -443,20 +443,14 @@ exports.send_applications= function(req, res) {
 	});
 };
 
-exports.send_volunteers_unapp= function(req, res) {
-	Volunteer.find( {approved: false},
-		function(err, volunteers) {
-		console.log(volunteers);
-		res.send(volunteers);
-	});
-};
+exports.send_volunteers= function(req, res) {
+	var approval = req.params.approval;
 
-exports.send_volunteers_app= function(req, res) {
-	Volunteer.find( {approved: true},
+	Volunteer.find( {approved: approval},
 		function(err, volunteers) {
-		console.log(volunteers);
 		res.send(volunteers);
 	});
+
 };
             
 exports.view_one_application = function(req, res) {
