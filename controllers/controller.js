@@ -305,6 +305,7 @@ exports.submit_review = function(req, res) {
 				Review.update({
 					"_id": ObjectId(req.params.id)},{
 						submitted: true,
+						date_review_submitted: Date.now,
 						clear_social_impact: req.body.clear_social_impact,
 						kiva_fit: req.body.kiva_fit,
 						sustainable_model: req.body.sustainable_model,
