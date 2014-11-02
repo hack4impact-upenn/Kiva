@@ -87,11 +87,24 @@
     var load_completed_apps = function() {
         $.getJSON('/volunteer/get_completed_applications', function(completed_apps) {
             var html = "<table class='table table-striped'>";
+            $('#completed-table table').append("<tr>" + 
+                "<th>" + "Organization" + "</th>" +
+                "<th>" + "Status" + "</th>" +
+                "<th>" + "Date Started" + "</th>" +
+                "<th>" + "Date Submitted" + "</th>" +
+                "</tr>");
             $.each(completed_apps, function(index, value) {
-                html += "<tr>" + "<td>" + value._id + "</td>" + "</tr>";
+                $.getJSON("/review/organization_data/" + value.organization_id, function(organization) {  
+                    var start = new Date(value.date_review_started);
+                    var submitted = new Date(value.date_review_submitted);
+                    $('#completed-table table').append("<tr>" + 
+                        "<td>" + organization.organization_name + "</td>" +
+                        "<td>" + "Status" + "</td>" +
+                        "<td>" + start.toLocaleDateString() + "</td>" +
+                        "<td>" + submitted.toLocaleDateString() + "</td>" +
+                        "</tr>");
+                });
             });
-            html += '</table>'; 
-            $('#completed-table').html(html);
         }); 
     }
 
@@ -139,7 +152,7 @@
     <div id="training"></div>
     <div class="row">
         <div id="review" class="col-md-6"></div>
-        <div id="completed-table" class="col-md-6"></div>
+        <div id="completed-table" class="col-md-6"><table class='table table-striped'></table></div>
     </div>
 
 

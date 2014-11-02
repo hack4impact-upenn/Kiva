@@ -224,6 +224,13 @@ exports.load_organization_docs = function(req, res) {
 	});
 }
 
+exports.load_organization_data = function(req, res) {
+	console.log("loading organization data");
+	Application.findById(req.params.org_id, function(err, application) {
+		return res.json(application);
+	});
+}
+
 //creates new review based on org id
 exports.create_review = function(req, res) {
 	console.log("creating review");
