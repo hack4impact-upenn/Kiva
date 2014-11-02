@@ -43,7 +43,7 @@ app.get("/logout", controller.logout);
 
 //Volunteer
 app.get("/volunteer/get_min_reviewed_application", controller.get_min_reviewed_application);
-app.get("volunteer/get_completed_applications", controller.get_completed_applications);
+app.get("/volunteer/get_completed_applications", controller.get_completed_applications);
 app.get("/volunteer/load", controller.load_volunteer);
 app.post("/volunteer/submit-volunteer", controller.create_volunteer);
 app.get("/volunteer/sign-up", controller.volunteer_signup_page);
