@@ -190,7 +190,7 @@
             };
 
             function load_links() {
-                $.getJSON("/review/organization_data/" + $('#organization_id').val(), function(data) {  
+                $.getJSON("/review/organization_docs/" + $('#organization_id').val(), function(data) {  
                     data = JSON.parse(data);
                     console.log(data.links);
                     var html = "";
