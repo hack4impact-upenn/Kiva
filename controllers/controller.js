@@ -171,7 +171,8 @@ exports.completed_review_page = function(req, res) {
 };
 
 exports.get_min_reviewed_application = function(req, res) {
-		Application.get_min_reviewed_application(function (err, application) {
+		console.log(req.session.volunteerId);
+		Application.get_min_reviewed_application(ObjectId(req.session.volunteerId), function (err, application) {
 			if(application === null) {
 				res.send({"data" : "none"});
 			} else {
@@ -324,6 +325,16 @@ exports.submit_review = function(req, res) {
 						callback();
 					});
 			},
+			//in Application: add to volunteers list
+			function(callback) {
+				Application.update({_id: org_id},
+								{ $push: {"volunteer_list": req.session.volunteerId}}, function(err){
+									if(err) {console.log("error in adding to volunteer list")
+											return callback(err);
+									}
+									callback()
+								})							
+				},
 			//in Application: move from in_progress
 			function(callback) {
 				Application.remove_review_in_progress(org_id, req.params.id, function(err) {
@@ -483,7 +494,8 @@ exports.create_application = function(req, res) {
 		token: req.body.token,
 		url: req.body.url,
 		organization_address: req.body.organization_address,
-		organization_url: req.body.organization_url
+		organization_url: req.body.organization_url,
+		volunteer_list: []
 	});
 
 	application.save(function(err, application) {
