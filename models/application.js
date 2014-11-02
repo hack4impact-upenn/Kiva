@@ -12,7 +12,7 @@ var ApplicationSchema = new Schema({
   open_to_review: {type: Boolean, default: true},
   reviews_in_progress: [Schema.Types.ObjectId],
   reviews_submitted: [Schema.Types.ObjectId],
-  volunteer_list: [Schema.Types.ObjectId],
+  volunteer_list : [Schema.Types.ObjectId],
   date_submitted: {type: Date, default: Date.now},
   score_sum: {type: Number, default: 0},
   kiva_fit_count: {type: Number, default: 0},
@@ -42,7 +42,7 @@ ApplicationSchema.statics = {
 	},
 	
 	get_min_reviewed_application: function(volunteer_id, cb) {
-		this.findOne({"open_to_review": true, "volunteer_list": {$nin: volunteer_id}}).sort({"num_reviews":1}).exec(cb);
+		this.findOne({"open_to_review": true, "volunteer_list": {$ne: volunteer_id}}).sort({"num_reviews":1}).exec(cb);
 		}
 	};
 

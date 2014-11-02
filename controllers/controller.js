@@ -318,10 +318,9 @@ exports.submit_review = function(req, res) {
 			function(callback) {
 				Application.update({_id: org_id},
 								{ $push: {"volunteer_list": req.session.volunteerId}}, function(err){
-									if(err) {console.log("error")
+									if(err) {console.log("error in adding to volunteer list")
 											return callback(err);
 									}
-									console.log("volunteer added");
 									callback()
 								})							
 				},
@@ -459,7 +458,8 @@ exports.create_application = function(req, res) {
 		token: req.body.token,
 		url: req.body.url,
 		organization_address: req.body.organization_address,
-		organization_url: req.body.organization_url
+		organization_url: req.body.organization_url,
+		volunteer_list: []
 	});
 
 	application.save(function(err, application) {
