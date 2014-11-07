@@ -38,6 +38,28 @@ html, body {
 	/*color: #587F3A;*/
 }
 
+#average-reviews {
+	width: 100%;
+	float: center;
+	border-radius: 3px;
+	border: 1px solid green;
+	padding: 10px;
+	text-align: center;
+	margin: 5;
+	/*color: #587F3A;*/
+}
+
+#individual-reviews {
+	width: 25%;
+	float: center;
+	border-radius: 3px;
+	border: 1px solid green;
+	padding: 10px;
+	text-align: center;
+	margin: 5;
+	/*color: #587F3A;*/
+}
+
 #homepage-button {
 	background-color: green;
 	width: 35%;

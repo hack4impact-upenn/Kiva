@@ -4,7 +4,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="" rel="stylesheet" type="text/css">
+        <link href="/kiva_style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
         <meta name="description" content="">
         <meta name="author" content="">
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
@@ -35,13 +36,15 @@
    var load_org_info = function() {
     $.getJSON("/load_application/" + org_id, function(application) {
         $('#data').append(
+                    "<div id='average-reviews'>" + 
                     "<p>" +  application.kiva_fit_count + " out of " + application.num_reviews + " thought " + application.organization_name + " fit in with Kiva's culture. </p>" + 
 
                     "<p>" +  application.sustainable_model_count + " out of " + application.num_reviews + " thought " + application.organization_name + " has a sustainable business model. </p>" + 
 
                     "<p>" +  application.clear_social_impact_count + " out of " + application.num_reviews + " thought " + application.organization_name + " has a clear social impact. </p>" + 
 
-                    "<p> Average rating was: " + (application.score_sum/application.num_reviews).toFixed(1) + " out of 5.0 </p>" 
+                    "<p> Average rating was: " + (application.score_sum/application.num_reviews).toFixed(1) + " out of 5.0 </p>" +
+                    "</div>"
                     );
     });
    };
@@ -51,15 +54,18 @@
              $.each(reviews, function(index, review) {
                 console.log(review);
                  $('#reviews').append(
+                    "<div id='individual-reviews'>" +
                     "<p> Clear Social Impact: " + review["clear_social_impact"] + "</p>" +
                     "<p> Kiva Fit: " + review["kiva_fit"] + "</p>" +
                     "<p> Sustainable Business Model: " + review["sustainable_model"] + "</p>" +
                     "<p> Recommended Rating: " + review["recommend_rating"] + "</p>" + 
+                    + "</div>" +
                    "<br />"
                     );
             }); 
         });
     }
+
     $( document ).ready(function() {
         load_page();
     });
