@@ -86,7 +86,6 @@
     };*/
     var load_completed_apps = function() {
         $.getJSON('/volunteer/get_completed_applications', function(completed_apps) {
-            var html = "<table class='table table-striped'>";
             $('#completed-table table').append("<tr>" + 
                 "<th>" + "Organization" + "</th>" +
                 "<th>" + "Status" + "</th>" +
@@ -133,20 +132,18 @@
     <% include banner %>   
 
     <style>
-        
-        h2, h4{
-            text-align: center;
-            margin: 5;
-            color: green;
-        }
         h1{
             text-align: center;
             margin: 5;
             color: LimeGreen;
         }
-
-        
+        h2, h4{
+            text-align: center;
+            margin: 5;
+            color: green;
+        }
     </style>
+
     <h2>Welcome, username!</h2>
 
     <div id="training"></div>
@@ -154,9 +151,6 @@
         <div id="review" class="col-md-6"></div>
         <div id="completed-table" class="col-md-6"><table class='table table-striped'></table></div>
     </div>
-
-
-</div>
 
     <% include footer %>   
 

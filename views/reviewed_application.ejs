@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/kiva_style.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <meta name="description" content="">
         <meta name="author" content="">
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
@@ -15,12 +16,29 @@
     
     </head>
 
-    <body>
-        <div id="data">
-        </div>
+    <style>
+        h1{
+            text-align: center;
+            margin: 5;
+            color: LimeGreen;
+        }
+        h2, h4{
+            text-align: center;
+            margin: 5;
+            color: green;
+        }
+    </style>
 
-        <div id="reviews">
-        </div>
+    <body>
+        <% include banner %>   
+
+        <h2>Thanks for reviewing! Just one more step...</h2>
+
+        <div id="data" class="col-md-6"></div>
+
+        <div id="completed-table" class="col-md-6"><table class='table table-striped'></table></div>
+
+        <% include footer %>
     </body>
 
 <script>
@@ -51,9 +69,23 @@
 
     var load_completed_review = function() {
         $.getJSON('/review/completed/load/' + org_id, function(reviews) {
+            $('#completed-table table').append("<tr>" + 
+                "<th>" + "Clear Social Impact" + "</th>" +
+                "<th>" + "Kiva Fit" + "</th>" +
+                "<th>" + "Sustainable Business Model" + "</th>" +
+                "<th>" + "Recommended Rating" + "</th>" +
+                "</tr>");
              $.each(reviews, function(index, review) {
                 console.log(review);
-                 $('#reviews').append(
+                $('#completed-table table').append("<tr>" + 
+                    "<td>" + review["clear_social_impact"] + "</td>" +
+                    "<td>" + review["kiva_fit"] + "</td>" +
+                    "<td>" + review["sustainable_model"] + "</td>" +
+                    "<td>" + review["recommend_rating"] + "</td>" +
+                    "</tr>"
+                    );
+
+                 /*$('#reviews').append(
                     "<div id='individual-reviews'>" +
                     "<p> Clear Social Impact: " + review["clear_social_impact"] + "</p>" +
                     "<p> Kiva Fit: " + review["kiva_fit"] + "</p>" +
@@ -61,10 +93,12 @@
                     "<p> Recommended Rating: " + review["recommend_rating"] + "</p>" + 
                     + "</div>" +
                    "<br />"
-                    );
+                    );*/
             }); 
         });
     }
+
+
 
     $( document ).ready(function() {
         load_page();
