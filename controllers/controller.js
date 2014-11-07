@@ -215,12 +215,19 @@ exports.edit_review = function(req, res) {
 
 //Volunteer Helper Functions
 
-exports.load_organization_data = function(req, res) {
-	console.log("loading application data");
+exports.load_organization_docs = function(req, res) {
+	console.log("loading application docs");
 	request('https://api.myjson.com/bins/1a2tl', function (error, response, body) {
 	  	if (!error && response.statusCode == 200) {
 	    	res.json(body)
 	    }
+	});
+}
+
+exports.load_organization_data = function(req, res) {
+	console.log("loading organization data");
+	Application.findById(req.params.org_id, function(err, application) {
+		return res.json(application);
 	});
 }
 
@@ -305,6 +312,7 @@ exports.submit_review = function(req, res) {
 				Review.update({
 					"_id": ObjectId(req.params.id)},{
 						submitted: true,
+						date_review_submitted: Date.now(),
 						clear_social_impact: req.body.clear_social_impact,
 						kiva_fit: req.body.kiva_fit,
 						sustainable_model: req.body.sustainable_model,

@@ -43,7 +43,7 @@ app.get("/logout", controller.logout);
 
 //Volunteer
 app.get("/volunteer/get_min_reviewed_application", controller.get_min_reviewed_application);
-app.get("volunteer/get_completed_applications", controller.get_completed_applications);
+app.get("/volunteer/get_completed_applications", controller.get_completed_applications);
 app.get("/volunteer/load", controller.load_volunteer);
 app.post("/volunteer/submit-volunteer", controller.create_volunteer);
 app.get("/volunteer/sign-up", controller.volunteer_signup_page);
@@ -57,7 +57,8 @@ app.get("/review/load/:id", controller.load_unfinished_review);
 app.post("/review/submit/:id", controller.submit_review); // review id
 app.get("/review/completed/:org_id", controller.completed_review_page); //org_id
 app.get("/review/completed/load/:org_id", controller.load_completed_reviews);
-app.get("/review/organization_data/:org_id", controller.load_organization_data)
+app.get("/review/organization_docs/:org_id", controller.load_organization_docs);
+app.get("/review/organization_data/:org_id", controller.load_organization_data);
 
 //Admin
 app.get("/admin/sign-up", controller.admin_signup_page);
