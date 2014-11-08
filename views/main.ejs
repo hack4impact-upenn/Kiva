@@ -14,7 +14,6 @@
     <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 
-    <script src="sorttable.js" type="text/javascript"></script>
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.3/css/jquery.dataTables.css">
@@ -51,7 +50,8 @@
     <div class="tabContent" id="apps">
   <h2>Application Dashboard</h2>
   <div>
-    <table id="appsTable" class="display" cellspacing="0" width="100%">
+    <h3>Application Shortlist</h3>
+    <table id="appsTableShort" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
           <th>Name</td>
@@ -61,10 +61,33 @@
           <th>Social Impact</td>    
           <th>Number of reviews</td>   
           <th>Open to review</td> 
+          <th>More details</td> 
+
             </tr>
         </thead>
      </table>
   </div>
+  <div>
+    <h3>All other applications</h3>
+    <table id="appsTableRest" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+          <th>Name</td>
+          <th>Avg. Rating</td>
+          <th>Kiva Fit</td>
+          <th>Business Model</td>
+          <th>Social Impact</td>    
+          <th>Number of reviews</td>   
+          <th>Open to review</td> 
+          <th>More details</td> 
+
+            </tr>
+        </thead>
+     </table>
+  </div>
+
+
+
 </div>
 
 <div class="tabContent" id="volunteers">
@@ -136,21 +159,27 @@
 
     <script>
  
-      // Ajax call for applications data
-      var load_apps = function() {
-        $.getJSON( "/admin/pull_applications", function( data ) {
+      // Ajax call for shortilisted applications data
+      var load_apps_short = function() {
+        $.getJSON( "/admin/pull_applications_short", function( data ) {
           console.log(data);
           var data2 = {"data" : data};
           console.log(JSON.stringify(data2));
-          var table = document.getElementById("appsTable");
+          var table = document.getElementById("appsTableShort");
           console.log($(table));
           console.log(jQuery.type(data));
           var string = JSON.stringify(data);
 
           $.each( data, function( key, value ) {
             value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
+            var linkstr = '<a href="/admin/application/'+ value._id + '">Click here</a>'
+           console.log(linkstr);
+            value.details_view = linkstr;
+
+
           });
          
+         console.log(jQuery.type(data));
           $(table).dataTable({
             "data": data,
             
@@ -161,12 +190,54 @@
               { "data": "sustainable_model_count" },
               { "data": "clear_social_impact_count" },
               { "data": "num_reviews" },
-              { "data": "open_to_review" }
+              { "data": "open_to_review" },
+              { "data": "details_view" }
             ]
         
           });
         });
       }
+
+      // Ajax call for shortilisted applications data
+      var load_apps_rest = function() {
+        $.getJSON( "/admin/pull_applications_rest", function( data ) {
+          console.log(data);
+          var data2 = {"data" : data};
+          console.log(JSON.stringify(data2));
+          var table = document.getElementById("appsTableRest");
+          console.log($(table));
+          console.log(jQuery.type(data));
+          var string = JSON.stringify(data);
+
+          $.each( data, function( key, value ) {
+            value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
+            var linkstr = '<a href="/admin/application/'+ value._id + '">Click here</a>'
+           console.log(linkstr);
+            value.details_view = linkstr;
+
+
+          });
+         
+         console.log(jQuery.type(data));
+          $(table).dataTable({
+            "data": data,
+            
+            "columns": [
+              { "data": "organization_name" },
+              { "data": "score_sum" },
+              { "data": "kiva_fit_count" },
+              { "data": "sustainable_model_count" },
+              { "data": "clear_social_impact_count" },
+              { "data": "num_reviews" },
+              { "data": "open_to_review" },
+              { "data": "details_view" }
+            ]
+        
+          });
+        });
+      }
+
+
       
       // ajax call for unprocessed volunteers data
       var load_vols_unapp = function() {
@@ -346,7 +417,8 @@
     }
 
     $( document ).ready(function() {
-      load_apps();
+      load_apps_short();
+      load_apps_rest();
       load_vols_unapp();
       load_vols_app();
 

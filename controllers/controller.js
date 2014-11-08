@@ -433,8 +433,18 @@ exports.view_applications = function(req, res) {
 
 
 
-exports.send_applications= function(req, res) {
-	Application.find( {}, {"_id": 1, "organization_name": 1, "reviews_in_progress": 1, 
+exports.send_applications_short= function(req, res) {
+	Application.find( {"shortlisted": true}, {"_id": 1, "organization_name": 1, "reviews_in_progress": 1, 
+		"score_sum": 1, "reviews_submitted": 1, "kiva_fit_count":1, "sustainable_model_count": 1,
+		"clear_social_impact_count": 1, "num_reviews": 1, "open_to_review": 1},
+		function(err, applications) {
+		console.log(applications);
+		res.send(applications);
+	});
+};
+
+exports.send_applications_rest= function(req, res) {
+	Application.find( {"shortlisted": false}, {"_id": 1, "organization_name": 1, "reviews_in_progress": 1, 
 		"score_sum": 1, "reviews_submitted": 1, "kiva_fit_count":1, "sustainable_model_count": 1,
 		"clear_social_impact_count": 1, "num_reviews": 1, "open_to_review": 1},
 		function(err, applications) {
@@ -458,14 +468,58 @@ exports.send_volunteers_app= function(req, res) {
 		res.send(volunteers);
 	});
 };
+
             
 exports.view_one_application = function(req, res) {
-	var id = req.params.id;
-	Application.find({"_id": ObjectId(id)}, function(err, application){
-		console.log(application);
-		return res.render("main.ejs");
+	res.render('single_org.ejs', {app_id: req.params.id});
+};
+
+exports.load_single_application = function(req, res) {
+	Application.findById(req.params.id, function(err, application) {
+		if(err) {
+			console.log(err);
+			res.send(404);
+		} else {
+			res.send(application);
+		}
 	});
 };
+
+
+exports.save_application_changes = function(req, res) {
+	var org_id = req.body.organization_name;
+	console.log(org_id);
+	console.log("updating");
+	async.parallel(
+		[
+			function(callback) {
+				//save review
+				Application.update({
+					"_id": ObjectId(req.params.id)},{
+						
+						organization_name: req.body.organization_name,
+						description: req.body.description,
+						token: req.body.token,
+						organization_address: req.body.organization_address,
+						organization_url: req.body.organization_url,
+						open_to_review: req.body.open_to_review,
+						shortlisted: req.body.shortlisted
+
+					}, function(err) {
+						if (err) {return callback(err)};
+						console.log(err);
+						console.log("Error updating values");
+						callback();
+					});
+			},
+			
+			
+		], function(err) {
+			if (err) {res.send(404);};
+			console.log("submission complete");
+			res.redirect('/admin_applications');
+		});
+	};
 
 //Page: admin submit new application page
 exports.submit_application = function(req, res) {
