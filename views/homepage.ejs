@@ -30,11 +30,13 @@
                     console.log(data);
                     if(data.data !== "none") {
                             $('#review').append(
-                                "<div id='review-display'>" + 
-                                "<p>" + "<h2>" + data["organization_name"] + "</h2>" + "</p>" +
+                                "<div id='review-display'>" +
+                                //"<a href='" + data["organization_url"] + "'>" + data[organization_name] + "</a>" +
+
+                                "<p><h2>" + data["organization_name"] + "</h2></p>" +
                                 "<p>" + data["description"] + "</p>" +
-                                "<a href='" + data["organization_url"] + "'  id='homepage-button' class='btn btn-primary'>Homepage</a>" + 
-                                "<p>" + "<h4>" + "Reviews to date: " + data["num_reviews"] + "</h4>" + "</p>" +
+                                "<a href='" + data["organization_url"] + "' id='homepage-button' class='btn btn-primary'>Homepage</a>" + 
+                                "<p><h4>Reviews to date: " + data["num_reviews"] + "</h4></p>" +
                                 "<p><h2>Help get this application on track!</h2><p>" +
                                 "<form method='POST' action='/review/create/" + data["_id"] + "'>" + 
                                 "<input type='submit' id='review-button' class='btn btn-primary' value='Create Review'>" + 
@@ -132,15 +134,10 @@
     <% include banner %>   
 
     <style>
-        h1{
-            text-align: center;
-            margin: 5;
-            color: LimeGreen;
-        }
         h2, h4{
             text-align: center;
             margin: 5;
-            color: green;
+            /*color: green;*/
         }
     </style>
 

@@ -28,7 +28,7 @@ html, body {
 }
 
 #review-display {
-	width: 50%;
+	width: 100%;
 	float: left;
 	border-radius: 3px;
 	border: 1px solid green;
@@ -38,9 +38,17 @@ html, body {
 	/*color: #587F3A;*/
 }
 
-#average-reviews {
-	width: 100%;
+#completed-table {
+	padding: 10px;
+	border-radius: 3px;
+
+}
+
+
+#data {
+	width: 70%;
 	float: center;
+	margin-left: 15%;
 	border-radius: 3px;
 	border: 1px solid green;
 	padding: 10px;
