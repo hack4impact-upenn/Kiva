@@ -170,6 +170,14 @@ html, body {
 	float: left;
 }
 
+#points {
+	border-radius: 3px;
+	border: 1px solid black;
+	padding: 10px;
+	margin-left: 100px;
+	float: left;
+}
+
 .btn.btn-primary {
 	background-color: green;
 	width: 100%;

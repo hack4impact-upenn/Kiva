@@ -109,6 +109,17 @@
         }); 
     }
 
+    // var get_score = function() {
+    //     $.getJSON('/volunteer/load', function(volunteer) {
+    //         console.log("loading volunteer...");
+    //         console.log(volunteer);
+    //         var score = 0;
+    //         $('#review').append(
+    //             "<p><h2>" + volunteer["reviews_completed"] + "</h2></p>"
+    //             );
+    //     });
+    // }
+
 
     $( document ).ready(function() {
         $.getJSON('/volunteer/load', function(volunteer) {
@@ -137,11 +148,12 @@
         h2, h4{
             text-align: center;
             margin: 5;
-            /*color: green;*/
+            color: green;
         }
     </style>
 
     <h2>Welcome, username!</h2>
+    <!-- <div id="points"></div> -->
 
     <div id="training"></div>
     <div class="row">
