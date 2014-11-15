@@ -8,7 +8,8 @@ var async = require("async");
 var fs=require('fs');
 var sys=require('sys');
 var credentials = require("../config.json");
-
+var sendgrid  = require('sendgrid')('hack4impact', 'dhruvmadethis1');
+var request = require('request');
 var ObjectId= mongoose.Types.ObjectId;
 
 
@@ -80,6 +81,7 @@ exports.load_application = function(req, res) {
 
 exports.create_volunteer = function(req, res) {
 	console.log("does this work");
+    console.log(req.body.why_kiva);
 	var volunteer = new Volunteer({
 		first_name: req.body.first_name,
 		last_name: req.body.last_name,
@@ -206,6 +208,15 @@ exports.edit_review = function(req, res) {
 };*/
 
 //Volunteer Helper Functions
+
+exports.load_organization_data = function(req, res) {
+	console.log("loading application data");
+	request('https://api.myjson.com/bins/1a2tl', function (error, response, body) {
+	  	if (!error && response.statusCode == 200) {
+	    	res.json(body)
+	    }
+	});
+}
 
 //creates new review based on org id
 exports.create_review = function(req, res) {
@@ -411,26 +422,109 @@ exports.load_completed_reviews = function(req, res) {
 
 /*--------------  Admin Story ------------------ */
 
+
+
+
+
 //Admin Pages
 exports.view_applications = function(req, res) {
-	Application.find( function(err, applications) {
+	res.render("main.ejs", {error: "lalal"});	
+};
+
+
+
+exports.send_applications_short= function(req, res) {
+	Application.find( {"shortlisted": true}, {"_id": 1, "organization_name": 1, "reviews_in_progress": 1, 
+		"score_sum": 1, "reviews_submitted": 1, "kiva_fit_count":1, "sustainable_model_count": 1,
+		"clear_social_impact_count": 1, "num_reviews": 1, "open_to_review": 1},
+		function(err, applications) {
 		console.log(applications);
-			return res.render("main.ejs", {applications: applications});
+		res.send(applications);
 	});
 };
 
-exports.view_one_application = function(req, res) {
-	var id = req.params.id;
-	Application.find({"_id": ObjectId(id)}, function(err, application){
-		console.log(application);
-		return res.render("main.ejs");
+exports.send_applications_rest= function(req, res) {
+	Application.find( {"shortlisted": false}, {"_id": 1, "organization_name": 1, "reviews_in_progress": 1, 
+		"score_sum": 1, "reviews_submitted": 1, "kiva_fit_count":1, "sustainable_model_count": 1,
+		"clear_social_impact_count": 1, "num_reviews": 1, "open_to_review": 1},
+		function(err, applications) {
+		console.log(applications);
+		res.send(applications);
 	});
 };
+
+exports.send_volunteers_unapp= function(req, res) {
+	Volunteer.find( {approved: false},
+		function(err, volunteers) {
+		console.log(volunteers);
+		res.send(volunteers);
+	});
+};
+
+exports.send_volunteers_app= function(req, res) {
+	Volunteer.find( {approved: true},
+		function(err, volunteers) {
+		console.log(volunteers);
+		res.send(volunteers);
+	});
+};
+
+            
+exports.view_one_application = function(req, res) {
+	res.render('single_org.ejs', {app_id: req.params.id});
+};
+
+exports.load_single_application = function(req, res) {
+	Application.findById(req.params.id, function(err, application) {
+		if(err) {
+			console.log(err);
+			res.send(404);
+		} else {
+			res.send(application);
+		}
+	});
+};
+
+
+exports.save_application_changes = function(req, res) {
+	var org_id = req.body.organization_name;
+	console.log(org_id);
+	console.log("updating");
+	async.parallel(
+		[
+			function(callback) {
+				//save review
+				Application.update({
+					"_id": ObjectId(req.params.id)},{
+						
+						organization_name: req.body.organization_name,
+						description: req.body.description,
+						token: req.body.token,
+						organization_address: req.body.organization_address,
+						organization_url: req.body.organization_url,
+						open_to_review: req.body.open_to_review,
+						shortlisted: req.body.shortlisted
+
+					}, function(err) {
+						if (err) {return callback(err)};
+						console.log(err);
+						console.log("Error updating values");
+						callback();
+					});
+			},
+			
+			
+		], function(err) {
+			if (err) {res.send(404);};
+			console.log("submission complete");
+			res.redirect('/admin_applications');
+		});
+	};
 
 //Page: admin submit new application page
 exports.submit_application = function(req, res) {
 	res.render("admin_submit.ejs", {error: "lalal"});
-}
+};
 
 //Admin Helpers
 
@@ -452,6 +546,44 @@ exports.create_application = function(req, res) {
 		else {
 			res.redirect('/admin');
 		}
+	});
+};
+
+exports.approve_volunteer = function(req, res) {
+	Volunteer.findOneAndUpdate({"_id": new ObjectId(req.body.id)},
+		{approved: 1}, function(err, data) {
+		if(!err) {
+			console.log(data);
+			var email = new sendgrid.Email({
+					to: data.email_address,
+					from: 'kiva@kiva.com',
+					bcc: 'dhwari@@gmail.com',
+					subject:'Volunteer Approved!',
+				});
+			email.setHtml('<p>Dear'  + data.first_name + '<br /> Thanks for signing up to be a volunteer! '+ 
+			 			'Feel free to visit the app and login to get started. The first two things to do are to' + 
+			 			'go through the tutorials and fill out the confidentiality form.' + 
+			 			'<br /> Thanks, <br /> Folks at Kiva</p>');
+			sendgrid.send(email, function(err, json) {
+				if (err) { return console.error(err); }
+				console.log(json);
+				res.send("approved!");
+			});
+			res.redirect('/admin_applications');
+		}
+		res.send(err);
+		});
+};
+
+exports.deny_volunteer = function(req, res) {
+	Volunteer.findOneAndUpdate({"_id": new ObjectId(req.body.id)},
+		{approved: null}, function(err, data) {
+		if(!err) {
+			console.log(data);
+			// Send a rejection email?
+			res.redirect('/admin_applications');
+		}
+		res.send(err);
 	});
 };
 

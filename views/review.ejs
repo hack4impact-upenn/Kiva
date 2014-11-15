@@ -3,8 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="" rel="stylesheet" type="text/css">
+        <link href="/kiva_style.css" rel="stylesheet" type="text/css">
         <meta name="description" content="">
         <meta name="author" content="">
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
@@ -18,26 +19,70 @@
         <div id="applicant documents">
         </div>
 
-        <div id="form">
+        <div id="left">
+            <div class="dropdown">
+                <h2>Organizaton name</h2>
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                    Documents
+                    <span class="caret"></span>
+                </button>
+                <ul id="link-dropdown" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"></ul>
+            </div>
+            <iframe id="doc" src =""></iframe>
+
+        </div>
+
+        <div id="right">
+        <div id="review-form">
 
             <form id="review" action="" method="POST">
                 
 
                 <label for="clear_social_impact"> Does this company have a clear social impact? </label>
-                <input type="radio" name="clear_social_impact" value=true size="20" class="form-control">
-                <input type="radio" name="clear_social_impact" value=false size="20" class="form-control">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="clear_social_impact" value=true>
+                        Yes
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="clear_social_impact" value=false>
+                        No
+                    </label>
+                </div>
                 <br />
 
-                <label for="sustainable_model"> Is there a clear savings/revenue model to repay the loan? </label>            
-               <input type="radio" name="sustainable_model" value=true size="20" class="form-control">
-                <input type="radio" name="sustainable_model" value=false size="20" class="form-control">
+                <label for="sustainable_model"> Is there a clear savings/revenue model to repay the loan? </label>
+                <div class="radio">
+                    <label>   
+                        <input type="radio" name="sustainable_model" value=true size="20">
+                        Yes
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>   
+                        <input type="radio" name="sustainable_model" value=false size="20">
+                        No
+                    </label>
+                </div>
                 <br />
 
 
 
                 <label for="kiva_fit"> Is there a good fit with the Kiva model? </label>
-               <input type="radio" name="kiva_fit" value=true size="20" class="form-control">
-                <input type="radio" name="kiva_fit" value=false size="20" class="form-control">
+                <div class="radio">
+                    <label>   
+                        <input type="radio" name="kiva_fit" value=true size="20">
+                        Yes
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>   
+                        <input type="radio" name="kiva_fit" value=false size="20">
+                        No
+                    </label>
+                </div>
                 <br />
 
 
@@ -58,11 +103,39 @@
 
 
                 <label for="recommend_rating"> How excited would you be to recommend this application for the next stage in the approval process? </label>
-                <input type="radio" name="recommend_rating" value=1 size="20" class="form-control">
-                <input type="radio" name="recommend_rating" value=2 size="20" class="form-control">
-                <input type="radio" name="recommend_rating" value=3 size="20" class="form-control">
-                <input type="radio" name="recommend_rating" value=4 size="20" class="form-control" >
-                <input type="radio" name="recommend_rating" value=5 size="20" class="form-control">
+                <div class="radio">
+                    <label>   
+                        <input type="radio" name="recommend_rating" value=1 size="20">
+                        1
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>   
+                        <input type="radio" name="recommend_rating" value=2 size="20">
+                        2
+                    </label>
+                </div>
+
+                <div class="radio">
+                    <label>   
+                        <input type="radio" name="recommend_rating" value=3 size="20">
+                        3
+                    </label>
+                </div>
+
+                <div class="radio">
+                    <label>   
+                        <input type="radio" name="recommend_rating" value=4 size="20">
+                        4
+                    </label>
+                </div>
+
+                <div class="radio">
+                    <label>   
+                        <input type="radio" name="recommend_rating" value=5 size="20">
+                        5
+                    </label>
+                </div>
                 <br>
 
                 <label for="other_comments"> Any other comments or concerns you wish to address? </label>
@@ -75,7 +148,10 @@
                 <input type="button" value="Something else" name="submit_review" onclick="myFunction()" />
 
 
-          </form>
+            </form>
+          </div>
+      </div>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     </body>
         <script>
             <!---- //stackoverflow.com/questions/16660734/html-form-with-multiple-actions ---!>
@@ -109,8 +185,29 @@
                                             break;
                                     }
                             });
+                    load_links()
                      });
             };
+
+            function load_links() {
+                $.getJSON("/review/organization_data/" + $('#organization_id').val(), function(data) {  
+                    data = JSON.parse(data);
+                    console.log(data.links);
+                    var html = "";
+                    $.each(data.links, function(i, item) {
+                        html += '<li class="document" role="presentation"><a role="menuitem" tabindex="-1" link="' +  item.link + '">' + item.name + '</a></li>'                                    
+                    });
+                    $('#link-dropdown').html(html)
+                    dropdown()
+                });
+            };
+
+            function dropdown() {
+                $('.document > a').click(function(){
+                    $('#doc').attr('src', $(this).attr('link'))
+                    $('#doc').show();
+                });
+            }
 
             $( document ).ready(function() {
                 load_review();

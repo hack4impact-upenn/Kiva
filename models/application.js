@@ -5,7 +5,6 @@ var ApplicationSchema = new Schema({
   organization_name: { type: String, default: '', trim : true },
   description: { type: String, default: '', trim : true },
   token: { type: String, default: '' },
-  url: {type: String, default: ''},
   organization_address: { type: String, default: ''},
   organization_url: { type: String, default: '' },
   num_reviews: { type: Number, default: 0 },
@@ -16,7 +15,8 @@ var ApplicationSchema = new Schema({
   score_sum: {type: Number, default: 0},
   kiva_fit_count: {type: Number, default: 0},
   sustainable_model_count: {type: Number, default: 0},
-  clear_social_impact_count: {type: Number, default: 0}
+  clear_social_impact_count: {type: Number, default: 0},
+  shortlisted: {type: Boolean, default: false}
 });
 
 

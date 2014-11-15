@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/kiva_style.css" rel="stylesheet" type="text/css">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+        <title>Organization details</title>
+    
+    </head>
+
+
+ <div id="applicant documents">
+<h3> Update organization information </h3>        
+
+    
+        <div id="apps-form">
+
+            <form id="apps" action="" method="POST">
+
+             <label for="organization_name"> Org. Name </label>
+                <input type="text" id="organization_name" name="organization_name" size="20" class="form-control" placeholder=""><br>
+               
+
+                <label for="description"> Description </label>
+                <input type="text" id="description" name="description" size="20" class="form-control" placeholder=""><br>
+
+
+                <label for="token"> Token </label>
+                <input id="token" name="token" type="text"  size="20" class="form-control" placeholder=""><br>
+
+                <label for="organization_address"> Address </label>
+                <input type="text" id="organization_address" name="organization_address" size="20" class="form-control" placeholder=""><br>
+
+
+                
+
+                <label for="organization_url"> Org. URL </label>
+                <input type="text" id="organization_url" name="organization_url" size="20" class="form-control" placeholder=""><br>   
+
+                <label for="open_to_review"> Open to review? </label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="open_to_review" value=true>
+                        Yes
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="open_to_review" value=false>
+                        No
+                    </label>
+                </div>
+                <br />    
+
+                <label for="shortlisted"> Short list application? </label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="shortlisted" value=true>
+                        Yes
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="shortlisted" value=false>
+                        No
+                    </label>
+                </div>
+                <br />           
+
+                
+                <input type="button" value="Update" name="update_application" onclick="askForSave()" />
+                <input type="button" value="Cancel" name="cancel_update" onclick="cancelGoBack()" />
+
+
+
+            </form>
+          </div>
+      </div>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    </body>
+    <script type='text/javascript'>    
+         
+
+
+     
+            function load_application() {
+                     var form=document.getElementById("apps");
+                     $.getJSON('<%= "/admin/load_application/" + app_id %>', function(application) {   $.each(application, function(name, val) {
+                                    console.log(name + ":" + val);
+                                    switch(name)
+                                    {
+                                        case ("shortlisted"): 
+                                        case ("open_to_review"):
+                                            var i = val ? 0 : 1;        
+                                            $('input[name=' + name + ']:nth(' + i + ')').attr('checked', true);
+                                            break;                                  
+                                        default:
+                                            $("#" + name).val(val);
+                                            break;
+                                    }
+                            });
+                     });
+            };
+            
+            function askForSave() {
+                var form=document.getElementById("apps");
+                form.action='<%= "/admin/update_application/" + app_id %>';
+                form.submit();
+            };
+            function cancelGoBack() {
+                var form=document.getElementById("apps");
+                form.method ="GET";
+                form.action='<%= "/admin_applications/" %>';
+                form.submit();            
+                
+            };
+        
+  
+
+            $( document ).ready(function() {
+               load_application();
+             });
+
+
+        </script>
+</html>

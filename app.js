@@ -42,10 +42,10 @@ app.get("/load_application/:org_id", controller.load_application);
 app.get("/logout", controller.logout);
 
 //Volunteer
-app.get("/volunteer/get_min_reviewed_application", controller.get_min_reviewed_application);
-app.get("/volunteer/load", controller.load_volunteer);
-app.post("/volunteer/submit-volunteer", controller.create_volunteer);
-app.get("/volunteer/sign-up", controller.volunteer_signup_page);
+app.get("/volunteer/get_min_reviewed_application", controller.get_min_reviewed_application); 
+app.get("/volunteer/load", controller.load_volunteer); //loads data of a single User from session info
+app.post("/volunteer/submit-volunteer", controller.create_volunteer); 
+app.get("/volunteer/sign-up", controller.volunteer_signup_page); 
 app.get("/volunteer/home", controller.volunteer_home);
 app.get("/volunteer/training", controller.volunteer_training);
 app.get("/volunteer/finished-training", controller.volunteer_finished_training);
@@ -56,6 +56,7 @@ app.get("/review/load/:id", controller.load_unfinished_review);
 app.post("/review/submit/:id", controller.submit_review); // review id
 app.get("/review/completed/:org_id", controller.completed_review_page); //org_id
 app.get("/review/completed/load/:org_id", controller.load_completed_reviews);
+app.get("/review/organization_data/:org_id", controller.load_organization_data)
 
 //Admin
 app.get("/admin/sign-up", controller.admin_signup_page);
@@ -65,5 +66,14 @@ app.get("/admin/home", controller.admin_home);
 app.post("/post-application", controller.create_application);
 app.get("/admin_applications", controller.view_applications);
 app.get("/admin/application/:id", controller.view_one_application);
+app.get("/admin/load_application/:id", controller.load_single_application);
+app.post("/admin/update_application/:id", controller.save_application_changes);
 
+app.post("/admin/volunteer/approve", controller.approve_volunteer);
+app.post("/admin/volunteer/deny", controller.deny_volunteer);
+app.get("/admin/pull_applications_short", controller.send_applications_short);
+app.get("/admin/pull_applications_rest", controller.send_applications_rest);
+
+app.get("/admin/pull_volunteers_unapp", controller.send_volunteers_unapp);
+app.get("/admin/pull_volunteers_app", controller.send_volunteers_app);
 module.exports = app;
