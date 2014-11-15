@@ -175,7 +175,10 @@
             var linkstr = '<a href="/admin/application/'+ value._id + '">Click here</a>'
            console.log(linkstr);
             value.details_view = linkstr;
-
+            value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
+            value.kiva_fit_count_display = value.kiva_fit_count + " / " + value.num_reviews;
+            value.sustainable_model_count_display = value.sustainable_model_count + " / " + value.num_reviews;
+            value.clear_social_impact_count_display = value.clear_social_impact_count + " / " + value.num_reviews;
 
           });
          
@@ -185,10 +188,10 @@
             
             "columns": [
               { "data": "organization_name" },
-              { "data": "score_sum" },
-              { "data": "kiva_fit_count" },
-              { "data": "sustainable_model_count" },
-              { "data": "clear_social_impact_count" },
+              { "data": "rating" },
+              { "data": "kiva_fit_count_display" },
+              { "data": "sustainable_model_count_display" },
+              { "data": "clear_social_impact_count_display" },
               { "data": "num_reviews" },
               { "data": "open_to_review" },
               { "data": "details_view" }
@@ -214,6 +217,10 @@
             var linkstr = '<a href="/admin/application/'+ value._id + '">Click here</a>'
            console.log(linkstr);
             value.details_view = linkstr;
+            value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
+            value.kiva_fit_count_display = value.kiva_fit_count + " / " + value.num_reviews;
+            value.sustainable_model_count_display = value.sustainable_model_count + " / " + value.num_reviews;
+            value.clear_social_impact_count_display = value.clear_social_impact_count + " / " + value.num_reviews;
 
 
           });
@@ -224,10 +231,10 @@
             
             "columns": [
               { "data": "organization_name" },
-              { "data": "score_sum" },
-              { "data": "kiva_fit_count" },
-              { "data": "sustainable_model_count" },
-              { "data": "clear_social_impact_count" },
+              { "data": "rating" },
+              { "data": "kiva_fit_count_display" },
+              { "data": "sustainable_model_count_display" },
+              { "data": "clear_social_impact_count_display" },
               { "data": "num_reviews" },
               { "data": "open_to_review" },
               { "data": "details_view" }
