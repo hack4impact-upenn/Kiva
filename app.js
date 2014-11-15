@@ -76,4 +76,5 @@ app.get("/admin/pull_applications_rest", controller.send_applications_rest);
 
 app.get("/admin/pull_volunteers_unapp", controller.send_volunteers_unapp);
 app.get("/admin/pull_volunteers_app", controller.send_volunteers_app);
+app.get("/admin/pull_volunteers:approval", controller.send_volunteers);
 module.exports = app;
