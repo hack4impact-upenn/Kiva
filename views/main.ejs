@@ -243,7 +243,7 @@
             value.finished_training = (value.finished_training) ? 'yes' : 'no';
           });
             
-          $(table).dataTable({
+          var oTable = $(table).dataTable({
             "data": data,
             
             "columns": [
@@ -256,6 +256,7 @@
             ]
         
           });
+          
         });
       } 
 
@@ -352,14 +353,36 @@
       load_vols_unapp();
       load_vols_app();
 
-      $('.volunteer-approve').on('submit', function(event, elem){
-        $('.volunteer-approve').submit();
+      $('body').delegate('.volunteer-approve', 'submit', function(e) {
+        e.preventDefault();
+        var form = $(this).serializeArray();
+        console.log(form);
+        $.post('/admin/volunteer/approve', form, function() {
+          console.log('done');
+          var oTable = $('#volsTableUnapp').dataTable();
+          oTable.fnDestroy();
+          load_vols_unapp();
+          var oTable = $('#volsTableApp').dataTable();
+          oTable.fnDestroy();
+          load_vols_app();
+          console.log(form);
+        });
       });
 
-      $('.volunteer-deny').on('submit', function(event, elem){
-        $('.volunteer-deny').submit();
-        load_vols_unapp();
+      $('body').delegate('.volunteer-deny', 'submit', function(ee) {
+        ee.preventDefault();
+        var form = $(this).serializeArray();
+        console.log(form);
+        console.log('inside deny!!!');
+        $.post('/admin/volunteer/deny', form, function() {
+          console.log('done with deny!!!');
+          var oTable = $('#volsTableUnapp').dataTable();
+          oTable.fnDestroy();
+          load_vols_unapp();
+        });
+      
       });
+
 
     });
         

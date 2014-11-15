@@ -493,11 +493,10 @@ exports.approve_volunteer = function(req, res) {
 	Volunteer.findOneAndUpdate({"_id": new ObjectId(req.body.id)},
 		{approved: 1}, function(err, data) {
 		if(!err) {
-			console.log(data);
 			var email = new sendgrid.Email({
 					to: data.email_address,
 					from: 'kiva@kiva.com',
-					bcc: 'dhwari@@gmail.com',
+					bcc: 'dhwari@gmail.com',
 					subject:'Volunteer Approved!',
 				});
 			email.setHtml('<p>Dear'  + data.first_name + '<br /> Thanks for signing up to be a volunteer! '+ 
@@ -505,13 +504,15 @@ exports.approve_volunteer = function(req, res) {
 			 			'go through the tutorials and fill out the confidentiality form.' + 
 			 			'<br /> Thanks, <br /> Folks at Kiva</p>');
 			sendgrid.send(email, function(err, json) {
-				if (err) { return console.error(err); }
+				if (err) { return res.send(err); }
 				console.log(json);
-				res.send("approved!");
+				console.log('done with the request!');
+				res.send(200);
 			});
-			res.redirect('/admin_applications');
+		} else {
+			console.log("error found: " + err);
+			res.send(err);	
 		}
-		res.send(err);
 		});
 };
 
@@ -521,9 +522,11 @@ exports.deny_volunteer = function(req, res) {
 		if(!err) {
 			console.log(data);
 			// Send a rejection email?
-			res.redirect('/admin_applications');
-		}
-		res.send(err);
+			console.log('done with the deny request!');
+			res.send(200);
+		} else {
+			res.send(err);
+		};
 	});
 };
 
