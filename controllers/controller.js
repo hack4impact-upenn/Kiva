@@ -231,6 +231,14 @@ exports.load_organization_data = function(req, res) {
 	});
 }
 
+exports.get_questions = function(req, res) {
+	console.log("getting questions");
+	var org_id = req.params.org_id;
+	Question.find({"organization_id": org_id}, function(err, questions) {
+		return res.json(questions)
+	});
+}
+
 //creates new review based on org id
 exports.create_review = function(req, res) {
 	console.log("creating review");
