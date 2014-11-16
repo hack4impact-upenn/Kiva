@@ -74,7 +74,5 @@ app.post("/admin/volunteer/deny", controller.deny_volunteer);
 app.get("/admin/pull_applications_short", controller.send_applications_short);
 app.get("/admin/pull_applications_rest", controller.send_applications_rest);
 
-app.get("/admin/pull_volunteers_unapp", controller.send_volunteers_unapp);
-app.get("/admin/pull_volunteers_app", controller.send_volunteers_app);
-app.get("/admin/pull_volunteers:approval", controller.send_volunteers);
+app.get("/admin/send_volunteers:approval", controller.send_volunteers);
 module.exports = app;
