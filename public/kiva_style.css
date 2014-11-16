@@ -38,11 +38,6 @@ html, body {
 	/*color: #587F3A;*/
 }
 
-#completed-table {
-	padding: 10px;
-	border-radius: 3px;
-
-}
 
 
 #data {
@@ -136,6 +131,10 @@ html, body {
 	margin-right: 10px;
 }
 
+#completed-table {
+	padding: 10px;
+	border-radius: 3px
+}
 
 #container {
 	margin-top: 20px;
