@@ -36,6 +36,7 @@
 
 
   <body onload="init()">  
+    <% include admin_header %>  
 
 
 
@@ -48,8 +49,8 @@
 
 </ul>
     <div class="tabContent" id="apps">
-  <h2>Application Dashboard</h2>
-  <div>
+  <h1>Application Dashboard</h1>
+  <div id = "firstTable">
     <h3>Application Shortlist</h3>
     <table id="appsTableShort" class="display" cellspacing="0" width="100%">
         <thead>
@@ -66,7 +67,9 @@
             </tr>
         </thead>
      </table>
+     <br>
   </div>
+
   <div>
     <h3>All other applications</h3>
     <table id="appsTableRest" class="display" cellspacing="0" width="100%">
@@ -93,7 +96,7 @@
 <div class="tabContent" id="volunteers">
   <h2>Volunteer Dashboard</h2>
   
-  <div>
+  <div id=firstTable>
     <h3>Unprocessed volunteers</h3>
     <table id="volsTableUnapp" class="display" cellspacing="0" width="100%">
         <thead>
