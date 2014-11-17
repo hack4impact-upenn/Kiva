@@ -61,6 +61,7 @@
         load_completed_review();
         load_org_info();
         load_questions();
+        press_submit();
    }
 
    //would like to refactor later
@@ -120,6 +121,16 @@
                         $(this).removeAttr("checked");
                 });
             }); 
+        });
+    }
+
+    var press_submit = function() {
+        $('form').submit(function() {
+            if (checkboxes.filter(":checked").length != 3) {
+            alert("You must select 3 questions");
+            return false;
+        }
+        return true;
         });
     }
 
