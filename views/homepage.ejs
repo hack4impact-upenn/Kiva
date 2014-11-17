@@ -90,39 +90,15 @@
                 console.log("current review: " + volunteer.current_review);
                 $('#review').append(
                    "<p> You have one review pending. </p>" +
-                   "<a href='/review/edit/" + volunteer.current_review + "''>" +
-                   "Complete Review</a>" + 
+                   
+                   "<a href='/review/edit/" + volunteer.current_review + "' id='review-button' class='btn btn-primary'>Edit Review</a>" +
+
                    "</div>"
                     );
              };
          });
      };
 
-/*
-                //pulls old review
-                $.getJSON('/volunteer/load_unfinished_review', function(data) {
-                    console.log("does it reach here");
-                    console.log(data);
-                    if(data.data !== "none") {
-
-                            //TODO: load information of the pending review?
-                            $('#review').append(
-                                //"<p> You have one review pending. </p>" +
-                                "<div id='review-display'>" +
-                                "<p>" + "<h2>" + data["organization_name"] + "</h2>" + "</p>" +
-                                "<p>" + data["description"] + "</p>" +
-                                "<a href='" + data["organization_url"] + "'  id='homepage-button' class='btn btn-primary'>Homepage</a>" + 
-                                "<p>" + "<h4>" + "Reviews to date: " + data["num_reviews"] + "</h4>" + "</p>" +
-                                "<p><h2>Keep up the good work!</h2><p>" +
-                                "<a href='/review/edit/" + volunteer.current_review + "' id='review-button' class='btn btn-primary'>Complete Review</a>" +
-                                //"</div>"
-                                "</div>"
-                                );
-                    }
-                });
-            }
-        });
-    };*/
     var load_completed_apps = function() {
         $.getJSON('/volunteer/get_completed_applications', function(completed_apps) {
             $('#completed-table table').append("<tr>" + 
@@ -145,18 +121,6 @@
             });
         }); 
     }
-
-    // var get_score = function() {
-    //     $.getJSON('/volunteer/load', function(volunteer) {
-    //         console.log("loading volunteer...");
-    //         console.log(volunteer);
-    //         var score = 0;
-    //         $('#review').append(
-    //             "<p><h2>" + volunteer["reviews_completed"] + "</h2></p>"
-    //             );
-    //     });
-    // }
-
 
     $( document ).ready(function() {
         $.getJSON('/volunteer/load', function(volunteer) {
@@ -196,7 +160,6 @@
         }
     </style>
 
-    <!-- <h2>Welcome, username!</h2> -->
     <p><div id="user-header"></div></p>
 
     <div id="training"></div>

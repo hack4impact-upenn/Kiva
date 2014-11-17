@@ -20,6 +20,14 @@ html, body {
 	border-bottom: 2px solid
 }
 
+#review-docs {
+	height: 600px;
+}
+
+
+
+
+
 #user-header {
 	width: 20%;
 	float: center;
@@ -52,18 +60,28 @@ html, body {
 	/*color: #587F3A;*/
 }
 
-
+#questions {
+	text-align: left;
+	width: 50%;
+}
 
 #data {
-	width: 70%;
+	width: 60%;
 	float: center;
-	margin-left: 15%;
+	margin-left: 20%;
 	border-radius: 3px;
 	border: 1px solid green;
 	padding: 10px;
 	text-align: center;
 	margin: 5;
 	/*color: #587F3A;*/
+}
+
+#stats {
+	width: 50%;
+	margin-left: 50%;
+
+
 }
 
 #individual-reviews {
@@ -145,6 +163,8 @@ html, body {
 	margin-right: 10px;
 }
 
+
+
 #completed-table {
 	/*padding: 10px;*/
 	border-radius: 3px;
@@ -175,6 +195,7 @@ html, body {
 	border: 1px solid black;*/
 	padding: 10px;
 	margin-left: 10px;
+	height: 600px;
 }
 
 #form {
