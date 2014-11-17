@@ -16,6 +16,23 @@
 
     <title>Submit an Application</title>
     <script>
+
+    var load_user_header = function() {
+        $.getJSON('/volunteer/load', function(volunteer) {
+            console.log("loading volunteer...");
+            console.log(volunteer);
+            console.log(volunteer["first_name"]);
+            $('#user-header').append(
+                "<p><h2>" + volunteer["first_name"] + "</h2></p>" +
+                "<p><h2>" + "Points: 10" + "</h2><p>"
+
+                // "<tr>" +
+                // "<th>" + volunteer["first_name"] + "</th>" +
+                // "<th>" + "Points: 10" + "</th>" +
+                // "</tr>"
+                );
+        }); 
+    }
      
 
     var load_review = function() {
@@ -50,13 +67,33 @@
                     }
                 });
             } else {
+                /*;
+                //pulls current review
+                $.getJSON('/volunteer/load_unfinished_review', function(data) {
+                    console.log("does it reach here");
+                    console.log(data);
+                    if(data.data !== "none") {
+                            $('#review').append(
+                                "<div id='review-display'>" +
+                                //"<a href='" + data["organization_url"] + "'>" + data[organization_name] + "</a>" +
+
+                                "<p><h2>" + data["organization_name"] + "</h2></p>" +
+                                "<p>" + data["description"] + "</p>" +
+                                "<a href='" + data["organization_url"] + "' id='homepage-button' class='btn btn-primary'>Homepage</a>" + 
+                                "<p><h4>Reviews to date: " + data["num_reviews"] + "</h4></p>" +
+                                "<p><h2>Complete Review</h2><p>" +
+                                //"<form method='POST' action='/review/create/" + data["_id"] + "'>" + 
+                                "<input type='submit' id='review-button' class='btn btn-primary' value='Complete Review'>" + 
+                                "</form>" +
+                                "</div>"
+                                );*/
                 console.log("current review: " + volunteer.current_review);
                 $('#review').append(
-                    "<p> You have one review pending. </p>" +
-                    "<a href='/review/edit/" + volunteer.current_review + "''>" +
-                    "Complete Review</a>" + 
-                    "</div>"
-                     );
+                   "<p> You have one review pending. </p>" +
+                   "<a href='/review/edit/" + volunteer.current_review + "''>" +
+                   "Complete Review</a>" + 
+                   "</div>"
+                    );
              };
          });
      };
@@ -113,6 +150,17 @@
         }); 
     }
 
+    // var get_score = function() {
+    //     $.getJSON('/volunteer/load', function(volunteer) {
+    //         console.log("loading volunteer...");
+    //         console.log(volunteer);
+    //         var score = 0;
+    //         $('#review').append(
+    //             "<p><h2>" + volunteer["reviews_completed"] + "</h2></p>"
+    //             );
+    //     });
+    // }
+
 
     $( document ).ready(function() {
         $.getJSON('/volunteer/load', function(volunteer) {
@@ -124,6 +172,10 @@
             }
             else {
                 console.log('finished training is true');
+                // $('#user-header').append(
+                //     "<h2>" + volunteer[first_name] + <"/h2">
+                //     );
+                load_user_header();
                 load_review();
                 load_completed_apps();
             }
@@ -135,25 +187,32 @@
   </head>
 
 <body>
+    <div id="wrapper">
+
+
     <% include banner %>   
 
     <style>
         h2, h4{
             text-align: center;
             margin: 5;
-            /*color: green;*/
+            color: green;
         }
     </style>
 
-    <h2>Welcome, username!</h2>
+    <!-- <h2>Welcome, username!</h2> -->
+    <p><div id="user-header"></div></p>
 
     <div id="training"></div>
-    <div class="row">
-        <div id="review" class="col-md-6"></div>
-        <div id="completed-table" class="col-md-6"><table class='table table-striped'></table></div>
+    <div id="row">
+            <div id="review" class="col-md-6"></div>
+            <div id="completed-table" class="col-md-6"><table class='table table-striped'></table></div>
     </div>
+    
+
 
     <% include footer %>   
+    </div>
 
 
   </body>

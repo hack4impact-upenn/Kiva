@@ -20,6 +20,20 @@ html, body {
 	border-bottom: 2px solid
 }
 
+#user-header {
+	width: 20%;
+	float: center;
+	margin-left: 40%;
+	border-radius: 3px;
+	border: 2px solid green;
+	padding: 10px;
+	text-align: center;
+	margin: 5;
+	color: green;
+
+
+}
+
 #doc {
 	display: none;
 	float: left;
@@ -38,11 +52,6 @@ html, body {
 	/*color: #587F3A;*/
 }
 
-#completed-table {
-	padding: 10px;
-	border-radius: 3px;
-
-}
 
 
 #data {
@@ -136,6 +145,12 @@ html, body {
 	margin-right: 10px;
 }
 
+#completed-table {
+	/*padding: 10px;*/
+	border-radius: 3px;
+	height: 350px;
+	overflow: scroll;
+}
 
 #container {
 	margin-top: 20px;
@@ -163,6 +178,14 @@ html, body {
 }
 
 #form {
+	border-radius: 3px;
+	border: 1px solid black;
+	padding: 10px;
+	margin-left: 100px;
+	float: left;
+}
+
+#points {
 	border-radius: 3px;
 	border: 1px solid black;
 	padding: 10px;
