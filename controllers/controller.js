@@ -239,6 +239,24 @@ exports.get_questions = function(req, res) {
 	});
 }
 
+exports.upvote_3questions = function(req, res) {
+	questions = req.body.box;
+	var count = 0;
+	for (var id in req.body.box) {
+		Question.upvote(id, function(err) {
+			if (err) { 
+				console.log("error in upvoting question");
+				return callback(err)
+			};
+			count++;
+			console.log(count);
+			if (count == 3) {
+				return res.redirect('/');
+			}
+		});
+	}
+}
+
 //creates new review based on org id
 exports.create_review = function(req, res) {
 	console.log("creating review");

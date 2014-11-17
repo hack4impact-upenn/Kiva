@@ -36,7 +36,7 @@
             <div class="row">
                 <h2>Choose Top Three Questions</h2>
                 <div class="col-lg-6">
-                    <form id="question-checkboxes" action="/review/question_upvote" method="POST">
+                    <form id="question-checkboxes" action="/review/upvote_3questions" method="POST">
                         <input id="question-submit" type="submit" value="Submit">
                     </form>
                 </div><!-- /.col-lg-6 -->
@@ -89,7 +89,6 @@
                 "<th>" + "Recommended Rating" + "</th>" +
                 "</tr>");
              $.each(reviews, function(index, review) {
-                console.log(review);
                 $('#completed-table table').append("<tr>" + 
                     "<td>" + review["clear_social_impact"] + "</td>" +
                     "<td>" + review["kiva_fit"] + "</td>" +
@@ -114,8 +113,7 @@
     var load_questions = function() {
         $.getJSON('/review/get_questions/' + org_id, function(questions) {
             $.each(questions, function(index, question) {
-                console.log(question);
-                $('<div class="checkbox">' + '<label>' + '<input type="checkbox">' + question['question_text'] + '</label>' + '</div>').insertBefore('#question-submit');
+                $('<div class="checkbox">' + '<label>' + '<input type="checkbox" name="box[' + question['_id'] + ']">' + question['question_text'] + '</label>' + '</div>').insertBefore('#question-submit');
                 checkboxes = $("input[type='checkbox']"); 
                 checkboxes.click(function() {
                     if (checkboxes.filter(":checked").length > 3)
