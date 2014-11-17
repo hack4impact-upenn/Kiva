@@ -98,9 +98,13 @@
                 $.getJSON("/review/organization_data/" + value.organization_id, function(organization) {  
                     var start = new Date(value.date_review_started);
                     var submitted = new Date(value.date_review_submitted);
+                    var status = "ShortListed";
+                    if (organization.shortlisted) {
+                        status = " - ";
+                    }
                     $('#completed-table table').append("<tr>" + 
                         "<td>" + organization.organization_name + "</td>" +
-                        "<td>" + "Status" + "</td>" +
+                        "<td>" + status + "</td>" +
                         "<td>" + start.toLocaleDateString() + "</td>" +
                         "<td>" + submitted.toLocaleDateString() + "</td>" +
                         "</tr>");
