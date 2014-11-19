@@ -34,24 +34,6 @@
 
         <!-- <div id="left"> -->
             <div class="row">
-                <div id="questions">
-                    <h2>Choose Top Three Questions</h2>
-                    <div class="col-lg-6">
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <input type="checkbox">
-                            </span>
-                            <input type="text" class="form-control">
-                        </div><!-- /input-group -->
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <input type="checkbox">
-                            </span>
-                            <input type="text" class="form-control">
-                        </div><!-- /input-group -->
-                    </div><!-- /.col-lg-6 -->
-                </div>
-
                 <div id="stats">
                     <p><div id="data"></div></p>
                     <br></br>
@@ -61,12 +43,15 @@
                     <input type="button" value="Submit" name="submit_review" onclick="askForSubmit()" />
                 </div>
 
-
-
+                <h2>Choose Top Three Questions</h2>
+                <div class="col-lg-6">
+                    <form id="question-checkboxes" action="/review/upvote_3questions" method="POST">
+                        <input id="question-submit" type="submit" value="Submit">
+                    </form>
+                </div><!-- /.col-lg-6 -->
 
             </div>
-
-        <!-- </div> -->
+        </div>
 
         <!-- <div id="right">
                 <p><div id="data" ></div></p>
@@ -80,12 +65,15 @@
     </body>
 
 <script>
+    var checkboxes = [];
     var org_id = "<%= org_id %>";
     console.log(org_id);
 
     var load_page = function() {
         load_completed_review();
         load_org_info();
+        load_questions();
+        press_submit();
    }
 
    //would like to refactor later
@@ -114,7 +102,6 @@
                 "<th>" + "Recommended Rating" + "</th>" +
                 "</tr>");
              $.each(reviews, function(index, review) {
-                console.log(review);
                 $('#completed-table table').append("<tr>" + 
                     "<td>" + review["clear_social_impact"] + "</td>" +
                     "<td>" + review["kiva_fit"] + "</td>" +
@@ -123,6 +110,29 @@
                     "</tr>"
                     );
             }); 
+        });
+    }
+
+    var load_questions = function() {
+        $.getJSON('/review/get_questions/' + org_id, function(questions) {
+            $.each(questions, function(index, question) {
+                $('<div class="checkbox">' + '<label>' + '<input type="checkbox" name="box[' + question['_id'] + ']">' + question['question_text'] + '</label>' + '</div>').insertBefore('#question-submit');
+                checkboxes = $("input[type='checkbox']"); 
+                checkboxes.click(function() {
+                    if (checkboxes.filter(":checked").length > 3)
+                        $(this).removeAttr("checked");
+                });
+            }); 
+        });
+    }
+
+    var press_submit = function() {
+        $('form').submit(function() {
+            if (checkboxes.filter(":checked").length != 3) {
+            alert("You must select 3 questions");
+            return false;
+        }
+        return true;
         });
     }
 

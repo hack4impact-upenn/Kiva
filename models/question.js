@@ -12,14 +12,9 @@ var QuestionSchema = new Schema({
 QuestionSchema.statics = {
 	upvote: function (question_id, cb) {
     this.update({_id: question_id},
-      { $inc: {'votes': 1}}
+      { $inc: {'votes': 1}},cb
       );
   },
-  downvote: function (question_id, cb) {
-    this.update({_id: question_id},
-      { $inc: {'votes': -1}}
-      );
-  }
 };
 
 var question = mongoose.model("Question", QuestionSchema);

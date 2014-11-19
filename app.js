@@ -59,6 +59,9 @@ app.get("/review/completed/:org_id", controller.completed_review_page); //org_id
 app.get("/review/completed/load/:org_id", controller.load_completed_reviews);
 app.get("/review/organization_docs/:org_id", controller.load_organization_docs);
 app.get("/review/organization_data/:org_id", controller.load_organization_data);
+app.get("/review/get_questions/:org_id", controller.get_questions);
+app.post("/review/upvote_3questions", controller.upvote_3questions);
+
 
 //Admin
 app.get("/admin/sign-up", controller.admin_signup_page);
