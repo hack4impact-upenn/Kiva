@@ -15,84 +15,51 @@
     
 
     <title>Submit an Application</title>
-    <script>
+    <script>     
 
-    var load_user_header = function() {
-        $.getJSON('/volunteer/load', function(volunteer) {
-            console.log("loading volunteer...");
-            console.log(volunteer);
-            console.log(volunteer["first_name"]);
-            $('#user-header').append(
-                "<h2>" + volunteer["first_name"] + "</h2>" +
-                "<h2>" + "Points: 10" + "</h2>"
-                );
-        }); 
-    }
-     
-
-    var load_review = function() {
-        $.getJSON('/volunteer/load', function(volunteer) {
-            console.log("loading volunteer...");
-            console.log(volunteer);
-            if(volunteer.current_review == null) {
-                console.log("generate a new review for them");
-                //pulls new review  
-                $.getJSON('/volunteer/get_min_reviewed_application', function(data) {
-                    console.log("does it reach here");
-                    console.log(data);
-                    console.log(data["organization_url"]);
-                    if(data.data !== "none") {
-                            $('#review').append(
-                                "<div id='review-display'>" +
-                                // "<a href='" + data["organization_url"] + "'>" + data[organization_name] + "</a>" +
-
-                                "<h2>" + data["organization_name"] + "</h2>" +
-                                "<p>" + data["description"] + "</p>" +
-                                "<a href='" + data["organization_url"] + "' id='homepage-button' class='btn btn-primary'>Homepage</a>" + 
-                                "<p><h4>Reviews to date: " + data["num_reviews"] + "</h4></p>" +
-                                "<p><h2>Help get this application on track!</h2><p>" +
-                                "<form method='POST' action='/review/create/" + data["_id"] + "'>" + 
-                                "<input type='submit' id='review-button' class='btn btn-primary' value='Create Review'>" + 
-                                "</form>" +
-                                "</div>"
-                                );
-                    } else {
-                          $('#review').append(
-                             "<p> There are currently no reviews for you to complete. </p>"
-                             )
-                    }
-                });
+    var load_review = function(volunteer) {
+        console.log("loading volunteer...");
+        console.log(volunteer);
+        $('#user-header').append(
+            "<h2>" + volunteer["first_name"] + "</h2>" +
+            "<h2>" + "Points: 10" + "</h2>"
+            );
+        if(volunteer.current_review == null) {
+            console.log("generate a new review for them");
+            //pulls new review  
+            $.getJSON('/volunteer/get_min_reviewed_application', function(data) {
+                console.log("does it reach here");
+                console.log(data);
+                console.log(data["organization_url"]);
+                if(data.data !== "none") {
+                        $('#review').append(
+                            "<div id='review-display'>" +
+                            "<h2>" + data["organization_name"] + "</h2>" +
+                            "<p>" + data["description"] + "</p>" +
+                            "<a href='" + data["organization_url"] + "' id='homepage-button' class='btn btn-primary'>Homepage</a>" + 
+                            "<p><h4>Reviews to date: " + data["num_reviews"] + "</h4></p>" +
+                            "<p><h2>Help get this application on track!</h2><p>" +
+                            "<form method='POST' action='/review/create/" + data["_id"] + "'>" + 
+                            "<input type='submit' id='review-button' class='btn btn-primary' value='Create Review'>" + 
+                            "</form>" +
+                            "</div>"
+                            );
+                } else {
+                      $('#review').append(
+                         "<p> There are currently no reviews for you to complete. </p>"
+                         )
+                }
+            });
             } else {
-                /*;
-                //pulls current review
-                $.getJSON('/volunteer/load_unfinished_review', function(data) {
-                    console.log("does it reach here");
-                    console.log(data);
-                    if(data.data !== "none") {
-                            $('#review').append(
-                                "<div id='review-display'>" +
-                                //"<a href='" + data["organization_url"] + "'>" + data[organization_name] + "</a>" +
-
-                                "<p><h2>" + data["organization_name"] + "</h2></p>" +
-                                "<p>" + data["description"] + "</p>" +
-                                "<a href='" + data["organization_url"] + "' id='homepage-button' class='btn btn-primary'>Homepage</a>" + 
-                                "<p><h4>Reviews to date: " + data["num_reviews"] + "</h4></p>" +
-                                "<p><h2>Complete Review</h2><p>" +
-                                //"<form method='POST' action='/review/create/" + data["_id"] + "'>" + 
-                                "<input type='submit' id='review-button' class='btn btn-primary' value='Complete Review'>" + 
-                                "</form>" +
-                                "</div>"
-                                );*/
                 console.log("current review: " + volunteer.current_review);
                 $('#review').append(
                    "<p> You have one review pending. </p>" +
                    
-                   "<a href='/review/edit/" + volunteer.current_review + "' id='review-button' class='btn btn-primary'>Edit Review</a>" +
+                   "<a href='/review/edit/" + volunteer.current_review + "' id='review-button' class='btn btn-primary'>Complete Current Review</a>" +
 
                    "</div>"
                     );
              };
-         });
      };
 
     var load_completed_apps = function() {
@@ -132,11 +99,7 @@
             }
             else {
                 console.log('finished training is true');
-                // $('#user-header').append(
-                //     "<h2>" + volunteer[first_name] + <"/h2">
-                //     );
-                load_user_header();
-                load_review();
+                load_review(volunteer);
                 load_completed_apps();
             }
         });
