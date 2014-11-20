@@ -239,7 +239,7 @@ exports.get_questions = function(req, res) {
 	});
 }
 
-exports.upvote_3questions = function(req, res) {
+exports.upvote_three_questions = function(req, res) {
 	questions = req.body.box;
 	var count = 0;
 	for (var id in req.body.box) {

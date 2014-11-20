@@ -167,7 +167,6 @@
             function load_review() {
                      var form=document.getElementById("review");
                      $.getJSON('<%= "/review/load/" + review_id %>', function(review) {   $.each(review, function(name, val) {
-                                    console.log(name + ":" + val);
                                     switch(name)
                                     {
                                         case ("clear_social_impact"):
@@ -191,7 +190,6 @@
             function load_links() {
                 $.getJSON("/review/organization_docs/" + $('#organization_id').val(), function(data) {  
                     data = JSON.parse(data);
-                    console.log(data.links);
                     var html = "";
                     $.each(data.links, function(i, item) {
                         html += '<li class="document" role="presentation"><a role="menuitem" tabindex="-1" link="' +  item.link + '">' + item.name + '</a></li>'                                    

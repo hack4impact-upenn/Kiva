@@ -38,7 +38,7 @@
             <div class="row">
                 <h2>Choose Top Three Questions</h2>
                 <div class="col-lg-6">
-                    <form id="question-checkboxes" action="/review/upvote_3questions" method="POST">
+                    <form id="question-checkboxes" action="/review/upvote_three_questions" method="POST">
                         <input id="question-submit" type="submit" value="Submit">
                     </form>
                 </div><!-- /.col-lg-6 -->
@@ -57,7 +57,6 @@
 <script>
     var checkboxes = [];
     var org_id = "<%= org_id %>";
-    console.log(org_id);
 
     var load_page = function() {
         load_completed_review();

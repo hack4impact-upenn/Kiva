@@ -60,7 +60,7 @@ app.get("/review/completed/load/:org_id", controller.load_completed_reviews);
 app.get("/review/organization_docs/:org_id", controller.load_organization_docs);
 app.get("/review/organization_data/:org_id", controller.load_organization_data);
 app.get("/review/get_questions/:org_id", controller.get_questions);
-app.post("/review/upvote_3questions", controller.upvote_3questions);
+app.post("/review/upvote_three_questions", controller.upvote_three_questions);
 
 
 //Admin

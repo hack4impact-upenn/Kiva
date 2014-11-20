@@ -18,19 +18,13 @@
     <script>     
 
     var load_review = function(volunteer) {
-        console.log("loading volunteer...");
-        console.log(volunteer);
         $('#user-header').append(
             "<h2>" + volunteer["first_name"] + "</h2>" +
             "<h2>" + "Points: 10" + "</h2>"
             );
         if(volunteer.current_review == null) {
-            console.log("generate a new review for them");
             //pulls new review  
             $.getJSON('/volunteer/get_min_reviewed_application', function(data) {
-                console.log("does it reach here");
-                console.log(data);
-                console.log(data["organization_url"]);
                 if(data.data !== "none") {
                         $('#review').append(
                             "<div id='review-display'>" +
@@ -51,7 +45,6 @@
                 }
             });
             } else {
-                console.log("current review: " + volunteer.current_review);
                 $('#review').append(
                    "<p> You have one review pending. </p>" +
                    
@@ -92,13 +85,11 @@
     $( document ).ready(function() {
         $.getJSON('/volunteer/load', function(volunteer) {
             if (!volunteer.finished_training) {
-                console.log('get training first.');
                 $('#training').append($('<a>')
                                         .attr('href', '/volunteer/training')
                                         .html('Get training first'));
             }
             else {
-                console.log('finished training is true');
                 load_review(volunteer);
                 load_completed_apps();
             }
