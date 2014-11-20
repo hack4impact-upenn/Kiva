@@ -7,51 +7,38 @@ html, body {
 
 #left {
 	float: left;
-	width: 50%;
-	height: 600px;
-	border-right:2px solid
+	width: 50%;	
 }
 
 #right {
 	float: right;
 	width: 50%;
-	height: 600px;
-	overflow: scroll;
-	border-bottom: 2px solid
 }
 
-#review-docs {
+/*#applicant-documents {
 	height: 600px;
-}
-
-
-
+}*/
 
 
 #user-header {
-	width: 20%;
+	width: 60%;
 	float: center;
-	margin-left: 40%;
+	margin-left: 20%;
 	border-radius: 3px;
 	border: 2px solid green;
-	padding: 10px;
 	text-align: center;
 	margin: 5;
 	color: green;
-
-
 }
 
 #doc {
 	display: none;
-	float: left;
-	width: 100%;
 	height: 500px;
+	border-right:2px solid
 }
 
 #review-display {
 	width: 100%;
-	float: left;
 	border-radius: 3px;
 	border: 1px solid green;
 	padding: 10px;
@@ -110,6 +97,9 @@ html, body {
 #org-info {
 
 }
+
+
+
 
 #wrapper {
 	min-height:100%;
@@ -191,22 +181,16 @@ html, body {
 }
 
 #review-form {
-	/*border-radius: 3px;
-	border: 1px solid black;*/
-	padding: 10px;
-	margin-left: 10px;
-	height: 600px;
-}
-
-#form {
 	border-radius: 3px;
 	border: 1px solid black;
 	padding: 10px;
-	margin-left: 100px;
-	float: left;
+	margin-left: 10px;
+	height: 600px;
+	overflow: scroll;
+	border-bottom: 2px solid
 }
 
-#points {
+#form {
 	border-radius: 3px;
 	border: 1px solid black;
 	padding: 10px;
@@ -229,7 +213,6 @@ html, body {
 	margin-right: auto;
 	margin-top: 20px;
 }
-
 
 #training a {
 			background-color: #B1FF75;

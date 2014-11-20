@@ -4,13 +4,15 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
         <link href="/kiva_style.css" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <meta name="description" content="">
         <meta name="author" content="">
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
         <title>Thanks for reviewing!</title>
     
@@ -32,17 +34,8 @@
     <body>
         <h2>Thanks for reviewing! Just one more step...</h2>
 
-        <!-- <div id="left"> -->
+        <div id="left">
             <div class="row">
-                <div id="stats">
-                    <p><div id="data"></div></p>
-                    <br></br>
-
-                    <p><div id="completed-table" ><table class='table table-striped'></table></div></p>
-
-                    <input type="button" value="Submit" name="submit_review" onclick="askForSubmit()" />
-                </div>
-
                 <h2>Choose Top Three Questions</h2>
                 <div class="col-lg-6">
                     <form id="question-checkboxes" action="/review/upvote_3questions" method="POST">
@@ -53,15 +46,12 @@
             </div>
         </div>
 
-        <!-- <div id="right">
+        <div id="right">
                 <p><div id="data" ></div></p>
                 <br></br>
 
-                <p><div id="completed-table" ><table class='table table-striped'></table></div></p>
-
-                <input type="button" value="Submit" name="submit_review" onclick="askForSubmit()" />
-            
-        </div> -->
+                <p><div id="completed-table" ><table class='table table-striped'></table></div></p>            
+        </div>
     </body>
 
 <script>

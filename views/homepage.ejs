@@ -12,7 +12,7 @@
     <script src="//code.jquery.com/jquery-1.9.1.js"></script>
     <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
+    
 
     <title>Submit an Application</title>
     <script>
@@ -23,13 +23,8 @@
             console.log(volunteer);
             console.log(volunteer["first_name"]);
             $('#user-header').append(
-                "<p><h2>" + volunteer["first_name"] + "</h2></p>" +
-                "<p><h2>" + "Points: 10" + "</h2><p>"
-
-                // "<tr>" +
-                // "<th>" + volunteer["first_name"] + "</th>" +
-                // "<th>" + "Points: 10" + "</th>" +
-                // "</tr>"
+                "<h2>" + volunteer["first_name"] + "</h2>" +
+                "<h2>" + "Points: 10" + "</h2>"
                 );
         }); 
     }
@@ -45,12 +40,13 @@
                 $.getJSON('/volunteer/get_min_reviewed_application', function(data) {
                     console.log("does it reach here");
                     console.log(data);
+                    console.log(data["organization_url"]);
                     if(data.data !== "none") {
                             $('#review').append(
                                 "<div id='review-display'>" +
-                                //"<a href='" + data["organization_url"] + "'>" + data[organization_name] + "</a>" +
+                                // "<a href='" + data["organization_url"] + "'>" + data[organization_name] + "</a>" +
 
-                                "<p><h2>" + data["organization_name"] + "</h2></p>" +
+                                "<h2>" + data["organization_name"] + "</h2>" +
                                 "<p>" + data["description"] + "</p>" +
                                 "<a href='" + data["organization_url"] + "' id='homepage-button' class='btn btn-primary'>Homepage</a>" + 
                                 "<p><h4>Reviews to date: " + data["num_reviews"] + "</h4></p>" +
