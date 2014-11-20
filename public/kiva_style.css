@@ -7,29 +7,99 @@ html, body {
 
 #left {
 	float: left;
-	width: 50%;
-	height: 600px;
-	border-right:2px solid
+	width: 50%;	
 }
 
 #right {
 	float: right;
 	width: 50%;
+}
+
+/*#applicant-documents {
 	height: 600px;
-	overflow: scroll;
-	border-bottom: 2px solid
+}*/
+
+
+#user-header {
+	width: 60%;
+	float: center;
+	margin-left: 20%;
+	border-radius: 3px;
+	border: 2px solid green;
+	text-align: center;
+	margin: 5;
+	color: green;
 }
 
 #doc {
 	display: none;
-	float: left;
-	width: 100%;
 	height: 500px;
+	border-right:2px solid
+}
+
+#review-display {
+	width: 100%;
+	border-radius: 3px;
+	border: 1px solid green;
+	padding: 10px;
+	text-align: center;
+	margin: 5;
+	/*color: #587F3A;*/
+}
+
+#questions {
+	text-align: left;
+	width: 50%;
+}
+
+#data {
+	width: 60%;
+	float: center;
+	margin-left: 20%;
+	border-radius: 3px;
+	border: 1px solid green;
+	padding: 10px;
+	text-align: center;
+	margin: 5;
+	/*color: #587F3A;*/
+}
+
+#stats {
+	width: 50%;
+	margin-left: 50%;
+
+
+}
+
+#individual-reviews {
+	width: 25%;
+	float: center;
+	border-radius: 3px;
+	border: 1px solid green;
+	padding: 10px;
+	text-align: center;
+	margin: 5;
+	/*color: #587F3A;*/
+}
+
+#homepage-button {
+	background-color: green;
+	width: 35%;
+	margin-bottom: 2px;
+}
+
+#review-button {
+	background-color: green;
+	width: 50%;
+	margin-bottom: 2px;
 }
 
 #org-info {
 
 }
+
+
+
 
 #wrapper {
 	min-height:100%;
@@ -84,6 +154,14 @@ html, body {
 }
 
 
+
+#completed-table {
+	/*padding: 10px;*/
+	border-radius: 3px;
+	height: 350px;
+	overflow: scroll;
+}
+
 #container {
 	margin-top: 20px;
 	width: 100%;
@@ -103,10 +181,13 @@ html, body {
 }
 
 #review-form {
-	/*border-radius: 3px;
-	border: 1px solid black;*/
+	border-radius: 3px;
+	border: 1px solid black;
 	padding: 10px;
 	margin-left: 10px;
+	height: 600px;
+	overflow: scroll;
+	border-bottom: 2px solid
 }
 
 #form {
@@ -135,7 +216,6 @@ html, body {
 #firstTable {
 	border-bottom: 2px solid green;
 }
-
 
 #training a {
 			background-color: #B1FF75;
