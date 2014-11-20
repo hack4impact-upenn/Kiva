@@ -11,6 +11,10 @@
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
+            <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+
+
         <title>Organization details</title>
     
     </head>
@@ -78,10 +82,20 @@
                 
                 <input type="button" value="Update" name="update_application" onclick="askForSave()" />
                 <input type="button" value="Cancel" name="cancel_update" onclick="cancelGoBack()" />
-
-
-
             </form>
+
+             <div id=questionsTable>
+                <h3>Unprocessed volunteers</h3>
+                <table id="questionsTable" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                      <th>Question</td>
+                      <th>Num Votes</td>
+                        </tr>
+                    </thead>
+                 </table>
+              </div>
+
           </div>
       </div>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -109,6 +123,34 @@
                             });
                      });
             };
+
+
+          var load_questions = function() {
+                $.getJSON( "/admin/pull_questions", function( data ) {
+                  console.log(data);
+                  var table = document.getElementById("volsTableApp");
+                  console.log($(table));
+                  console.log(jQuery.type(data));
+                  var string = JSON.stringify(data);
+
+                  $.each( data, function( key, value ) {
+                    value.reviews_completed = value.reviews_completed.length;
+                    value.finished_training = (value.finished_training) ? 'yes' : 'no';
+                  });
+                    
+                  var oTable = $(table).dataTable({
+                    "data": data,
+                    
+                    "columns": [
+                      { "data": "first_name" },
+                      { "data": "last_name" },
+                    ]
+                
+                  });
+                  
+                });
+              } 
+
             
             function askForSave() {
                 var form=document.getElementById("apps");
