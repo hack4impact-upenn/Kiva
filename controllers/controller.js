@@ -2,6 +2,7 @@ var Application = require('../models/application').Application;
 var Volunteer = require('../models/volunteer').Volunteer;
 var Review = require('../models/review').Review;
 var Question = require('../models/question').Question;
+var Notification = require('../models/notification').Notification;
 var mongoose = require('mongoose');
 var SHA3 = require("crypto-js/sha3");
 var async = require("async");
@@ -11,6 +12,7 @@ var credentials = require("../config.json");
 var sendgrid  = require('sendgrid')('hack4impact', 'dhruvmadethis1');
 var request = require('request');
 var ObjectId= mongoose.Types.ObjectId;
+
 
 
 
@@ -171,7 +173,8 @@ exports.completed_review_page = function(req, res) {
 };
 
 exports.get_min_reviewed_application = function(req, res) {
-		Application.get_min_reviewed_application(function (err, application) {
+		console.log(req.session.volunteerId);
+		Application.get_min_reviewed_application(ObjectId(req.session.volunteerId), function (err, application) {
 			if(application === null) {
 				res.send({"data" : "none"});
 			} else {
@@ -286,6 +289,33 @@ exports.save_review = function(req, res) {
 		);
 };
 
+create_notification = function(notif_id, volunteer_id) {
+	var numPoints = 0;
+	var string = "";
+	var dateNow = new Date();
+	switch(notif_id) {
+		case(1):
+			numPoints = 10;
+			string = "You just submitted a review!";
+			break;
+		default:
+			string = "Notification error";
+			break;
+	}
+	
+	var notification = new Notification({
+		reviewer_id: volunteer_id,
+		notification_text: string,
+		points: numPoints,
+		date: dateNow,
+		read: false,						
+	});
+	return notification;
+}
+
+
+
+
 exports.submit_review = function(req, res) {
 	//TODO: Add the review to the user's submitted list
 	//TODO: This is massive. refactoring needed?
@@ -324,6 +354,16 @@ exports.submit_review = function(req, res) {
 						callback();
 					});
 			},
+			//in Application: add to volunteers list
+			function(callback) {
+				Application.update({_id: org_id},
+								{ $push: {"volunteer_list": req.session.volunteerId}}, function(err){
+									if(err) {console.log("error in adding to volunteer list")
+											return callback(err);
+									}
+									callback()
+								})							
+				},
 			//in Application: move from in_progress
 			function(callback) {
 				Application.remove_review_in_progress(org_id, req.params.id, function(err) {
@@ -354,6 +394,30 @@ exports.submit_review = function(req, res) {
 						console.log("q1 saved");
 						callback(err);
 					});
+			},
+			function(callback) {
+				var notification = create_notification (1, req.session.volunteerId);
+				notification.save(function(err, question) {
+						if (err) {return callback(err)};
+						console.log("notification saved");
+						Volunteer.update({"_id": req.session.volunteerId}, 
+							{$inc: {num_points: notification.points}
+								}, function(err) {
+							if (err) {return callback(err)};
+							console.log("points updated");							
+						})
+						callback(err);
+					});
+
+
+/*
+				Volunteer.update({"_id": req.session.volunteerId}, 
+					{$inc: {num_points: notification.points}
+						}, function(err) {
+					if (err) {return callback(err)};
+					console.log("points updated");
+					callback(err);
+				}) */
 			},
 			function(callback) {
 					//save q_2
@@ -453,20 +517,14 @@ exports.send_applications_rest= function(req, res) {
 	});
 };
 
-exports.send_volunteers_unapp= function(req, res) {
-	Volunteer.find( {approved: false},
-		function(err, volunteers) {
-		console.log(volunteers);
-		res.send(volunteers);
-	});
-};
+exports.send_volunteers= function(req, res) {
+	var approval = req.params.approval;
 
-exports.send_volunteers_app= function(req, res) {
-	Volunteer.find( {approved: true},
+	Volunteer.find( {approved: approval},
 		function(err, volunteers) {
-		console.log(volunteers);
 		res.send(volunteers);
 	});
+
 };
 
             
@@ -537,7 +595,8 @@ exports.create_application = function(req, res) {
 		token: req.body.token,
 		url: req.body.url,
 		organization_address: req.body.organization_address,
-		organization_url: req.body.organization_url
+		organization_url: req.body.organization_url,
+		volunteer_list: []
 	});
 
 	application.save(function(err, application) {
@@ -553,11 +612,10 @@ exports.approve_volunteer = function(req, res) {
 	Volunteer.findOneAndUpdate({"_id": new ObjectId(req.body.id)},
 		{approved: 1}, function(err, data) {
 		if(!err) {
-			console.log(data);
 			var email = new sendgrid.Email({
 					to: data.email_address,
 					from: 'kiva@kiva.com',
-					bcc: 'dhwari@@gmail.com',
+					bcc: 'dhwari@gmail.com',
 					subject:'Volunteer Approved!',
 				});
 			email.setHtml('<p>Dear'  + data.first_name + '<br /> Thanks for signing up to be a volunteer! '+ 
@@ -565,13 +623,15 @@ exports.approve_volunteer = function(req, res) {
 			 			'go through the tutorials and fill out the confidentiality form.' + 
 			 			'<br /> Thanks, <br /> Folks at Kiva</p>');
 			sendgrid.send(email, function(err, json) {
-				if (err) { return console.error(err); }
+				if (err) { return res.send(err); }
 				console.log(json);
-				res.send("approved!");
+				console.log('done with the request!');
+				res.send(200);
 			});
-			res.redirect('/admin_applications');
+		} else {
+			console.log("error found: " + err);
+			res.send(err);	
 		}
-		res.send(err);
 		});
 };
 
@@ -581,9 +641,11 @@ exports.deny_volunteer = function(req, res) {
 		if(!err) {
 			console.log(data);
 			// Send a rejection email?
-			res.redirect('/admin_applications');
-		}
-		res.send(err);
+			console.log('done with the deny request!');
+			res.send(200);
+		} else {
+			res.send(err);
+		};
 	});
 };
 

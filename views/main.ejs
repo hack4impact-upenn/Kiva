@@ -124,6 +124,7 @@
           <th># of completed reviews</td>
           <th>Current review</td>    
           <th>Completed training?</td>
+          <th>Points</td>
             </tr>
         </thead>
      </table>
@@ -251,7 +252,8 @@
       
       // ajax call for unprocessed volunteers data
       var load_vols_unapp = function() {
-        $.getJSON( "/admin/pull_volunteers_unapp", function( data ) {
+        var approval = false;
+        $.getJSON( "/admin/pull_volunteers" + approval, function( data ) {
           console.log(data);
           var data2 = {"data" : data};
           console.log(JSON.stringify(data2));
@@ -308,7 +310,8 @@
 
       // ajax call for approved volunteers data
       var load_vols_app = function() {
-        $.getJSON( "/admin/pull_volunteers_app", function( data ) {
+        var approval = true;
+        $.getJSON( "/admin/pull_volunteers" + approval, function( data ) {
           console.log(data);
           var data2 = {"data" : data};
           console.log(JSON.stringify(data2));
@@ -322,7 +325,7 @@
             value.finished_training = (value.finished_training) ? 'yes' : 'no';
           });
             
-          $(table).dataTable({
+          var oTable = $(table).dataTable({
             "data": data,
             
             "columns": [
@@ -331,10 +334,12 @@
               { "data": "reviews_completed" },
               { "data": "current_review" },
               { "data": "finished_training" },
+              { "data": "num_points" }
 
             ]
         
           });
+          
         });
       } 
 
@@ -432,14 +437,36 @@
       load_vols_unapp();
       load_vols_app();
 
-      $('.volunteer-approve').on('submit', function(event, elem){
-        $('.volunteer-approve').submit();
+      $('body').delegate('.volunteer-approve', 'submit', function(e) {
+        e.preventDefault();
+        var form = $(this).serializeArray();
+        console.log(form);
+        $.post('/admin/volunteer/approve', form, function() {
+          console.log('done');
+          var oTable = $('#volsTableUnapp').dataTable();
+          oTable.fnDestroy();
+          load_vols_unapp();
+          var oTable = $('#volsTableApp').dataTable();
+          oTable.fnDestroy();
+          load_vols_app();
+          console.log(form);
+        });
       });
 
-      $('.volunteer-deny').on('submit', function(event, elem){
-        $('.volunteer-deny').submit();
-        load_vols_unapp();
+      $('body').delegate('.volunteer-deny', 'submit', function(ee) {
+        ee.preventDefault();
+        var form = $(this).serializeArray();
+        console.log(form);
+        console.log('inside deny!!!');
+        $.post('/admin/volunteer/deny', form, function() {
+          console.log('done with deny!!!');
+          var oTable = $('#volsTableUnapp').dataTable();
+          oTable.fnDestroy();
+          load_vols_unapp();
+        });
+      
       });
+
 
     });
         
