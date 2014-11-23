@@ -55,12 +55,16 @@
 
     <div id="content">
     <div id="signup-form">
+
         <form id="signup-submit" action="/volunteer/submit-volunteer" method="POST">
+
             <input type="text" name="first_name" size="20" class="form-control" placeholder="First Name"><br>
 
             <input type="text" name="last_name" size="20" class="form-control" placeholder="Last Name"><br>
 
             <input type="text" name="email_address" size="20" class="form-control" placeholder="Email Address"><br>
+
+            <span style="color:red"><%- error %></span>
 
             <input type="password" name="password" size="20" class="form-control" placeholder="Password"><br>
 
