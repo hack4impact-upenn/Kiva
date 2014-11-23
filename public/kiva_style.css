@@ -98,9 +98,6 @@ html, body {
 
 }
 
-
-
-
 #wrapper {
 	min-height:100%;
 	position:relative;
@@ -213,6 +210,21 @@ html, body {
 	margin-right: auto;
 	margin-top: 20px;
 }
+
+#apps-form {
+	border-radius: 3px;
+	border: 1px solid black;
+	padding: 10px;
+	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+
+#questions {
+	display: none;
+}
+
 #firstTable {
 	border-bottom: 2px solid green;
 }

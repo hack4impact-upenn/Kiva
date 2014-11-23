@@ -19,7 +19,6 @@ QuestionSchema.statics = {
 
 var question = mongoose.model("Question", QuestionSchema);
 
-
 module.exports = {
 	Question : question
 };
