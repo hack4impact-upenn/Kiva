@@ -234,10 +234,8 @@ exports.load_organization_data = function(req, res) {
 }
 
 exports.get_questions = function(req, res) {
-	console.log("getting questions");
 	var org_id = req.params.org_id;
 	Question.find({"organization_id": org_id}, function(err, questions) {
-		console.log(questions)
 		return res.json(questions)
 	});
 }
@@ -575,7 +573,6 @@ exports.submit_application = function(req, res) {
 
 
 //Admin Helpers
-
 //creates new application
 exports.create_application = function(req, res) {
 	console.log("does this work");
