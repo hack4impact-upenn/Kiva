@@ -2,6 +2,7 @@ var Application = require('../models/application').Application;
 var Volunteer = require('../models/volunteer').Volunteer;
 var Review = require('../models/review').Review;
 var Question = require('../models/question').Question;
+var Achievement = require('../models/achievement').Achievement;
 var mongoose = require('mongoose');
 var SHA3 = require("crypto-js/sha3");
 var async = require("async");
@@ -326,6 +327,41 @@ exports.save_review = function(req, res) {
 		);
 };
 
+create_achievement = function(achievement_id, volunteer_id) {
+	var numPoints = 0;
+	var string = "";
+	var dateNow = new Date();
+	switch(achievement_id) {
+		case(1):
+			numPoints = 10;
+			string = "You just submitted a review!";
+			break;
+		default:
+			string = "achievement error";
+			break;
+	}
+	
+	var achievement = new Achievement({
+		reviewer_id: volunteer_id,
+		achievement_text: string,
+		points: numPoints,
+		date: dateNow,
+		read: false,						
+	});
+	return achievement;
+}
+
+exports.get_achievements = function(req, res) {
+	Achievement.find({"reviewer_id": req.session.volunteerId}, function(err, achievements) {
+		if(err) {console.log(err)}
+			res.send(achievements);
+	});
+}
+
+
+
+
+
 exports.submit_review = function(req, res) {
 	//TODO: Add the review to the user's submitted list
 	//TODO: This is massive. refactoring needed?
@@ -452,6 +488,20 @@ exports.submit_review = function(req, res) {
 					console.log("score updated");
 					callback(err);
 				})
+			},
+			function(callback) {
+				var achievement = create_achievement (1, req.session.volunteerId);
+				achievement.save(function(err, achiev) {
+						if (err) {return callback(err)};
+						console.log("achievement saved");
+						Volunteer.update({"_id": req.session.volunteerId}, 
+							{$inc: {num_points: achievement.points}
+								}, function(err) {
+							if (err) {return callback(err)};
+							console.log("points updated");							
+						})
+						callback(err);
+					});
 			},
 		], function(err) {
 			if (err) {res.send(404);};

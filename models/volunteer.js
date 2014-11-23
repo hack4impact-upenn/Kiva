@@ -16,6 +16,7 @@ var VolunteerSchema = new Schema({
   reviews_completed: [Schema.Types.ObjectId],
   current_review: {type: Schema.Types.ObjectId, default: null},
   is_admin: {type: Boolean, default: false},
+  num_points: { type: Number, default: 0 },
 
 });
 

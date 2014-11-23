@@ -42,7 +42,6 @@ app.get("/load_application/:org_id", controller.load_application);
 app.get("/logout", controller.logout);
 app.get("/get_questions/:org_id", controller.get_questions);
 
-
 //Volunteer
 app.get("/volunteer/get_min_reviewed_application", controller.get_min_reviewed_application); 
 app.get("/volunteer/load", controller.load_volunteer); //loads data of a single User from session info
@@ -56,6 +55,7 @@ app.get("/volunteer/sign-up", controller.volunteer_signup_page);
 app.get("/volunteer/home", controller.volunteer_home);
 app.get("/volunteer/training", controller.volunteer_training);
 app.get("/volunteer/finished-training", controller.volunteer_finished_training);
+app.get("/volunteer/get_achievements", controller.get_achievements);
 app.post("/review/create/:id", controller.create_review); // org_id here
 app.get("/review/edit/:id", controller.edit_review); // review id
 app.post("/review/save/:id", controller.save_review); // review id
