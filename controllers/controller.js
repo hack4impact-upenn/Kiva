@@ -476,10 +476,11 @@ exports.send_applications_short= function(req, res) {
 		"score_sum": 1, "reviews_submitted": 1, "kiva_fit_count":1, "sustainable_model_count": 1,
 		"clear_social_impact_count": 1, "num_reviews": 1, "open_to_review": 1},
 		function(err, applications) {
-		console.log(applications);
-		res.send(applications);
-	});
+			console.log(applications);
+			res.send(applications);
+		});
 };
+
 
 exports.send_applications_rest= function(req, res) {
 	Application.find( {"shortlisted": false}, {"_id": 1, "organization_name": 1, "reviews_in_progress": 1, 
@@ -501,7 +502,7 @@ exports.send_volunteers= function(req, res) {
 
 };
 
-            
+
 exports.view_one_application = function(req, res) {
 	res.render('single_org.ejs', {app_id: req.params.id});
 };
@@ -675,7 +676,6 @@ exports.create_admin = function(req, res) {
 	});
 	//}
 };
-
 
 /*------- extra functions not used for this project -----------*/
 
