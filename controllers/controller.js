@@ -95,6 +95,7 @@ exports.create_volunteer = function(req, res) {
 			if(volunteer != null) {
 				//this is a duplicate entry
 				console.log('duplicate');
+				req.session.email_duplicate = true;
                 res.redirect('/volunteer/sign-up');
 			} else {
 				var volunteer = new Volunteer({
@@ -138,7 +139,14 @@ exports.load_volunteer = function(req, res) {
 
 //Volunteer Pages
 exports.volunteer_signup_page = function(req, res) {
-	res.render("volunteer_signup.ejs", {error: "lalal"});
+	var error = '';
+	
+	if (req.session.email_duplicate) {
+		error = 'This email has already been registered.';
+		req.session.email_duplicate = null;
+	}
+
+	res.render("volunteer_signup.ejs", {error: error});
 };
 
 exports.volunteer_home = function(req, res) {
@@ -617,7 +625,14 @@ exports.deny_volunteer = function(req, res) {
 
 //loads admin signup page
 exports.admin_signup_page = function(req, res) {
-	res.render("admin_signup.ejs", {error: "lalal"});
+	var error = '';
+	
+	if (req.session.email_duplicate) {
+		error = 'This email has already been registered.';
+		req.session.email_duplicate = null;
+	}
+
+	res.render("admin_signup.ejs", {error: error});
 };
 
 //create admin account
@@ -629,6 +644,7 @@ exports.create_admin = function(req, res) {
 			if(volunteer != null) {
 				//this is a duplicate entry
 				console.log('duplicate');
+				req.session.email_duplicate = true;
                 res.redirect('/admin/sign-up');
 			} else {
 	var admin = new Volunteer({
