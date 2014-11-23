@@ -18,9 +18,15 @@ var ObjectId= mongoose.Types.ObjectId;
 
 exports.index = function(req, res) {
 	if(req.session.logged) {
-		res.redirect('/volunteer/home');
+		
+		if (req.session.admin) {
+			res.redirect('/admin_applications');
+		} else {
+			res.redirect('/volunteer/home');
+		}
+		
 	} else {
-		res.render("index.ejs");
+		res.render('index.ejs');
 	}
 };
 
@@ -40,8 +46,7 @@ exports.login = function(req, res) {
 					req.session.volunteerId = ObjectId(volunteer._id.toString());
 					req.session.email = volunteer.email_address;
 					if(req.session.admin) {
-						res.send(404);
-						res.redirect('/admin/home');
+						res.redirect('/admin_applications');
 					} else {
 						console.log("redirecting to volunteer homepage");
 						res.redirect('/volunteer/home');
@@ -62,6 +67,7 @@ exports.login = function(req, res) {
 //logs out
 exports.logout = function(req, res) {
 	req.session.logged = false;
+	req.session.admin = false;
 	req.session.username = "";
 	return res.redirect("/");
 };
@@ -82,7 +88,16 @@ exports.load_application = function(req, res) {
 exports.create_volunteer = function(req, res) {
 	console.log("does this work");
     console.log(req.body.why_kiva);
-	var volunteer = new Volunteer({
+	var email = req.body.email_address;
+	
+	Volunteer.findOne({'email_address': email}, 
+		function(err, volunteer) {
+			if(volunteer != null) {
+				//this is a duplicate entry
+				console.log('duplicate');
+                res.redirect('/volunteer/sign-up');
+			} else {
+				var volunteer = new Volunteer({
 		first_name: req.body.first_name,
 		last_name: req.body.last_name,
 		email_address: req.body.email_address,
@@ -105,6 +120,10 @@ exports.create_volunteer = function(req, res) {
 			res.redirect('/volunteer/training');
 		}
 	});
+			}
+		});
+
+	
 };
 
 //load volunteer
@@ -596,11 +615,6 @@ exports.deny_volunteer = function(req, res) {
 	});
 };
 
-//loads admin homepage
-exports.admin_home = function(req, res) {
-
-};
-
 //loads admin signup page
 exports.admin_signup_page = function(req, res) {
 	res.render("admin_signup.ejs", {error: "lalal"});
@@ -608,6 +622,15 @@ exports.admin_signup_page = function(req, res) {
 
 //create admin account
 exports.create_admin = function(req, res) {
+	var email = req.body.email_address;
+	
+	Volunteer.findOne({'email_address': email}, 
+		function(err, volunteer) {
+			if(volunteer != null) {
+				//this is a duplicate entry
+				console.log('duplicate');
+                res.redirect('/admin/sign-up');
+			} else {
 	var admin = new Volunteer({
 		first_name: req.body.first_name,
 		last_name: req.body.last_name,
@@ -624,9 +647,16 @@ exports.create_admin = function(req, res) {
 			console.log(admin);
 			if(err) {console.log(err);}
 			else {
-				res.redirect('/volunteer/home');
+				req.session.admin = admin.is_admin;
+				req.session.logged = true;
+				console.log("Volunteer_id to string: " + (admin._id).toString());
+				req.session.volunteerId = ObjectId(admin._id.toString());
+				req.session.email = admin.email_address;
+				res.redirect('/admin_applications');
 			}
 		});
+		}
+	});
 	//}
 };
 
