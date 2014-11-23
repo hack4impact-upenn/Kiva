@@ -2,7 +2,7 @@ var Application = require('../models/application').Application;
 var Volunteer = require('../models/volunteer').Volunteer;
 var Review = require('../models/review').Review;
 var Question = require('../models/question').Question;
-var Notification = require('../models/notification').Notification;
+var Achievement = require('../models/achievement').Achievement;
 var mongoose = require('mongoose');
 var SHA3 = require("crypto-js/sha3");
 var async = require("async");
@@ -328,34 +328,34 @@ exports.save_review = function(req, res) {
 		);
 };
 
-create_notification = function(notif_id, volunteer_id) {
+create_achievement = function(achievement_id, volunteer_id) {
 	var numPoints = 0;
 	var string = "";
 	var dateNow = new Date();
-	switch(notif_id) {
+	switch(achievement_id) {
 		case(1):
 			numPoints = 10;
 			string = "You just submitted a review!";
 			break;
 		default:
-			string = "Notification error";
+			string = "achievement error";
 			break;
 	}
 	
-	var notification = new Notification({
+	var achievement = new Achievement({
 		reviewer_id: volunteer_id,
-		notification_text: string,
+		achievement_text: string,
 		points: numPoints,
 		date: dateNow,
 		read: false,						
 	});
-	return notification;
+	return achievement;
 }
 
-exports.get_unread_notifications = function(req, res) {
-	Notification.find({"reviewer_id": req.session.volunteerId, "read": false}, function(err, notifications) {
+exports.get_achievements = function(req, res) {
+	Achievement.find({"reviewer_id": req.session.volunteerId}, function(err, achievements) {
 		if(err) {console.log(err)}
-			res.send(notifications);
+			res.send(achievements);
 	});
 }
 
@@ -491,28 +491,18 @@ exports.submit_review = function(req, res) {
 				})
 			},
 			function(callback) {
-				var notification = create_notification (1, req.session.volunteerId);
-				notification.save(function(err, question) {
+				var achievement = create_achievement (1, req.session.volunteerId);
+				achievement.save(function(err, achiev) {
 						if (err) {return callback(err)};
-						console.log("notification saved");
+						console.log("achievement saved");
 						Volunteer.update({"_id": req.session.volunteerId}, 
-							{$inc: {num_points: notification.points}
+							{$inc: {num_points: achievement.points}
 								}, function(err) {
 							if (err) {return callback(err)};
 							console.log("points updated");							
 						})
 						callback(err);
 					});
-
-
-/*
-				Volunteer.update({"_id": req.session.volunteerId}, 
-					{$inc: {num_points: notification.points}
-						}, function(err) {
-					if (err) {return callback(err)};
-					console.log("points updated");
-					callback(err);
-				}) */
 			},
 		], function(err) {
 			if (err) {res.send(404);};
