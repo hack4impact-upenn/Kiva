@@ -352,13 +352,14 @@ create_notification = function(notif_id, volunteer_id) {
 	return notification;
 }
 
-exports.load_notifications = function(req, res) {
-	var reviewer_id = req.params.reviewer_id;
-	Review.find({"reviewer_id": reviewer_id, "read": false}, function(err, notifs) {
+exports.get_unread_notifications = function(req, res) {
+	Notification.find({"reviewer_id": req.session.volunteerId, "read": false}, function(err, notifications) {
 		if(err) {console.log(err)}
-			res.send(notifs);
+			res.send(notifications);
 	});
-};
+}
+
+
 
 
 

@@ -20,7 +20,7 @@
     var load_review = function(volunteer) {
         $('#user-header').append(
             "<h2>" + volunteer["first_name"] + "</h2>" +
-            "<h2>" + "Points: 10" + "</h2>"
+            "<h2>" + "Points: " + volunteer.num_points + "</h2>"
             );
         if(volunteer.current_review == null) {
             //pulls new review  
@@ -81,6 +81,33 @@
             });
         }); 
     }
+/*
+        var load_unread_notifs = function() {
+        $.getJSON('/volunteer/get_unread_notifications', function(unread_notifs) {
+            $('#completed-table table').append("<tr>" + 
+                "<th>" + "Organization" + "</th>" +
+                "<th>" + "Status" + "</th>" +
+                "<th>" + "Date Started" + "</th>" +
+                "<th>" + "Date Submitted" + "</th>" +
+                "</tr>");
+            $.each(completed_apps, function(index, value) {
+                $.getJSON("/review/organization_data/" + value.organization_id, function(organization) {  
+                    var start = new Date(value.date_review_started);
+                    var submitted = new Date(value.date_review_submitted);
+                    var status = "ShortListed";
+                    if (organization.shortlisted) {
+                        status = " - ";
+                    }
+                    $('#completed-table table').append("<tr>" + 
+                        "<td>" + organization.organization_name + "</td>" +
+                        "<td>" + status + "</td>" +
+                        "<td>" + start.toLocaleDateString() + "</td>" +
+                        "<td>" + submitted.toLocaleDateString() + "</td>" +
+                        "</tr>");
+                });
+            });
+        }); 
+    } */
 
     $( document ).ready(function() {
         $.getJSON('/volunteer/load', function(volunteer) {
@@ -120,6 +147,7 @@
     <div id="row">
             <div id="review" class="col-md-6"></div>
             <div id="completed-table" class="col-md-6"><table class='table table-striped'></table></div>
+            <div id="notif-table" class="col-md-6"><table class='table table-striped'></table></div>
     </div>
     
 
