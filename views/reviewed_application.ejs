@@ -103,7 +103,7 @@
     }
 
     var load_questions = function() {
-        $.getJSON('/review/get_questions/' + org_id, function(questions) {
+        $.getJSON('/get_questions/' + org_id, function(questions) {
             $.each(questions, function(index, question) {
                 $('<div class="checkbox">' + '<label>' + '<input type="checkbox" name="box[' + question['_id'] + ']">' + question['question_text'] + '</label>' + '</div>').insertBefore('#question-submit');
                 checkboxes = $("input[type='checkbox']"); 

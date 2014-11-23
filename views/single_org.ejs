@@ -124,7 +124,7 @@
             };
 
           var load_questions = function() {
-                $.getJSON( ' <%= "/admin/pull_questions/" + app_id %> ', function(data) {
+                $.getJSON( ' <%= "/get_questions/" + app_id %> ', function(data) {
                   console.log(data);
                   var table = document.getElementById("questionsTable");
                   console.log($(table));

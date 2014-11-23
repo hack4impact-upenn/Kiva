@@ -237,6 +237,7 @@ exports.get_questions = function(req, res) {
 	console.log("getting questions");
 	var org_id = req.params.org_id;
 	Question.find({"organization_id": org_id}, function(err, questions) {
+		console.log(questions)
 		return res.json(questions)
 	});
 }
@@ -572,13 +573,13 @@ exports.submit_application = function(req, res) {
 	res.render("admin_submit.ejs", {error: "lalal"});
 };
 
-exports.get_questions_for_org= function(req, res) {
-	org_id = req.params.id
-	Question.find({"organization_id": org_id}, function(err, questions) {
-		console.log(questions);
-		res.send(questions);
-	});
-};
+// exports.get_questions_for_org= function(req, res) {
+// 	org_id = req.params.id
+// 	Question.find({"organization_id": org_id}, function(err, questions) {
+// 		console.log(questions);
+// 		res.send(questions);
+// 	});
+// };
 
 
 

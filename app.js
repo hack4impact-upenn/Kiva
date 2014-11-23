@@ -40,6 +40,8 @@ app.get("/", controller.index);
 app.post("/login", controller.login);
 app.get("/load_application/:org_id", controller.load_application);
 app.get("/logout", controller.logout);
+app.get("/get_questions/:org_id", controller.get_questions);
+
 
 //Volunteer
 app.get("/volunteer/get_min_reviewed_application", controller.get_min_reviewed_application); 
@@ -63,7 +65,6 @@ app.get("/review/completed/:org_id", controller.completed_review_page); //org_id
 app.get("/review/completed/load/:org_id", controller.load_completed_reviews);
 app.get("/review/organization_docs/:org_id", controller.load_organization_docs);
 app.get("/review/organization_data/:org_id", controller.load_organization_data);
-app.get("/review/get_questions/:org_id", controller.get_questions);
 app.post("/review/upvote_three_questions", controller.upvote_three_questions);
 
 //Admin
@@ -81,7 +82,6 @@ app.post("/admin/volunteer/approve", controller.approve_volunteer);
 app.post("/admin/volunteer/deny", controller.deny_volunteer);
 app.get("/admin/pull_applications_short", controller.send_applications_short);
 app.get("/admin/pull_applications_rest", controller.send_applications_rest);
-app.get("/admin/pull_questions/:id", controller.get_questions_for_org);
 
 app.get("/admin/pull_volunteers:approval", controller.send_volunteers);
 module.exports = app;
