@@ -32,25 +32,26 @@
     </style>
 
     <body>
-        <h2>Thanks for reviewing! Just one more step...</h2>
-
         <div id="left">
-            <div class="row">
+            <!-- <div class="row"> -->
+            <div id="questions">
                 <h2>Choose Top Three Questions</h2>
                 <div class="col-lg-6">
                     <form id="question-checkboxes" action="/review/upvote_3questions" method="POST">
                         <input id="question-submit" type="submit" value="Submit">
                     </form>
                 </div><!-- /.col-lg-6 -->
-
             </div>
+
+            <!-- </div> -->
         </div>
 
         <div id="right">
-                <p><div id="data" ></div></p>
-                <br></br>
-
-                <p><div id="completed-table" ><table class='table table-striped'></table></div></p>            
+                <div id="stats">
+                    <p><div id="data" ></div></p>
+                    <br></br>
+                    <p><div id="completed-table" ><table class='table table-striped'></table></div></p>            
+                </div>
         </div>
     </body>
 
