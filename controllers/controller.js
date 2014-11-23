@@ -2,6 +2,7 @@ var Application = require('../models/application').Application;
 var Volunteer = require('../models/volunteer').Volunteer;
 var Review = require('../models/review').Review;
 var Question = require('../models/question').Question;
+var Notification = require('../models/notification').Notification;
 var mongoose = require('mongoose');
 var SHA3 = require("crypto-js/sha3");
 var async = require("async");
@@ -327,6 +328,40 @@ exports.save_review = function(req, res) {
 		);
 };
 
+create_notification = function(notif_id, volunteer_id) {
+	var numPoints = 0;
+	var string = "";
+	var dateNow = new Date();
+	switch(notif_id) {
+		case(1):
+			numPoints = 10;
+			string = "You just submitted a review!";
+			break;
+		default:
+			string = "Notification error";
+			break;
+	}
+	
+	var notification = new Notification({
+		reviewer_id: volunteer_id,
+		notification_text: string,
+		points: numPoints,
+		date: dateNow,
+		read: false,						
+	});
+	return notification;
+}
+
+exports.load_notifications = function(req, res) {
+	var reviewer_id = req.params.reviewer_id;
+	Review.find({"reviewer_id": reviewer_id, "read": false}, function(err, notifs) {
+		if(err) {console.log(err)}
+			res.send(notifs);
+	});
+};
+
+
+
 exports.submit_review = function(req, res) {
 	//TODO: Add the review to the user's submitted list
 	//TODO: This is massive. refactoring needed?
@@ -453,6 +488,30 @@ exports.submit_review = function(req, res) {
 					console.log("score updated");
 					callback(err);
 				})
+			},
+			function(callback) {
+				var notification = create_notification (1, req.session.volunteerId);
+				notification.save(function(err, question) {
+						if (err) {return callback(err)};
+						console.log("notification saved");
+						Volunteer.update({"_id": req.session.volunteerId}, 
+							{$inc: {num_points: notification.points}
+								}, function(err) {
+							if (err) {return callback(err)};
+							console.log("points updated");							
+						})
+						callback(err);
+					});
+
+
+/*
+				Volunteer.update({"_id": req.session.volunteerId}, 
+					{$inc: {num_points: notification.points}
+						}, function(err) {
+					if (err) {return callback(err)};
+					console.log("points updated");
+					callback(err);
+				}) */
 			},
 		], function(err) {
 			if (err) {res.send(404);};
