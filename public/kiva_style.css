@@ -20,6 +20,10 @@ html, body {
 }*/
 
 
+#notifs {
+	overflow: scroll;
+}
+
 #user-header {
 	width: 60%;
 	float: center;
