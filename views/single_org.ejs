@@ -11,24 +11,61 @@
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.3/css/jquery.dataTables.css">
+
+    <link href="/kiva_style.css" rel="stylesheet" type="text/css">
+
+
         <title>Organization details</title>
     
     </head>
 
 <body>
     <% include admin_header %>  
- <div id="applicant documents">
-<h3> Update organization information </h3>        
 
-    
         <div id="apps-form">
+        <h3> Update organization information </h3>        
+        <br />
+                <form id="apps" action="" method="POST">
+                <label for="shortlisted"> Short list application? (Be sure to hit submit below!) </label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="shortlisted" value=true>
+                        Yes
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="shortlisted" value=false>
+                        No
+                    </label>
+                </div>
+                <br />           
 
-            <form id="apps" action="" method="POST">
+                <p id="click_for_questions"> Click this to see the most popular questions by reviewers. </p>
+
+                <br />
+
+                <div id=questions>
+                      <h3>Reviewer Questions</h3>
+                      <table id="questionsTable" class="display" cellspacing="0" width="100%">
+                          <thead>
+                              <tr>
+                            <th>Question</td>
+                            <th>Num Votes</td>
+                              </tr>
+                          </thead>
+                       </table>
+                </div>
+
 
              <label for="organization_name"> Org. Name </label>
                 <input type="text" id="organization_name" name="organization_name" size="20" class="form-control" placeholder=""><br>
                
-
                 <label for="description"> Description </label>
                 <input type="text" id="description" name="description" size="20" class="form-control" placeholder=""><br>
 
@@ -38,9 +75,6 @@
 
                 <label for="organization_address"> Address </label>
                 <input type="text" id="organization_address" name="organization_address" size="20" class="form-control" placeholder=""><br>
-
-
-                
 
                 <label for="organization_url"> Org. URL </label>
                 <input type="text" id="organization_url" name="organization_url" size="20" class="form-control" placeholder=""><br>   
@@ -58,38 +92,17 @@
                         No
                     </label>
                 </div>
-                <br />    
-
-                <label for="shortlisted"> Short list application? </label>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="shortlisted" value=true>
-                        Yes
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="shortlisted" value=false>
-                        No
-                    </label>
-                </div>
-                <br />           
-
-                
+                <br />     
                 <input type="button" value="Update" name="update_application" onclick="askForSave()" />
                 <input type="button" value="Cancel" name="cancel_update" onclick="cancelGoBack()" />
-
-
-
             </form>
           </div>
-      </div>
+
+
+
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     </body>
     <script type='text/javascript'>    
-         
-
-
      
             function load_application() {
                      var form=document.getElementById("apps");
@@ -109,7 +122,25 @@
                             });
                      });
             };
-            
+
+          var load_questions = function() {
+                $.getJSON( ' <%= "/get_questions/" + app_id %> ', function(data) {
+                  console.log(data);
+                  var table = document.getElementById("questionsTable");
+                  console.log($(table));
+                  console.log(jQuery.type(data));
+                  var string = JSON.stringify(data);
+                  var oTable = $(table).dataTable({
+                    "data": data,  
+                    "columns": [
+                      { "data": "question_text" },
+                      { "data": "votes" },
+                    ], 
+                    "order": [[ 1, "desc" ]]
+                  });  
+                });
+              }; 
+
             function askForSave() {
                 var form=document.getElementById("apps");
                 form.action='<%= "/admin/update_application/" + app_id %>';
@@ -122,11 +153,17 @@
                 form.submit();            
                 
             };
-        
-  
 
             $( document ).ready(function() {
+
+              $( "#click_for_questions" ).click(function() {
+                $( "#questions" ).toggle( "slow", function() {
+                  // Animation complete.
+                });
+              });
+
                load_application();
+               load_questions();
              });
 
 

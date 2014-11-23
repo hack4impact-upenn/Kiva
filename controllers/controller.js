@@ -2,6 +2,7 @@ var Application = require('../models/application').Application;
 var Volunteer = require('../models/volunteer').Volunteer;
 var Review = require('../models/review').Review;
 var Question = require('../models/question').Question;
+var Achievement = require('../models/achievement').Achievement;
 var mongoose = require('mongoose');
 var SHA3 = require("crypto-js/sha3");
 var async = require("async");
@@ -209,6 +210,13 @@ exports.get_min_reviewed_application = function(req, res) {
 		});
 	};
 
+exports.get_completed_applications = function(req, res) {
+	Review.find({"reviewer_id": req.session.volunteerId, "submitted": true}, function(err, reviews) {
+		if(err) {console.log(err)}
+			res.send(reviews);
+	});
+}
+
 
 //open a review for editing
 exports.edit_review = function(req, res) {
@@ -237,13 +245,45 @@ exports.edit_review = function(req, res) {
 
 //Volunteer Helper Functions
 
-exports.load_organization_data = function(req, res) {
-	console.log("loading application data");
+exports.load_organization_docs = function(req, res) {
+	console.log("loading application docs");
 	request('https://api.myjson.com/bins/1a2tl', function (error, response, body) {
 	  	if (!error && response.statusCode == 200) {
 	    	res.json(body)
 	    }
 	});
+}
+
+exports.load_organization_data = function(req, res) {
+	console.log("loading organization data");
+	Application.findById(req.params.org_id, function(err, application) {
+		return res.json(application);
+	});
+}
+
+exports.get_questions = function(req, res) {
+	var org_id = req.params.org_id;
+	Question.find({"organization_id": org_id}, function(err, questions) {
+		return res.json(questions)
+	});
+}
+
+exports.upvote_three_questions = function(req, res) {
+	questions = req.body.box;
+	var count = 0;
+	for (var id in req.body.box) {
+		Question.upvote(id, function(err) {
+			if (err) { 
+				console.log("error in upvoting question");
+				return callback(err)
+			};
+			count++;
+			console.log(count);
+			if (count == 3) {
+				return res.redirect('/');
+			}
+		});
+	}
 }
 
 //creates new review based on org id
@@ -314,6 +354,41 @@ exports.save_review = function(req, res) {
 		);
 };
 
+create_achievement = function(achievement_id, volunteer_id) {
+	var numPoints = 0;
+	var string = "";
+	var dateNow = new Date();
+	switch(achievement_id) {
+		case(1):
+			numPoints = 10;
+			string = "You just submitted a review!";
+			break;
+		default:
+			string = "achievement error";
+			break;
+	}
+	
+	var achievement = new Achievement({
+		reviewer_id: volunteer_id,
+		achievement_text: string,
+		points: numPoints,
+		date: dateNow,
+		read: false,						
+	});
+	return achievement;
+}
+
+exports.get_achievements = function(req, res) {
+	Achievement.find({"reviewer_id": req.session.volunteerId}, function(err, achievements) {
+		if(err) {console.log(err)}
+			res.send(achievements);
+	});
+}
+
+
+
+
+
 exports.submit_review = function(req, res) {
 	//TODO: Add the review to the user's submitted list
 	//TODO: This is massive. refactoring needed?
@@ -327,6 +402,7 @@ exports.submit_review = function(req, res) {
 				Review.update({
 					"_id": ObjectId(req.params.id)},{
 						submitted: true,
+						date_review_submitted: Date.now(),
 						clear_social_impact: req.body.clear_social_impact,
 						kiva_fit: req.body.kiva_fit,
 						sustainable_model: req.body.sustainable_model,
@@ -439,6 +515,20 @@ exports.submit_review = function(req, res) {
 					console.log("score updated");
 					callback(err);
 				})
+			},
+			function(callback) {
+				var achievement = create_achievement (1, req.session.volunteerId);
+				achievement.save(function(err, achiev) {
+						if (err) {return callback(err)};
+						console.log("achievement saved");
+						Volunteer.update({"_id": req.session.volunteerId}, 
+							{$inc: {num_points: achievement.points}
+								}, function(err) {
+							if (err) {return callback(err)};
+							console.log("points updated");							
+						})
+						callback(err);
+					});
 			},
 		], function(err) {
 			if (err) {res.send(404);};
@@ -559,8 +649,8 @@ exports.submit_application = function(req, res) {
 	res.render("admin_submit.ejs", {error: "lalal"});
 };
 
-//Admin Helpers
 
+//Admin Helpers
 //creates new application
 exports.create_application = function(req, res) {
 	console.log("does this work");
@@ -676,42 +766,3 @@ exports.create_admin = function(req, res) {
 	});
 	//}
 };
-
-/*------- extra functions not used for this project -----------*/
-
-
-//handles update for an edit page
-/*exports.update_project = function(req, res) {
-
-	updates = {
-		app_name : req.body.app_name,
-		description : req.body.description,
-		demo_link : req.body.demo,
-		location : req.body.location,
-		technologies : req.body.technologies,
-		tags : req.body.tags,
-		builders : req.body.builders,
-		date : req.body.date,
-		contact : req.body.contact,
-		github_permis : req.body.github_permis,
-		github : req.body.github,
-		personal : req.body.personal,
-		approved : req.body.approved,
-	}
-	var options = {upsert: true};
-
-	Project.findOneAndUpdate({"_id": new ObjectId(req.body.id)}, updates, options, function(err, data) {
-		if(!err) {
-			res.redirect("/admin");
-		} 
-		res.send(err);
-	}); 
-}
-
-//opens edit page for a single project
-exports.edit = function(req, res) {
-		Project.queryById(req.params.id, function(err, project) {
-			return res.render("edit.ejs", {projects: project[0]});
-		});
-	} */
-

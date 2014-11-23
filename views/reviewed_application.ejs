@@ -4,62 +4,129 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="" rel="stylesheet" type="text/css">
+
+
+        <link href="/kiva_style.css" rel="stylesheet" type="text/css">
         <meta name="description" content="">
         <meta name="author" content="">
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-        <title>Thanks for completing your review!</title>
+        <title>Thanks for reviewing!</title>
     
     </head>
 
+    <style>
+        h1{
+            text-align: center;
+            margin: 5;
+            color: LimeGreen;
+        }
+        h2, h4{
+            text-align: center;
+            margin: 5;
+            color: green;
+        }
+    </style>
+
     <body>
-        <div id="data">
+        <h2>Thanks for reviewing! Just one more step...</h2>
+
+        <div id="left">
+            <div class="row">
+                <h2>Choose Top Three Questions</h2>
+                <div class="col-lg-6">
+                    <form id="question-checkboxes" action="/review/upvote_three_questions" method="POST">
+                        <input id="question-submit" type="submit" value="Submit">
+                    </form>
+                </div><!-- /.col-lg-6 -->
+
+            </div>
         </div>
 
-        <div id="reviews">
+        <div id="right">
+                <p><div id="data" ></div></p>
+                <br></br>
+
+                <p><div id="completed-table" ><table class='table table-striped'></table></div></p>            
         </div>
     </body>
 
 <script>
+    var checkboxes = [];
     var org_id = "<%= org_id %>";
-    console.log(org_id);
 
     var load_page = function() {
         load_completed_review();
         load_org_info();
+        load_questions();
+        press_submit();
    }
 
    //would like to refactor later
    var load_org_info = function() {
     $.getJSON("/load_application/" + org_id, function(application) {
         $('#data').append(
+                    "<div id='average-reviews'>" + 
                     "<p>" +  application.kiva_fit_count + " out of " + application.num_reviews + " thought " + application.organization_name + " fit in with Kiva's culture. </p>" + 
 
                     "<p>" +  application.sustainable_model_count + " out of " + application.num_reviews + " thought " + application.organization_name + " has a sustainable business model. </p>" + 
 
                     "<p>" +  application.clear_social_impact_count + " out of " + application.num_reviews + " thought " + application.organization_name + " has a clear social impact. </p>" + 
 
-                    "<p> Average rating was: " + (application.score_sum/application.num_reviews).toFixed(1) + " out of 5.0 </p>" 
+                    "<p> Average rating was: " + (application.score_sum/application.num_reviews).toFixed(1) + " out of 5.0 </p>" +
+                    "</div>"
                     );
     });
    };
 
     var load_completed_review = function() {
         $.getJSON('/review/completed/load/' + org_id, function(reviews) {
+            $('#completed-table table').append("<tr>" + 
+                "<th>" + "Clear Social Impact" + "</th>" +
+                "<th>" + "Good Kiva Fit" + "</th>" +
+                "<th>" + "Sustainable Business Model" + "</th>" +
+                "<th>" + "Recommended Rating" + "</th>" +
+                "</tr>");
              $.each(reviews, function(index, review) {
-                console.log(review);
-                 $('#reviews').append(
-                    "<p> Clear Social Impact: " + review["clear_social_impact"] + "</p>" +
-                    "<p> Kiva Fit: " + review["kiva_fit"] + "</p>" +
-                    "<p> Sustainable Business Model: " + review["sustainable_model"] + "</p>" +
-                    "<p> Recommended Rating: " + review["recommend_rating"] + "</p>" + 
-                   "<br />"
+                $('#completed-table table').append("<tr>" + 
+                    "<td>" + review["clear_social_impact"] + "</td>" +
+                    "<td>" + review["kiva_fit"] + "</td>" +
+                    "<td>" + review["sustainable_model"] + "</td>" +
+                    "<td>" + review["recommend_rating"] + "</td>" +
+                    "</tr>"
                     );
             }); 
         });
     }
+
+    var load_questions = function() {
+        $.getJSON('/get_questions/' + org_id, function(questions) {
+            $.each(questions, function(index, question) {
+                $('<div class="checkbox">' + '<label>' + '<input type="checkbox" name="box[' + question['_id'] + ']">' + question['question_text'] + '</label>' + '</div>').insertBefore('#question-submit');
+                checkboxes = $("input[type='checkbox']"); 
+                checkboxes.click(function() {
+                    if (checkboxes.filter(":checked").length > 3)
+                        $(this).removeAttr("checked");
+                });
+            }); 
+        });
+    }
+
+    var press_submit = function() {
+        $('form').submit(function() {
+            if (checkboxes.filter(":checked").length != 3) {
+            alert("You must select 3 questions");
+            return false;
+        }
+        return true;
+        });
+    }
+
+
+
     $( document ).ready(function() {
         load_page();
     });
