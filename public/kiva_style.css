@@ -1,9 +1,9 @@
-html, body {
+/*html, body {
   height: 100%;
-  /* The html and body elements cannot have any padding or margin. */
+   The html and body elements cannot have any padding or margin. 
   margin:0;
   padding:0;
-}
+}*/
 
 #left {
 	float: left;
@@ -102,10 +102,10 @@ html, body {
 
 }
 
-#wrapper {
+/*#wrapper {
 	min-height:100%;
 	position:relative;
-}
+}*/
 #banner {
 	width: 100%;
 	background-color: white;
