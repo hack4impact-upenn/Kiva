@@ -18,7 +18,7 @@ var VolunteerSchema = new Schema({
   is_admin: {type: Boolean, default: false},
   num_points: { type: Number, default: 0 },
   last_login_date: {type: Date, default: Date.now},
-  consecutive_login_days: { type: Number, default: 0 }
+  consecutive_login_days: { type: Number, default: 1 }
 
 });
 

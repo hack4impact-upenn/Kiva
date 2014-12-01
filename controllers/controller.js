@@ -71,7 +71,7 @@ exports.login = function(req, res) {
 								var achievement = create_achievement (3, req.session.volunteerId, -1);
 								achievement.save(function(err, achiev) {
 									if (err) {console.log(err)};
-									console.log("achievement saved "+ achievement.points);
+									console.log("achievement saved ");
 								});							
 							}
 							volunteer.save(function(err, vol) {
@@ -363,7 +363,7 @@ exports.save_review = function(req, res) {
 		);
 };
 
-create_achievement = function(achievement_id, volunteer_id, days_in_a_row) {
+create_achievement = function(achievement_id, volunteer_id, extra_info) {
 	var numPoints = 0;
 	var string = "";
 	var dateNow = new Date();
@@ -373,12 +373,23 @@ create_achievement = function(achievement_id, volunteer_id, days_in_a_row) {
 			string = "You just submitted a review!";
 			break;
 		case(2):
-			numPoints = days_in_a_row * 2;
-			string = "You have logged in " + days_in_a_row+ " days in a row!";
+			var days_in_a_row = extra_info;
+			numPoints = days_in_a_row;
+			string = "You have logged in " + days_in_a_row + " days in a row!";
 			break;
 		case(3):
 			numPoints = 0;
 			string = "Welcome back! Come back every day to earn bonus points";
+			break;
+		case(4):
+			numPoints = 0;
+			var org_name = extra_info;
+			string = "The application you reviewed: \'"+ org_name + "\' has been shortlisted!";
+			break;
+		case(5):
+			numPoints = 15;
+			var org_name = extra_info;
+			string = "You gave a good rating to shortlisted application: \'"+ org_name + ".\' Nice job!";
 			break;
 		default:
 			string = "achievement error";
@@ -639,40 +650,52 @@ exports.load_single_application = function(req, res) {
 };
 
 
-exports.save_application_changes = function(req, res) {
-	var org_id = req.body.organization_name;
-	console.log(org_id);
-	console.log("updating");
-	async.parallel(
-		[
-			function(callback) {
-				//save review
-				Application.update({
-					"_id": ObjectId(req.params.id)},{
-						
-						organization_name: req.body.organization_name,
-						description: req.body.description,
-						token: req.body.token,
-						organization_address: req.body.organization_address,
-						organization_url: req.body.organization_url,
-						open_to_review: req.body.open_to_review,
-						shortlisted: req.body.shortlisted
-
-					}, function(err) {
-						if (err) {return callback(err)};
-						console.log(err);
-						console.log("Error updating values");
-						callback();
-					});
-			},
-			
-			
-		], function(err) {
-			if (err) {res.send(404);};
+exports.save_application_changes = function(req, res) {	
+	Application.findById(req.params.id, function(err, application) {
+		console.log("----------------------------------");
+		if(!application.shortlisted && req.body.shortlisted){
+			for (var i = 0; i < application.volunteer_list.length; i++) {
+				var achievement = create_achievement(4, application.volunteer_list[i], application.organization_name);
+				achievement.save(function(err, achiev) {
+					if (err) {console.log(err)};
+					console.log("achievement saved ");
+				});	
+			};
+			for (var i = 0; i < application.reviews_submitted.length; i++) {
+				Review.findById(application.reviews_submitted[i], function(err, review) {
+					if (review.recommend_rating > 3){
+						var achievement = create_achievement(5, review.reviewer_id, application.organization_name);
+						achievement.save(function(err, achiev) {
+							if (err) {console.log(err)};
+							console.log("achievement saved ");
+							Volunteer.update({"_id": review.reviewer_id}, 
+							{$inc: {num_points: achievement.points}}, function(err) {
+								if (err) {return callback(err)};
+								console.log("points updated");							
+							})
+						});	
+					}
+				})				
+			};
+		}
+		console.log(application.volunteer_list);			
+		application.organization_name = req.body.organization_name;
+		application.description = req.body.description;
+		application.token = req.body.token;
+		application.organization_address = req.body.organization_address;
+		application.organization_url = req.body.organization_url;
+		application.open_to_review = req.body.open_to_review;
+		application.shortlisted = req.body.shortlisted;				
+		application.save();
+		if(err) {
+			console.log(err);
+			res.send(404);
+		} else {
 			console.log("submission complete");
 			res.redirect('/admin_applications');
-		});
-	};
+		}
+	});	
+};
 
 //Page: admin submit new application page
 exports.submit_application = function(req, res) {
