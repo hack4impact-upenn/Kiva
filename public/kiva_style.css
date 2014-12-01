@@ -273,3 +273,11 @@ html, body {
 	top: 20%;
 }
 
+.dropdown li {
+	min-width: 321px;
+}
+
+#achievs {
+	margin-left: 10px;
+}
+
