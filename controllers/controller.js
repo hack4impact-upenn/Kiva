@@ -219,7 +219,7 @@ exports.edit_review = function(req, res) {
 
 exports.load_organization_docs = function(req, res) {
 	console.log("loading application docs");
-	request('https://api.myjson.com/bins/1a2tl', function (error, response, body) {
+	request('https://api.myjson.com/bins/3sxyz', function (error, response, body) {
 	  	if (!error && response.statusCode == 200) {
 	    	res.json(body)
 	    }
