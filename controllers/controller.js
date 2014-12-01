@@ -83,10 +83,52 @@ exports.load_application = function(req, res) {
 };
 
 
-/*--------------  Volunteer Story ----------------- */
+/*--------------  Volunteer Functions ----------------- */
 
 
-exports.create_volunteer = function(req, res) {
+
+/* pulls data */
+
+/* loads volunter model data for sesssion */
+exports.loadVolunteer = function(req, res) {
+	console.log("ajax call is working");
+	Volunteer.findOne({"_id": req.session.volunteerId}, function(err, volunteer) {
+		res.send(volunteer);
+	});
+};
+
+/* loads next review for volunteer to complete */
+exports.getMinReviewedApplication = function(req, res) {
+		console.log(req.session.volunteerId);
+		Application.get_min_reviewed_application(ObjectId(req.session.volunteerId), function (err, application) {
+			if(application === null) {
+				res.send({"data" : "none"});
+			} else {
+				console.log("application: " + application);
+				res.send(application);
+			}
+		});
+};
+
+
+exports.getCompletedApplications = function(req, res) {
+	Review.find({"reviewer_id": req.session.volunteerId, "submitted": true}, function(err, reviews) {
+		if(err) {console.log(err);}
+			res.send(reviews);
+	});
+};
+
+exports.getAchievements = function(req, res) {
+	Achievement.find({"reviewer_id": req.session.volunteerId}, function(err, achievements) {
+		if(err) {console.log(err);}
+			res.send(achievements);
+	});
+};
+
+
+/*  methods for volunteer signup process */
+
+exports.createVolunteer = function(req, res) {
 	console.log("does this work");
     console.log(req.body.why_kiva);
 	var email = req.body.email_address;
@@ -128,49 +170,7 @@ exports.create_volunteer = function(req, res) {
 	
 };
 
-//load volunteer
-exports.load_volunteer = function(req, res) {
-	console.log("ajax call is working");
-	Volunteer.findOne({"_id": req.session.volunteerId}, function(err, volunteer) {
-		res.send(volunteer);
-	});
-};
-
-
-
-//Volunteer Pages
-exports.volunteer_signup_page = function(req, res) {
-	var error = '';
-	
-	if (req.session.email_duplicate) {
-		error = 'This email has already been registered.';
-		req.session.email_duplicate = null;
-	}
-
-	res.render("volunteer_signup.ejs", {error: error});
-};
-
-exports.volunteer_home = function(req, res) {
-	if(req.session.logged) {
-		console.log(req.session.volunteerId);
-		console.log(req.session.email);
-		res.render('homepage.ejs');
-	} else {
-		res.redirect('/');
-	}
-};
-
-exports.volunteer_training = function(req, res) {
-	if(req.session.logged) {
-		console.log(req.session.volunteerId);
-		console.log(req.session.email);
-		res.render('training.ejs');
-	} else {
-		res.redirect('/');
-	}
-};
-
-exports.volunteer_finished_training = function(req, res) {
+exports.volunteerFinishedTraining = function(req, res) {
 	if(req.session.logged) {
 		var id = req.session.volunteerId;
 		console.log('volunteer id: ' + id);
@@ -191,6 +191,41 @@ exports.volunteer_finished_training = function(req, res) {
 	}
 };
 
+
+/* Volunteer Pages */
+
+exports.volunteerSignupPage = function(req, res) {
+	var error = '';
+	
+	if (req.session.email_duplicate) {
+		error = 'This email has already been registered.';
+		req.session.email_duplicate = null;
+	}
+
+	res.render("volunteer_signup.ejs", {error: error});
+};
+
+exports.volunteerHome = function(req, res) {
+	if(req.session.logged) {
+		console.log(req.session.volunteerId);
+		console.log(req.session.email);
+		res.render('homepage.ejs');
+	} else {
+		res.redirect('/');
+	}
+};
+
+exports.volunteerTraining = function(req, res) {
+	if(req.session.logged) {
+		console.log(req.session.volunteerId);
+		console.log(req.session.email);
+		res.render('training.ejs');
+	} else {
+		res.redirect('/');
+	}
+};
+
+
 //TODO: 
 //TODO: Then load all the questions. 
 exports.completed_review_page = function(req, res) {
@@ -198,24 +233,8 @@ exports.completed_review_page = function(req, res) {
 	res.render("reviewed_application.ejs", {org_id: org_id});
 };
 
-exports.get_min_reviewed_application = function(req, res) {
-		console.log(req.session.volunteerId);
-		Application.get_min_reviewed_application(ObjectId(req.session.volunteerId), function (err, application) {
-			if(application === null) {
-				res.send({"data" : "none"});
-			} else {
-				console.log("application: " + application);
-				res.send(application);
-			}
-		});
-	};
 
-exports.get_completed_applications = function(req, res) {
-	Review.find({"reviewer_id": req.session.volunteerId, "submitted": true}, function(err, reviews) {
-		if(err) {console.log(err)}
-			res.send(reviews);
-	});
-}
+
 
 
 //open a review for editing
@@ -378,12 +397,7 @@ create_achievement = function(achievement_id, volunteer_id) {
 	return achievement;
 }
 
-exports.get_achievements = function(req, res) {
-	Achievement.find({"reviewer_id": req.session.volunteerId}, function(err, achievements) {
-		if(err) {console.log(err)}
-			res.send(achievements);
-	});
-}
+
 
 
 
