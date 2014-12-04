@@ -20,7 +20,7 @@ exports.index = function(req, res) {
 	if(req.session.logged) {
 		res.redirect('/volunteer/home');
 	} else {
-		res.render("index.ejs");
+		res.render("index.ejs", {message: null});
 	}
 };
 
@@ -48,7 +48,7 @@ exports.login = function(req, res) {
 					}
 				} else if (volunteer === null) {
 					console.log(volunteer);
-					res.render("index.ejs", {errors: "error"});
+					res.render("index.ejs", {message:"Your email or password is incorrect."});
 			} else {
 				if(err) {
 				} else {
