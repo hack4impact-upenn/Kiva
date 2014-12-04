@@ -74,7 +74,6 @@ app.post("/review/upvote_three_questions", controller.upvote_three_questions);
 app.get("/admin/sign-up", controller.admin_signup_page);
 app.post('/admin/submit-admin', controller.create_admin);
 app.get("/admin_submit", controller.submit_application);
-app.get("/admin/home", controller.admin_home);
 app.post("/post-application", controller.create_application);
 app.get("/admin_applications", controller.view_applications);
 app.get("/admin/application/:id", controller.view_one_application);

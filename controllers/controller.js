@@ -43,7 +43,7 @@ exports.login = function(req, res) {
 					req.session.email = volunteer.email_address;
 					if(req.session.admin) {
 						res.send(404);
-						res.redirect('/admin/home');
+						res.redirect('/admin_applications');
 					} else {
 						console.log("redirecting to volunteer homepage");
 						var today   = new Date();
@@ -766,11 +766,6 @@ exports.deny_volunteer = function(req, res) {
 			res.send(err);
 		};
 	});
-};
-
-//loads admin homepage
-exports.admin_home = function(req, res) {
-
 };
 
 //loads admin signup page
