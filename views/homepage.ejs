@@ -18,15 +18,13 @@
     <script>     
 
     var load_review = function(volunteer) {
-        $('#user-header').append(
-            "<h2>" + volunteer["first_name"] + "</h2>" +
-            "<h2>" + "Points: " + volunteer.num_points + "</h2>"
-            );
         if(volunteer.current_review == null) {
             //pulls new review  
             $.getJSON('/volunteer/get_min_reviewed_application', function(data) {
                 if(data.data !== "none") {
                         $('#review').append(
+                            "<h2>" + volunteer["first_name"] + "</h2>" +
+                            "<h2>" + "Points: " + volunteer.num_points + "</h2>" +
                             "<div id='review-display'>" +
                             "<h3><u>Next up:</u></h3>" +
                             "<h1>" + data["organization_name"] + "</h1>" +
@@ -38,6 +36,8 @@
                             );
                 } else {
                       $('#review').append(
+                        "<h2>" + volunteer["first_name"] + "</h2>" +
+                        "<h2>" + "Points: " + volunteer.num_points + "</h2>" +
                          "<p> There are currently no reviews for you to complete. </p>"
                          )
                 }
@@ -55,6 +55,8 @@
 
     var load_completed_apps = function() {
         $.getJSON('/volunteer/get_completed_applications', function(completed_apps) {
+            // $('#completed-table').append(
+            //         "<h2>Completed</h2>");
             if (completed_apps.length == 0) {
                 $('#completed-table').append(
                     "<h2>No reviews yet!</h2>");
@@ -141,8 +143,6 @@
             color: green;
         }
     </style>
-
-    <div id="user-header"></div>
 
     <div id="training"></div>
     <div id="row">
