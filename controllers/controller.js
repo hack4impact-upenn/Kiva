@@ -20,7 +20,7 @@ exports.index = function(req, res) {
 	if(req.session.logged) {
 		res.redirect('/volunteer/home');
 	} else {
-		res.render("index.ejs", {message: null});
+		res.render("index.ejs", {message: null, name: null});
 	}
 };
 
@@ -36,6 +36,7 @@ exports.login = function(req, res) {
 					//need to add some logic in case there is no error, but there is also no data
 					req.session.admin = volunteer.is_admin;
 					req.session.logged = true;
+					req.session.fullname = volunteer.first_name + " " + volunteer.last_name;
 					console.log("Volunteer_id to string: " + (volunteer._id).toString());
 					req.session.volunteerId = ObjectId(volunteer._id.toString());
 					req.session.email = volunteer.email_address;
@@ -48,7 +49,7 @@ exports.login = function(req, res) {
 					}
 				} else if (volunteer === null) {
 					console.log(volunteer);
-					res.render("index.ejs", {message:"Your email or password is incorrect."});
+					res.render("index.ejs", {message:"Your email or password is incorrect.", name: null});
 			} else {
 				if(err) {
 				} else {
@@ -119,14 +120,14 @@ exports.load_volunteer = function(req, res) {
 
 //Volunteer Pages
 exports.volunteer_signup_page = function(req, res) {
-	res.render("volunteer_signup.ejs", {error: "lalal"});
+	res.render("volunteer_signup.ejs", {error: "lalal", name: req.session.fullname});
 };
 
 exports.volunteer_home = function(req, res) {
 	if(req.session.logged) {
 		console.log(req.session.volunteerId);
 		console.log(req.session.email);
-		res.render('homepage.ejs');
+		res.render('homepage.ejs', {name: req.session.fullname});
 	} else {
 		res.redirect('/');
 	}
@@ -136,7 +137,7 @@ exports.volunteer_training = function(req, res) {
 	if(req.session.logged) {
 		console.log(req.session.volunteerId);
 		console.log(req.session.email);
-		res.render('training.ejs');
+		res.render('training.ejs', {name: req.session.fullname});
 	} else {
 		res.redirect('/');
 	}
@@ -167,7 +168,7 @@ exports.volunteer_finished_training = function(req, res) {
 //TODO: Then load all the questions. 
 exports.completed_review_page = function(req, res) {
 	org_id = req.params.org_id;
-	res.render("reviewed_application.ejs", {org_id: org_id});
+	res.render("reviewed_application.ejs", {org_id: org_id, name: req.session.fullname});
 };
 
 exports.get_min_reviewed_application = function(req, res) {
@@ -192,7 +193,7 @@ exports.get_completed_applications = function(req, res) {
 
 //open a review for editing
 exports.edit_review = function(req, res) {
-	res.render('review.ejs', {review_id: req.params.id});
+	res.render('review.ejs', {review_id: req.params.id, name: req.session.fullname});
 };
 /*	if(req.session.logged){
 		review_id = req.params.id;
@@ -480,7 +481,7 @@ exports.load_completed_reviews = function(req, res) {
 
 //Admin Pages
 exports.view_applications = function(req, res) {
-	res.render("main.ejs", {error: "lalal"});	
+	res.render("main.ejs", {error: "lalal", name: req.session.fullname});	
 };
 
 
@@ -517,7 +518,7 @@ exports.send_volunteers= function(req, res) {
 
             
 exports.view_one_application = function(req, res) {
-	res.render('single_org.ejs', {app_id: req.params.id});
+	res.render('single_org.ejs', {app_id: req.params.id, name: req.session.fullname});
 };
 
 exports.load_single_application = function(req, res) {
@@ -569,7 +570,7 @@ exports.save_application_changes = function(req, res) {
 
 //Page: admin submit new application page
 exports.submit_application = function(req, res) {
-	res.render("admin_submit.ejs", {error: "lalal"});
+	res.render("admin_submit.ejs", {error: "lalal", name: req.session.fullname});
 };
 
 //Admin Helpers
@@ -644,7 +645,7 @@ exports.admin_home = function(req, res) {
 
 //loads admin signup page
 exports.admin_signup_page = function(req, res) {
-	res.render("admin_signup.ejs", {error: "lalal"});
+	res.render("admin_signup.ejs", {error: "lalal", name: req.session.fullname});
 };
 
 //create admin account
