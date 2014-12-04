@@ -10,6 +10,11 @@
 	width: 50%;	
 }
 
+#review-info {
+	float: left;
+	width: 50%;
+}
+
 #right {
 	float: right;
 	width: 50%;
@@ -44,10 +49,11 @@
 #review-display {
 	width: 100%;
 	border-radius: 3px;
-	border: 1px solid green;
+	border: 4px; /*solid green;*/
 	padding: 10px;
 	text-align: center;
 	margin: 5;
+	border-style: groove;
 	/*color: #587F3A;*/
 }
 
@@ -94,8 +100,9 @@
 
 #review-button {
 	background-color: green;
-	width: 50%;
+	width: 75%;
 	margin-bottom: 2px;
+	margin-top: 2px;
 }
 
 #org-info {
@@ -175,13 +182,14 @@
 }
 
 #review-form {
+	/*float: right;*/
+	/*width: 50%;*/
 	border-radius: 3px;
-	border: 1px solid black;
+	border-left: 1px solid black;
 	padding: 10px;
-	margin-left: 10px;
 	height: 600px;
 	overflow: scroll;
-	border-bottom: 2px solid
+	/*border-bottom: 2px solid*/
 }
 
 #form {
@@ -264,5 +272,13 @@
 .popup {
 	position: absolute;
 	top: 20%;
+}
+
+.dropdown li {
+	min-width: 311px;
+}
+
+#achievs {
+	margin-left: 10px;
 }
 
