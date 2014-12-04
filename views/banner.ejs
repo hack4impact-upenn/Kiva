@@ -8,9 +8,12 @@
 
     <div id="nav">
         <ul> 
-            <a href="/volunteer/home"><li>Home</li></a>
-            <a href="/volunteer/training"><li>Training/Resources</li></a>
-            <a href="/logout"> <li>Logout </li></a>
+            <a class="banner-btn" href="/volunteer/home"><li>Home</li></a>
+            <a class="banner-btn" href="/volunteer/training"><li>Training/Resources</li></a>
+            <a class="banner-btn" href="/logout"><li>Logout</li></a></br>
+            <% if (name) { %>
+            Logged in as: <%= name %>
+            <% } %>
         </ul>
     </div>
 

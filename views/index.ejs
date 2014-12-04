@@ -15,10 +15,6 @@
 
 
         <title>Login</title>
-        <script>
-            
-        </script>
-
     </head>
 
     <body>
@@ -38,6 +34,9 @@
             <div id="form">
                 <h2>Login</h2>
                 <form action="/login" method="POST" class="kiva-form">
+                    <% if (message) { %>
+                    <span style="color:red"><%= message %></span>
+                    <% } %>
                     <input type="text" name="email_address" size="25" class="form-control" placeholder="Email">
                     <input type="password" name="password" size="25" class="form-control" placeholder="Password"><br>
                     <input type="submit" class="btn btn-primary" value="Login" />
@@ -56,6 +55,11 @@
         <% include footer %>
 
         <!-- </div> -->
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.banner-btn').hide();
+            });
+        </script>
     </body>
 
 </html>
