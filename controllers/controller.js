@@ -425,146 +425,152 @@ exports.submit_review = function(req, res) {
 	//TODO: This is massive. refactoring needed?
 	var org_id = req.body.organization_id;
 	console.log(org_id);
-	console.log("submitting");
-	async.parallel(
-		[
-			function(callback) {
-				//save review
-				Review.update({
-					"_id": ObjectId(req.params.id)},{
-						submitted: true,
-						date_review_submitted: Date.now(),
-						clear_social_impact: req.body.clear_social_impact,
-						kiva_fit: req.body.kiva_fit,
-						sustainable_model: req.body.sustainable_model,
-						kiva_fit_comments: req.body.kiva_fit_comments,
-						q_1: req.body.q_1,
-						q_2: req.body.q_2,
-						q_3: req.body.q_3,
-						recommend_rating: req.body.recommend_rating,
-						other_comments: req.body.other_comments
-					}, function(err) {
-						if (err) {return callback(err)};
-						console.log("review marked as submitted");
-						callback();
-					});
-			},
-			
-			//in Application: add to submitted list
-			function(callback) {
-				Application.submit_review(org_id, req.params.id, function(err) {
-						if (err) { console.log("error in application_submit review");
-							return callback(err)};
-						console.log("review added to application's submitted list");
-						callback();
-					});
-			},
-			//in Application: add to volunteers list
-			function(callback) {
-				Application.update({_id: org_id},
-								{ $push: {"volunteer_list": req.session.volunteerId}}, function(err){
-									if(err) {console.log("error in adding to volunteer list")
-											return callback(err);
-									}
-									callback()
-								})							
-				},
-			//in Application: move from in_progress
-			function(callback) {
-				Application.remove_review_in_progress(org_id, req.params.id, function(err) {
-						if (err) {return callback(err)};
-						console.log("review removed from application current list");
-						callback();
-					});
-			},
-			function(callback) {
-				//in Volunteer: remove from in_progress
+	Review.findById(req.params.id, function(err, review) {
+		if (review.submitted) {
+			res.redirect('/volunteer/home');
+		} else {
+			console.log("submitting");
+			async.parallel(
+				[
+					function(callback) {
+						//save review
+						Review.update({
+							"_id": ObjectId(req.params.id)},{
+								submitted: true,
+								date_review_submitted: Date.now(),
+								clear_social_impact: req.body.clear_social_impact,
+								kiva_fit: req.body.kiva_fit,
+								sustainable_model: req.body.sustainable_model,
+								kiva_fit_comments: req.body.kiva_fit_comments,
+								q_1: req.body.q_1,
+								q_2: req.body.q_2,
+								q_3: req.body.q_3,
+								recommend_rating: req.body.recommend_rating,
+								other_comments: req.body.other_comments
+							}, function(err) {
+								if (err) {return callback(err)};
+								console.log("review marked as submitted");
+								callback();
+							});
+					},
+					
+					//in Application: add to submitted list
+					function(callback) {
+						Application.submit_review(org_id, req.params.id, function(err) {
+								if (err) { console.log("error in application_submit review");
+									return callback(err)};
+								console.log("review added to application's submitted list");
+								callback();
+							});
+					},
+					//in Application: add to volunteers list
+					function(callback) {
+						Application.update({_id: org_id},
+										{ $push: {"volunteer_list": req.session.volunteerId}}, function(err){
+											if(err) {console.log("error in adding to volunteer list")
+													return callback(err);
+											}
+											callback()
+										})							
+						},
+					//in Application: move from in_progress
+					function(callback) {
+						Application.remove_review_in_progress(org_id, req.params.id, function(err) {
+								if (err) {return callback(err)};
+								console.log("review removed from application current list");
+								callback();
+							});
+					},
+					function(callback) {
+						//in Volunteer: remove from in_progress
 
-				Volunteer.remove_review_in_progress(req.session.volunteerId, function(err) {
-						if (err) {return callback(err)};
-					console.log("review removed from volunteer's current list");
-						callback();
-					});
-			},
-			function(callback) {
-					//save q_1
-					var q_1 = new Question({
-						reviewer_id: req.session.volunteerId,
-						organization_id: org_id,
-						question_text: req.body.q_1,
-					});
-					//TODO: do we have to edit the q in the review to make it point to the q_id?
-					q_1.save(function(err, question) {
-						if (err) {return callback(err)};
-						console.log("q1 saved");
-						callback(err);
-					});
-			},
-			function(callback) {
-					//save q_2
-					var q_2 = new Question({
-						reviewer_id: req.session.volunteerId,
-						organization_id: org_id,
-						question_text: req.body.q_2,
-					});
-					//TODO: do we have to edit the q in the review to make it point to the q_id?
-					q_2.save(function(err, question) {
-						if (err) {return callback(err)};
-						console.log("q2 saved");
-						callback(err);
-					});
-			},
-			function(callback) {
-					//save q_3
-					var q_3 = new Question({
-						reviewer_id: req.session.volunteerId,
-						organization_id: org_id,
-						question_text: req.body.q_3,
-					});
-					//TODO: do we have to edit the q in the review to make it point to the q_id?
-					q_3.save(function(err, question) {
-						if (err) {return callback(err)};
-						console.log("q3 saved");
-						callback(err);
-					});
-			},
-			function(callback) {
-				//update average score/counts
-				console.log(req.body.kiva_fit);
-				var kiva_fit = (req.body.kiva_fit === 'true' ? 1 : 0); 
-				var clear_social_impact = (req.body.clear_social_impact === 'true' ? 1 : 0); 
-				var sustainable_model = (req.body.sustainable_model === 'true' ? 1 : 0); 
-				console.log("kiva fit:" + kiva_fit);
+						Volunteer.remove_review_in_progress(req.session.volunteerId, function(err) {
+								if (err) {return callback(err)};
+							console.log("review removed from volunteer's current list");
+								callback();
+							});
+					},
+					function(callback) {
+							//save q_1
+							var q_1 = new Question({
+								reviewer_id: req.session.volunteerId,
+								organization_id: org_id,
+								question_text: req.body.q_1,
+							});
+							//TODO: do we have to edit the q in the review to make it point to the q_id?
+							q_1.save(function(err, question) {
+								if (err) {return callback(err)};
+								console.log("q1 saved");
+								callback(err);
+							});
+					},
+					function(callback) {
+							//save q_2
+							var q_2 = new Question({
+								reviewer_id: req.session.volunteerId,
+								organization_id: org_id,
+								question_text: req.body.q_2,
+							});
+							//TODO: do we have to edit the q in the review to make it point to the q_id?
+							q_2.save(function(err, question) {
+								if (err) {return callback(err)};
+								console.log("q2 saved");
+								callback(err);
+							});
+					},
+					function(callback) {
+							//save q_3
+							var q_3 = new Question({
+								reviewer_id: req.session.volunteerId,
+								organization_id: org_id,
+								question_text: req.body.q_3,
+							});
+							//TODO: do we have to edit the q in the review to make it point to the q_id?
+							q_3.save(function(err, question) {
+								if (err) {return callback(err)};
+								console.log("q3 saved");
+								callback(err);
+							});
+					},
+					function(callback) {
+						//update average score/counts
+						console.log(req.body.kiva_fit);
+						var kiva_fit = (req.body.kiva_fit === 'true' ? 1 : 0); 
+						var clear_social_impact = (req.body.clear_social_impact === 'true' ? 1 : 0); 
+						var sustainable_model = (req.body.sustainable_model === 'true' ? 1 : 0); 
+						console.log("kiva fit:" + kiva_fit);
 
-				Application.update({"_id": org_id}, 
-					{$inc: {score_sum: req.body.recommend_rating,
-							kiva_fit_count: kiva_fit, 
-							sustainable_model_count: sustainable_model, 
-							clear_social_impact_count: clear_social_impact}
-						}, function(err) {
-					if (err) {return callback(err)};
-					console.log("score updated");
-					callback(err);
-				})
-			},
-			function(callback) {
-				var achievement = create_achievement (1, req.session.volunteerId, 0);
-				achievement.save(function(err, achiev) {
-						if (err) {return callback(err)};
-						console.log("achievement saved");
-						Volunteer.update({"_id": req.session.volunteerId}, 
-							{$inc: {num_points: achievement.points}
+						Application.update({"_id": org_id}, 
+							{$inc: {score_sum: req.body.recommend_rating,
+									kiva_fit_count: kiva_fit, 
+									sustainable_model_count: sustainable_model, 
+									clear_social_impact_count: clear_social_impact}
 								}, function(err) {
 							if (err) {return callback(err)};
-							console.log("points updated");							
+							console.log("score updated");
+							callback(err);
 						})
-						callback(err);
-					});
-			},
-		], function(err) {
-			if (err) {res.send(404);};
-			console.log("submission complete");
-			res.redirect('/review/completed/' + org_id);
+					},
+					function(callback) {
+						var achievement = create_achievement (1, req.session.volunteerId, 0);
+						achievement.save(function(err, achiev) {
+								if (err) {return callback(err)};
+								console.log("achievement saved");
+								Volunteer.update({"_id": req.session.volunteerId}, 
+									{$inc: {num_points: achievement.points}
+										}, function(err) {
+									if (err) {return callback(err)};
+									console.log("points updated");							
+								})
+								callback(err);
+							});
+					},
+				], function(err) {
+					if (err) {res.send(404);};
+					console.log("submission complete");
+					res.redirect('/review/completed/' + org_id);
+				});
+			}
 		});
 	};
 
