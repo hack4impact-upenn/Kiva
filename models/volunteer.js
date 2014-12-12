@@ -17,6 +17,8 @@ var VolunteerSchema = new Schema({
   current_review: {type: Schema.Types.ObjectId, default: null},
   is_admin: {type: Boolean, default: false},
   num_points: { type: Number, default: 0 },
+  last_login_date: {type: Date, default: Date.now},
+  consecutive_login_days: { type: Number, default: 0 }
 
 });
 

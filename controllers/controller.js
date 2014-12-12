@@ -45,6 +45,41 @@ exports.login = function(req, res) {
 						res.redirect('/admin/home');
 					} else {
 						console.log("redirecting to volunteer homepage");
+						var today   = new Date();
+						today.setHours(0,0,0,0);
+						//console.log("Today-2---------------------------------"+Date.parse(today));
+
+						var last_login_day  = new Date(Date.parse(volunteer.last_login_date));
+						last_login_day.setHours(0,0,0,0);
+						volunteer.last_login_date = Date.now();
+					//	console.log("Last----------------------------------"+Date.parse(last_login_day));
+						if(Date.parse(today) - Date.parse(last_login_day) === 86400000) {
+							volunteer.consecutive_login_days++;
+							var achievement = create_achievement (2, req.session.volunteerId, volunteer.consecutive_login_days);
+							achievement.save(function(err, achiev) {
+								if (err) {console.log(err)};	
+								volunteer.num_points += achievement.points;
+								console.log("achievement saved "+ achievement.points);								
+								volunteer.save(function(err, vol) {
+									console.log("volunteer points updated");						
+								});									
+							});
+							
+						} else {
+							if(Date.parse(today) - Date.parse(last_login_day) > 86400000){
+								volunteer.consecutive_login_days = 1;	
+								var achievement = create_achievement (3, req.session.volunteerId, -1);
+								achievement.save(function(err, achiev) {
+									if (err) {console.log(err)};
+									console.log("achievement saved "+ achievement.points);
+								});							
+							}
+							volunteer.save(function(err, vol) {
+									console.log("Updated login day and consec");						
+								});	
+						}
+										
+						//console.log("After----------------------------------"+volunteer.consecutive_login_days);
 						res.redirect('/volunteer/home');
 					}
 				} else if (volunteer === null) {
@@ -328,7 +363,7 @@ exports.save_review = function(req, res) {
 		);
 };
 
-create_achievement = function(achievement_id, volunteer_id) {
+create_achievement = function(achievement_id, volunteer_id, days_in_a_row) {
 	var numPoints = 0;
 	var string = "";
 	var dateNow = new Date();
@@ -336,6 +371,14 @@ create_achievement = function(achievement_id, volunteer_id) {
 		case(1):
 			numPoints = 10;
 			string = "You just submitted a review!";
+			break;
+		case(2):
+			numPoints = days_in_a_row * 2;
+			string = "You have logged in " + days_in_a_row+ " days in a row!";
+			break;
+		case(3):
+			numPoints = 0;
+			string = "Welcome back! Come back every day to earn bonus points";
 			break;
 		default:
 			string = "achievement error";
@@ -353,10 +396,12 @@ create_achievement = function(achievement_id, volunteer_id) {
 }
 
 exports.get_achievements = function(req, res) {
-	Achievement.find({"reviewer_id": req.session.volunteerId}, function(err, achievements) {
+	Achievement.find({"reviewer_id": req.session.volunteerId})
+		.sort({date: -1})
+		.exec( function(err, achievements) {
 		if(err) {console.log(err)}
 			res.send(achievements);
-	});
+		});
 }
 
 
@@ -491,7 +536,7 @@ exports.submit_review = function(req, res) {
 				})
 			},
 			function(callback) {
-				var achievement = create_achievement (1, req.session.volunteerId);
+				var achievement = create_achievement (1, req.session.volunteerId, 0);
 				achievement.save(function(err, achiev) {
 						if (err) {return callback(err)};
 						console.log("achievement saved");
@@ -519,6 +564,18 @@ exports.load_completed_reviews = function(req, res) {
 			res.send(reviews);
 	});
 };
+
+exports.load_leaderboard = function(req, res) {
+	Volunteer
+	.find({})
+	.sort({num_points: -1})
+	.limit(10)
+	.exec(function(err, posts) {
+		if(err) {console.log(err)}
+		res.send(posts);
+	});
+};
+
 
 
 
