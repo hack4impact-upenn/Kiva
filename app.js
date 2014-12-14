@@ -66,12 +66,12 @@ app.get("/get_questions/:org_id", controller.get_questions);
 app.get("/volunteer/get_min_reviewed_application", ensure_auth, controller.getMinReviewedApplication);
 app.get("/volunteer/load", ensure_auth, controller.loadVolunteer); //loads data of a single User from session info
 app.get("/volunteer/get_completed_applications", ensure_auth, controller.getCompletedApplications);
-app.get("/volunteer/get_achievements", ensure_auth, controller.getAchievements);
-
+app.get("/volunteer/load_leaderboard", controller.load_leaderboard);
 
 //signs up a volunteer
 app.post("/volunteer/submit-volunteer", ensure_auth, controller.createVolunteer);
 app.get("/volunteer/finished-training", ensure_auth, controller.volunteerFinishedTraining);
+app.get("/volunteer/get_achievements", ensure_auth, controller.getAchievements);
 
 //pages
 app.get("/volunteer/home", ensure_auth, controller.volunteerHome);
@@ -116,5 +116,18 @@ app.get("/admin/pull_applications_rest", ensure_admin, controller.send_applicati
 
 
 app.get("/admin/pull_volunteers:approval", ensure_admin, controller.send_volunteers);
+app.get("/admin_submit", controller.submit_application);
+app.post("/post-application", controller.create_application);
+app.get("/admin_applications", controller.view_applications);
+app.get("/admin/application/:id", controller.view_one_application);
+app.get("/admin/load_application/:id", controller.load_single_application);
+app.post("/admin/update_application/:id", controller.save_application_changes);
+
+app.post("/admin/volunteer/approve", controller.approve_volunteer);
+app.post("/admin/volunteer/deny", controller.deny_volunteer);
+app.get("/admin/pull_applications_short", controller.send_applications_short);
+app.get("/admin/pull_applications_rest", controller.send_applications_rest);
+
+app.get("/admin/pull_volunteers:approval", controller.send_volunteers);
 module.exports = app;
 
