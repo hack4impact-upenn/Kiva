@@ -1,478 +1,401 @@
 <!DOCTYPE html>
 
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
    
-    <link href="/kiva_style.css" rel="stylesheet" type="text/css">
-    <link href="/tabs_style.css" rel="stylesheet" type="text/css">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <link href="/kiva_style.css" rel="stylesheet" type="text/css">
+        <link href="/tabs_style.css" rel="stylesheet" type="text/css">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.3/css/jquery.dataTables.css">
+      
+        <!-- jQuery -->
+        <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+      
+        <!-- DataTables -->
+        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+        
+        <!-- Bootstrap -->
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <title>Submit an Application</title>
+    </head> 
 
+    <body onload="init()">  
+        <% include admin_header %>  
+        <ul id="tabs">
+            <li><a href="#apps">Applications</a></li>
+            <li><a href="#volunteers">Volunteers</a></li>
+        </ul>
+        <div class="tabContent" id="apps">
+            <h1>Application Dashboard</h1>
+            <div id = "firstTable">
+                <h3>Application Shortlist</h3>
+                <table id="appsTableShort" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Name</td>
+                            <th>Avg. Rating</td>
+                            <th>Kiva Fit</td>
+                            <th>Business Model</td>
+                            <th>Social Impact</td>    
+                            <th>Number of reviews</td>   
+                            <th>Open to review</td> 
+                            <th>More details</td> 
+                        </tr>
+                    </thead>
+                </table>
+                <br>
+            </div>
+            <div>
+                <h3>All other applications</h3>
+                <table id="appsTableRest" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Name</td>
+                            <th>Avg. Rating</td>
+                            <th>Kiva Fit</td>
+                            <th>Business Model</td>
+                            <th>Social Impact</td>    
+                            <th>Number of reviews</td>   
+                            <th>Open to review</td> 
+                            <th>More details</td> 
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
 
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.3/css/jquery.dataTables.css">
-  
-    <!-- jQuery -->
-    <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-  
-    <!-- DataTables -->
-    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
-    
-    <!-- Bootstrap -->
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
-
-
-    <title>Submit an Application</title>
-  </head> 
-
-  <body onload="init()">  
-    <% include admin_header %>  
-
-
-
-
-
-
-    <ul id="tabs">
-  <li><a href="#apps">Applications</a></li>
-  <li><a href="#volunteers">Volunteers</a></li>
-
-</ul>
-    <div class="tabContent" id="apps">
-  <h1>Application Dashboard</h1>
-  <div id = "firstTable">
-    <h3>Application Shortlist</h3>
-    <table id="appsTableShort" class="display" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-          <th>Name</td>
-          <th>Avg. Rating</td>
-          <th>Kiva Fit</td>
-          <th>Business Model</td>
-          <th>Social Impact</td>    
-          <th>Number of reviews</td>   
-          <th>Open to review</td> 
-          <th>More details</td> 
-
-            </tr>
-        </thead>
-     </table>
-     <br>
-  </div>
-
-  <div>
-    <h3>All other applications</h3>
-    <table id="appsTableRest" class="display" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-          <th>Name</td>
-          <th>Avg. Rating</td>
-          <th>Kiva Fit</td>
-          <th>Business Model</td>
-          <th>Social Impact</td>    
-          <th>Number of reviews</td>   
-          <th>Open to review</td> 
-          <th>More details</td> 
-
-            </tr>
-        </thead>
-     </table>
-  </div>
-
-
-
-</div>
-
-<div class="tabContent" id="volunteers">
-  <h2>Volunteer Dashboard</h2>
-  
-  <div id=firstTable>
-    <h3>Unprocessed volunteers</h3>
-    <table id="volsTableUnapp" class="display" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-          <th>First name</td>
-          <th>Last name</td>
-          <th>LinkedIn</td>
-          <th>Resume</td>
-          <th>Why Kiva?</td>    
-          <th>Skills</td>   
-          <th>Approve</td>   
-          <th>Deny</td> 
-            </tr>
-        </thead>
-     </table>
-  </div>
-  
-  <div>
-    <h3>Approved volunteers</h3>
-    <table id="volsTableApp" class="display" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-          <th>First name</td>
-          <th>Last name</td>
-          <th># of completed reviews</td>
-          <th>Current review</td>    
-          <th>Completed training?</td>
-          <th>Points</td>
-            </tr>
-        </thead>
-     </table>
-  </div>
-  
-</div>
+        <div class="tabContent" id="volunteers">
+            <h2>Volunteer Dashboard</h2>
+            <div id="firstTable">
+                <h3>Unprocessed volunteers</h3>
+                    <table id="volsTableUnapp" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>First name</td>
+                                <th>Last name</td>
+                                <th>LinkedIn</td>
+                                <th>Resume</td>
+                                <th>Why Kiva?</td>    
+                                <th>Skills</td>   
+                                <th>Approve</td>   
+                                <th>Deny</td> 
+                            </tr>
+                        </thead>
+                    </table>
+            </div>
+            <div>
+                <h3>Approved volunteers</h3>
+                <table id="volsTableApp" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>First name</td>
+                            <th>Last name</td>
+                            <th># of completed reviews</td>
+                            <th>Current review</td>    
+                            <th>Completed training?</td>
+                            <th>Points</td>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
 
 <!-- A modal to show ""Why Kiva essays -->
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Why Kiva?</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Why Kiva?</h4>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <!--
-  
-
-
-
-
-
---> 
-  </body>
+    </body>
 
     <script>
  
       // Ajax call for shortilisted applications data
-      var load_apps_short = function() {
-        $.getJSON( "/admin/pull_applications_short", function( data ) {
-          console.log(data);
-          var data2 = {"data" : data};
-          console.log(JSON.stringify(data2));
-          var table = document.getElementById("appsTableShort");
-          console.log($(table));
-          console.log(jQuery.type(data));
-          var string = JSON.stringify(data);
+        var load_apps_short = function() {
+            $.getJSON( "/admin/pull_applications_short", function( data ) {
+                var data2 = {"data" : data};
+                var table = document.getElementById("appsTableShort");
+                var string = JSON.stringify(data);
+                $.each( data, function( key, value ) {
+                    value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
+                    var linkstr = '<a href="/admin/application/'+ value._id + '">Click here</a>'
+                    value.details_view = linkstr;
+                    value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
+                    value.kiva_fit_count_display = value.kiva_fit_count + " / " + value.num_reviews;
+                    value.sustainable_model_count_display = value.sustainable_model_count + " / " + value.num_reviews;
+                    value.clear_social_impact_count_display = value.clear_social_impact_count + " / " + value.num_reviews;
+                });
+                 
+                $(table).dataTable({
+                    "data": data,        
+                    "columns": [
+                      { "data": "organization_name" },
+                      { "data": "rating" },
+                      { "data": "kiva_fit_count_display" },
+                      { "data": "sustainable_model_count_display" },
+                      { "data": "clear_social_impact_count_display" },
+                      { "data": "num_reviews" },
+                      { "data": "open_to_review" },
+                      { "data": "details_view" }
+                    ]
+                });
+            });
+        }
 
-          $.each( data, function( key, value ) {
-            value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
-            var linkstr = '<a href="/admin/application/'+ value._id + '">Click here</a>'
-           console.log(linkstr);
-            value.details_view = linkstr;
-            value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
-            value.kiva_fit_count_display = value.kiva_fit_count + " / " + value.num_reviews;
-            value.sustainable_model_count_display = value.sustainable_model_count + " / " + value.num_reviews;
-            value.clear_social_impact_count_display = value.clear_social_impact_count + " / " + value.num_reviews;
-
-          });
-         
-         console.log(jQuery.type(data));
-          $(table).dataTable({
-            "data": data,
-            
-            "columns": [
-              { "data": "organization_name" },
-              { "data": "rating" },
-              { "data": "kiva_fit_count_display" },
-              { "data": "sustainable_model_count_display" },
-              { "data": "clear_social_impact_count_display" },
-              { "data": "num_reviews" },
-              { "data": "open_to_review" },
-              { "data": "details_view" }
-            ]
-        
-          });
-        });
-      }
-
-      // Ajax call for shortilisted applications data
-      var load_apps_rest = function() {
-        $.getJSON( "/admin/pull_applications_rest", function( data ) {
-          console.log(data);
-          var data2 = {"data" : data};
-          console.log(JSON.stringify(data2));
-          var table = document.getElementById("appsTableRest");
-          console.log($(table));
-          console.log(jQuery.type(data));
-          var string = JSON.stringify(data);
-
-          $.each( data, function( key, value ) {
-            value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
-            var linkstr = '<a href="/admin/application/'+ value._id + '">Click here</a>'
-           console.log(linkstr);
-            value.details_view = linkstr;
-            value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
-            value.kiva_fit_count_display = value.kiva_fit_count + " / " + value.num_reviews;
-            value.sustainable_model_count_display = value.sustainable_model_count + " / " + value.num_reviews;
-            value.clear_social_impact_count_display = value.clear_social_impact_count + " / " + value.num_reviews;
-
-
-          });
-         
-         console.log(jQuery.type(data));
-          $(table).dataTable({
-            "data": data,
-            
-            "columns": [
-              { "data": "organization_name" },
-              { "data": "rating" },
-              { "data": "kiva_fit_count_display" },
-              { "data": "sustainable_model_count_display" },
-              { "data": "clear_social_impact_count_display" },
-              { "data": "num_reviews" },
-              { "data": "open_to_review" },
-              { "data": "details_view" }
-            ]
-        
-          });
-        });
-      }
-
-
-      
+    // Ajax call for shortilisted applications data
+        var load_apps_rest = function() {
+            $.getJSON( "/admin/pull_applications_rest", function( data ) {
+                console.log(data);
+                var data2 = {"data" : data};
+                console.log(JSON.stringify(data2));
+                var table = document.getElementById("appsTableRest");
+                console.log($(table));
+                console.log(jQuery.type(data));
+                var string = JSON.stringify(data);
+                $.each( data, function( key, value ) {
+                    value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
+                    var linkstr = '<a href="/admin/application/'+ value._id + '">Click here</a>'
+                    value.details_view = linkstr;
+                    value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
+                    value.kiva_fit_count_display = value.kiva_fit_count + " / " + value.num_reviews;
+                    value.sustainable_model_count_display = value.sustainable_model_count + " / " + value.num_reviews;
+                    value.clear_social_impact_count_display = value.clear_social_impact_count + " / " + value.num_reviews;
+                });
+             
+                console.log(jQuery.type(data));
+                $(table).dataTable({
+                    "data": data,
+                    "columns": [
+                      { "data": "organization_name" },
+                      { "data": "rating" },
+                      { "data": "kiva_fit_count_display" },
+                      { "data": "sustainable_model_count_display" },
+                      { "data": "clear_social_impact_count_display" },
+                      { "data": "num_reviews" },
+                      { "data": "open_to_review" },
+                      { "data": "details_view" }
+                    ]
+                });
+            });
+        }
+  
       // ajax call for unprocessed volunteers data
-      var load_vols_unapp = function() {
-        var approval = false;
-        $.getJSON( "/admin/pull_volunteers" + approval, function( data ) {
-          console.log(data);
-          var data2 = {"data" : data};
-          console.log(JSON.stringify(data2));
-          var table = document.getElementById("volsTableUnapp");
-          console.log($(table));
-          console.log(jQuery.type(data));
-          var string = JSON.stringify(data);
-        
-          $.each( data, function( key, value ) {
-            value.linked_in = '<a href = "' + value.linked_in + 
-                '" target="_blank">' + value.first_name + '\'s LinkedIn</a>';
-            value.resume_link = '<a href = "' + value.resume_link + 
-                '" target="_blank">' + value.first_name + '\'s resume</a>';
-            
-            //Escaping the " signs in the text
-            //var escape = require('escape-html');
-            //value.why_kiva = escape(value.why_kiva);
-            value.why_kiva = value.why_kiva.replace(/"/g, '&quot;');
+        var load_vols_unapp = function() {
+            var approval = false;
+            $.getJSON( "/admin/pull_volunteers" + approval, function( data ) {
+                var data2 = {"data" : data};
+                var table = document.getElementById("volsTableUnapp");
+                var string = JSON.stringify(data);
 
-            value.why_kiva = '<!-- Button trigger modal -->' +
-                '<a class="modal-button" data-toggle="modal"' +
-                ' data-target="#myModal" content="' + value.why_kiva + '">' +
-                value.first_name + '\'s response' + '</a>'
-              
-            value.approve_vol = '<form class="volunteer-approve" action="/admin/volunteer/approve" method="post">' +
-                                    '<input type="hidden" name="id" value="' + value._id + '" />' +
-                                    '<input type="submit" value="Approve" class="btn btn-primary">' +
-                                '</form>';
-            
-            value.deny_vol = '<form class="volunteer-deny" action="/admin/volunteer/deny" method="post">' +
-                                    '<input type="hidden" name="id" value="' + value._id + '" />' +
-                                    '<input type="submit" value="Deny" class="btn btn-primary">' +
-                             '</form>';
-          });
-            
-          console.log(data);
-          $(table).dataTable({
-            "data": data,
-            
-            "columns": [
-              { "data": "first_name" },
-              { "data": "last_name" },
-              { "data": "linked_in" },
-              { "data": "resume_link" },
-              { "data": "why_kiva" },
-              { "data": "what_skills" },
-              { "data": "approve_vol" },
-              { "data": "deny_vol" }
-            ]
-        
-          });
-        });
-      }    
+                $.each( data, function( key, value ) {
+                    value.linked_in = '<a href = "' + value.linked_in + 
+                    '" target="_blank">' + value.first_name + '\'s LinkedIn</a>';
+                    value.resume_link = '<a href = "' + value.resume_link + 
+                    '" target="_blank">' + value.first_name + '\'s resume</a>';
+
+                    //Escaping the " signs in the text
+                    //var escape = require('escape-html');
+                    //value.why_kiva = escape(value.why_kiva);
+                    value.why_kiva = value.why_kiva.replace(/"/g, '&quot;');
+
+                    value.why_kiva = '<!-- Button trigger modal -->' +
+                    '<a class="modal-button" data-toggle="modal"' +
+                    ' data-target="#myModal" content="' + value.why_kiva + '">' +
+                    value.first_name + '\'s response' + '</a>'
+
+                    value.approve_vol = '<form class="volunteer-approve" action="/admin/volunteer/approve" method="post">' +
+                                        '<input type="hidden" name="id" value="' + value._id + '" />' +
+                                        '<input type="submit" value="Approve" class="btn btn-primary">' +
+                                    '</form>';
+
+                    value.deny_vol = '<form class="volunteer-deny" action="/admin/volunteer/deny" method="post">' +
+                                        '<input type="hidden" name="id" value="' + value._id + '" />' +
+                                        '<input type="submit" value="Deny" class="btn btn-primary">' +
+                                 '</form>';
+                });
+
+                $(table).dataTable({
+                    "data": data,
+                    "columns": [
+                        { "data": "first_name" },
+                        { "data": "last_name" },
+                        { "data": "linked_in" },
+                        { "data": "resume_link" },
+                        { "data": "why_kiva" },
+                        { "data": "what_skills" },
+                        { "data": "approve_vol" },
+                        { "data": "deny_vol" }
+                    ]
+                });
+            });
+        }    
 
       // ajax call for approved volunteers data
-      var load_vols_app = function() {
-        var approval = true;
-        $.getJSON( "/admin/pull_volunteers" + approval, function( data ) {
-          console.log(data);
-          var data2 = {"data" : data};
-          console.log(JSON.stringify(data2));
-          var table = document.getElementById("volsTableApp");
-          console.log($(table));
-          console.log(jQuery.type(data));
-          var string = JSON.stringify(data);
+        var load_vols_app = function() {
+            var approval = true;
+            $.getJSON( "/admin/pull_volunteers" + approval, function( data ) {
+                var data2 = {"data" : data};
+                var table = document.getElementById("volsTableApp");
+                var string = JSON.stringify(data);
 
-          $.each( data, function( key, value ) {
-            value.reviews_completed = value.reviews_completed.length;
-            value.finished_training = (value.finished_training) ? 'yes' : 'no';
-          });
+                $.each( data, function( key, value ) {
+                    value.reviews_completed = value.reviews_completed.length;
+                    value.finished_training = (value.finished_training) ? 'yes' : 'no';
+                });
             
-          var oTable = $(table).dataTable({
-            "data": data,
-            
-            "columns": [
-              { "data": "first_name" },
-              { "data": "last_name" },
-              { "data": "reviews_completed" },
-              { "data": "current_review" },
-              { "data": "finished_training" },
-              { "data": "num_points" }
-
-            ]
-        
-          });
-          
-        });
-      } 
+                var oTable = $(table).dataTable({
+                    "data": data,
+                        "columns": [
+                        { "data": "first_name" },
+                        { "data": "last_name" },
+                        { "data": "reviews_completed" },
+                        { "data": "current_review" },
+                        { "data": "finished_training" },
+                        { "data": "num_points" }
+                    ]
+                });
+            });
+        } 
 
     </script>
-
     <script type="text/javascript">
-    
 
-    var tabLinks = new Array();
-    var contentDivs = new Array();
+        var tabLinks = new Array();
+        var contentDivs = new Array();
 
-    function init() {
+        function init() {
+            // Grab the tab links and content divs from the page
+            var tabListItems = document.getElementById('tabs').childNodes;
+            for ( var i = 0; i < tabListItems.length; i++ ) {
+                if ( tabListItems[i].nodeName == "LI" ) {
+                    var tabLink = getFirstChildWithTagName( tabListItems[i], 'A' );
+                    var id = getHash( tabLink.getAttribute('href') );
+                    tabLinks[id] = tabLink;
+                    contentDivs[id] = document.getElementById( id );
+                }
+            }
 
-      // Grab the tab links and content divs from the page
-      var tabListItems = document.getElementById('tabs').childNodes;
-      for ( var i = 0; i < tabListItems.length; i++ ) {
-        if ( tabListItems[i].nodeName == "LI" ) {
-          var tabLink = getFirstChildWithTagName( tabListItems[i], 'A' );
-          var id = getHash( tabLink.getAttribute('href') );
-          tabLinks[id] = tabLink;
-          contentDivs[id] = document.getElementById( id );
+            // Assign onclick events to the tab links, and
+            // highlight the last clicked tab (retrieve from local storage)
+            var lastTab = undefined;
+            if(typeof(Storage) !== "undefined") {
+                if (localStorage.lastTab) {
+                    lastTab = localStorage.lastTab;
+                }
+            }
+            var i = 0;
+            for ( var id in tabLinks ) {
+                tabLinks[id].onclick = showTab;
+                tabLinks[id].onfocus = function() { this.blur() };
+                console.log($(tabLinks[id]).attr('href'));
+
+                if (lastTab == undefined && i == 0) {
+                    lastTab = $(tabLinks[id]).attr('href');
+                };
+                if ( $(tabLinks[id]).attr('href') == lastTab ) tabLinks[id].className = 'selected';
+            }
+
+            // Hide all content divs except the first
+
+            for ( var id in contentDivs ) {
+                if ( tabLinks[id].className != 'selected' ) contentDivs[id].className = 'tabContent hide';
+            }
         }
-      }
 
-      // Assign onclick events to the tab links, and
-      // highlight the last clicked tab (retrieve from local storage)
-      var lastTab = undefined;
+        function showTab() {
+            var selectedId = getHash( this.getAttribute('href') );
 
-      if(typeof(Storage) !== "undefined") {
-        
-        if (localStorage.lastTab) {
-          lastTab = localStorage.lastTab;
+            if(typeof(Storage) !== "undefined") {
+                localStorage.lastTab = "#" + selectedId;
+            }
+            // Highlight the selected tab, and dim all others.
+            // Also show the selected content div, and hide all others.
+
+            for ( var id in contentDivs ) {
+                if ( id == selectedId ) {
+                    tabLinks[id].className = 'selected';
+                    contentDivs[id].className = 'tabContent';
+                } else {
+                    tabLinks[id].className = '';
+                    contentDivs[id].className = 'tabContent hide';
+                }
+            }
+            // Stop the browser following the link
+            return false;
         }
 
-      }
-
-      var i = 0;
-      for ( var id in tabLinks ) {
-        tabLinks[id].onclick = showTab;
-        tabLinks[id].onfocus = function() { this.blur() };
-        console.log($(tabLinks[id]).attr('href'));
-        
-        if (lastTab == undefined && i == 0) {
-          lastTab = $(tabLinks[id]).attr('href');
-        };
-
-        if ( $(tabLinks[id]).attr('href') == lastTab ) tabLinks[id].className = 'selected';
-      }
-
-      // Hide all content divs except the first
-
-      for ( var id in contentDivs ) {
-        if ( tabLinks[id].className != 'selected' ) contentDivs[id].className = 'tabContent hide';
-      }
-    }
-
-    function showTab() {
-      var selectedId = getHash( this.getAttribute('href') );
-
-      if(typeof(Storage) !== "undefined") {
-        localStorage.lastTab = "#" + selectedId;
-      }
-      // Highlight the selected tab, and dim all others.
-      // Also show the selected content div, and hide all others.
-
-      for ( var id in contentDivs ) {
-        if ( id == selectedId ) {
-          tabLinks[id].className = 'selected';
-          contentDivs[id].className = 'tabContent';
-                      
-        } else {
-          tabLinks[id].className = '';
-          contentDivs[id].className = 'tabContent hide';
+        function getFirstChildWithTagName( element, tagName ) {
+            for ( var i = 0; i < element.childNodes.length; i++ ) {
+                if ( element.childNodes[i].nodeName == tagName ) return element.childNodes[i];
+            }
         }
-      }
 
-      // Stop the browser following the link
-      return false;
-    }
+        function getHash( url ) {
+            var hashPos = url.lastIndexOf ( '#' );
+            return url.substring( hashPos + 1 );
+        }
 
-    function getFirstChildWithTagName( element, tagName ) {
-      for ( var i = 0; i < element.childNodes.length; i++ ) {
-        if ( element.childNodes[i].nodeName == tagName ) return element.childNodes[i];
-      }
-    }
+        $( document ).ready(function() {
+            load_apps_short();
+            load_apps_rest();
+            load_vols_unapp();
+            load_vols_app();
 
-    function getHash( url ) {
-      var hashPos = url.lastIndexOf ( '#' );
-      return url.substring( hashPos + 1 );
-    }
+            $('body').delegate('.volunteer-approve', 'submit', function(e) {
+                e.preventDefault();
+                var form = $(this).serializeArray();
+                console.log(form);
+                $.post('/admin/volunteer/approve', form, function() {
+                    console.log('done');
+                    var oTable = $('#volsTableUnapp').dataTable();
+                    oTable.fnDestroy();
+                    load_vols_unapp();
+                    var oTable = $('#volsTableApp').dataTable();
+                    oTable.fnDestroy();
+                    load_vols_app();
+                    console.log(form);
+                });
+            });
 
-    $( document ).ready(function() {
-      load_apps_short();
-      load_apps_rest();
-      load_vols_unapp();
-      load_vols_app();
-
-      $('body').delegate('.volunteer-approve', 'submit', function(e) {
-        e.preventDefault();
-        var form = $(this).serializeArray();
-        console.log(form);
-        $.post('/admin/volunteer/approve', form, function() {
-          console.log('done');
-          var oTable = $('#volsTableUnapp').dataTable();
-          oTable.fnDestroy();
-          load_vols_unapp();
-          var oTable = $('#volsTableApp').dataTable();
-          oTable.fnDestroy();
-          load_vols_app();
-          console.log(form);
+            $('body').delegate('.volunteer-deny', 'submit', function(ee) {
+                ee.preventDefault();
+                var form = $(this).serializeArray();
+                console.log(form);
+                console.log('inside deny!!!');
+                $.post('/admin/volunteer/deny', form, function() {
+                    console.log('done with deny!!!');
+                    var oTable = $('#volsTableUnapp').dataTable();
+                    oTable.fnDestroy();
+                    load_vols_unapp();
+                });
+            });
         });
-      });
-
-      $('body').delegate('.volunteer-deny', 'submit', function(ee) {
-        ee.preventDefault();
-        var form = $(this).serializeArray();
-        console.log(form);
-        console.log('inside deny!!!');
-        $.post('/admin/volunteer/deny', form, function() {
-          console.log('done with deny!!!');
-          var oTable = $('#volsTableUnapp').dataTable();
-          oTable.fnDestroy();
-          load_vols_unapp();
-        });
-      
-      });
-
-
-    });
         
-    $( 'body' ).delegate( '.modal-button', 'click', function() {
-      $('.modal-body').html($(this).attr('content'));
-    });
-    
+        $( 'body' ).delegate( '.modal-button', 'click', function() {
+            $('.modal-body').html($(this).attr('content'));
+        }); 
+
     </script>
-
-  </body>
 </html>

@@ -10,27 +10,22 @@
         <meta name="author" content="">
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <!-- DataTables -->
+        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <!-- DataTables CSS -->
 
-    <!-- DataTables -->
-    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
-
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.3/css/jquery.dataTables.css">
-
-    <link href="/kiva_style.css" rel="stylesheet" type="text/css">
-
-
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.3/css/jquery.dataTables.css">
+        <link href="/kiva_style.css" rel="stylesheet" type="text/css">
         <title>Organization details</title>
-    
     </head>
 
-<body>
-    <% include admin_header %>  
-
+    <body>
+        <% include admin_header %>  
         <div id="apps-form">
-        <h3> Update organization information </h3>        
-        <br />
-                <form id="apps" action="" method="POST">
+            <h3> Update organization information </h3>        
+            <br />
+            <form id="apps" action="" method="POST">
                 <label for="shortlisted"> Short list application? (Be sure to hit submit below!) </label>
                 <div class="radio">
                     <label>
@@ -63,7 +58,7 @@
                 </div>
 
 
-             <label for="organization_name"> Org. Name </label>
+                <label for="organization_name"> Org. Name </label>
                 <input type="text" id="organization_name" name="organization_name" size="20" class="form-control" placeholder=""><br>
                
                 <label for="description"> Description </label>
@@ -96,76 +91,69 @@
                 <input type="button" value="Update" name="update_application" onclick="askForSave()" />
                 <input type="button" value="Cancel" name="cancel_update" onclick="cancelGoBack()" />
             </form>
-          </div>
-
-
-
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        </div>
+        
     </body>
     <script type='text/javascript'>    
      
-            function load_application() {
-                     var form=document.getElementById("apps");
-                     $.getJSON('<%= "/admin/load_application/" + app_id %>', function(application) {   $.each(application, function(name, val) {
-                                    console.log(name + ":" + val);
-                                    switch(name)
-                                    {
-                                        case ("shortlisted"): 
-                                        case ("open_to_review"):
-                                            var i = val ? 0 : 1;        
-                                            $('input[name=' + name + ']:nth(' + i + ')').attr('checked', true);
-                                            break;                                  
-                                        default:
-                                            $("#" + name).val(val);
-                                            break;
-                                    }
-                            });
-                     });
-            };
+        function load_application() {
+            var form=document.getElementById("apps");
+                $.getJSON('<%= "/admin/load_application/" + app_id %>', function(application) {   $.each(application, function(name, val) {
+                    switch(name) {
+                        case ("shortlisted"): 
+                        case ("open_to_review"):
+                            var i = val ? 0 : 1;        
+                            $('input[name=' + name + ']:nth(' + i + ')').attr('checked', true);
+                            break;                                  
+                        default:
+                            $("#" + name).val(val);
+                            break;
+                    }
+                });
+            });
+        };
 
-          var load_questions = function() {
-                $.getJSON( ' <%= "/get_questions/" + app_id %> ', function(data) {
-                  console.log(data);
-                  var table = document.getElementById("questionsTable");
-                  console.log($(table));
-                  console.log(jQuery.type(data));
-                  var string = JSON.stringify(data);
-                  var oTable = $(table).dataTable({
+        var load_questions = function() {
+            $.getJSON( ' <%= "/get_questions/" + app_id %> ', function(data) {
+                console.log(data);
+                var table = document.getElementById("questionsTable");
+                console.log($(table));
+                console.log(jQuery.type(data));
+                var string = JSON.stringify(data);
+                var oTable = $(table).dataTable({
                     "data": data,  
                     "columns": [
-                      { "data": "question_text" },
-                      { "data": "votes" },
-                    ], 
+                        { "data": "question_text" },
+                        { "data": "votes" },
+                        ], 
                     "order": [[ 1, "desc" ]]
-                  });  
-                });
-              }; 
+                });  
+            });
+        }; 
 
-            function askForSave() {
-                var form=document.getElementById("apps");
-                form.action='<%= "/admin/update_application/" + app_id %>';
-                form.submit();
-            };
-            function cancelGoBack() {
-                var form=document.getElementById("apps");
-                form.method ="GET";
-                form.action='<%= "/admin_applications/" %>';
-                form.submit();            
-                
-            };
+        function askForSave() {
+            var form=document.getElementById("apps");
+            form.action='<%= "/admin/update_application/" + app_id %>';
+            form.submit();
+        };
+        
+        function cancelGoBack() {
+            var form=document.getElementById("apps");
+            form.method ="GET";
+            form.action='<%= "/admin_applications/" %>';
+            form.submit();            
+        };
 
-            $( document ).ready(function() {
-
-              $( "#click_for_questions" ).click(function() {
+        $( document ).ready(function() {
+            $( "#click_for_questions" ).click(function() {
                 $( "#questions" ).toggle( "slow", function() {
-                  // Animation complete.
+                // Animation complete.
                 });
-              });
+            });
 
-               load_application();
-               load_questions();
-             });
+            load_application();
+            load_questions();
+        });
 
-
-        </script>
+    </script>
 </html>

@@ -12,15 +12,11 @@
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-
         <title>Login</title>
     </head>
 
     <body>
-
         <div id="wrapper">
-
         <!-- <div id="content"> -->
 
             <p><div id="blurb"></p>
@@ -33,7 +29,7 @@
                 <h2>Login</h2>
                 <form action="/login" method="POST" class="kiva-form">
                     <% if (message) { %>
-                    <span style="color:red"><%= message %></span>
+                        <span style="color:red"><%= message %></span>
                     <% } %>
                     <input type="text" name="email_address" size="25" class="form-control" placeholder="Email">
                     <input type="password" name="password" size="25" class="form-control" placeholder="Password"><br>
@@ -48,7 +44,6 @@
                     <input type="submit" class="btn btn-primary" value="Admins Only"/>
                 </form>
             </div>
-
         </div>
         <% include footer %>
 
@@ -59,5 +54,4 @@
             });
         </script>
     </body>
-
 </html>

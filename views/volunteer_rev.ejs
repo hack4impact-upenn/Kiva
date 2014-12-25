@@ -1,37 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-
-     <link href="" rel="stylesheet" type="text/css">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-
-    <title>Submit an Application</title>
-    <script>
-      $.get("/admin/view_volunteer/:id", function(data) {
-          $('applicant-info').html("<h1>" + data.first_name + " " + data.last_name + "</h1>");
-      });
-
-    </script>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
+        <link href="" rel="stylesheet" type="text/css">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
-  </head>
+        <title>Submit an Application</title>
+        <script>
+            $.get("/admin/view_volunteer/:id", function(data) {
+            $('applicant-info').html("<h1>" + data.first_name + " " + data.last_name + "</h1>");
+            });
+        </script>
+    </head>
+    <body>
+        <div id="applicant-info">
 
-  <body>
+        </div>
 
-
-    <div id="applicant-info">
-
-    </div>
-
-  </body>
-
-
-  </html>
+    </body>
+</html>

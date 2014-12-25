@@ -19,7 +19,9 @@ mongoose.connect(uristring, function (err, res) {
 });
 
 //controllers
-var controller = require('./controllers/controller.js');
+var admin_controller = require('./controllers/admin_controller.js');
+var volunteer_controller = require('./controllers/volunteer_controller.js');
+
 
 //other boiler plate
 app.use(express.static(__dirname + '/public'));
@@ -54,80 +56,80 @@ function ensure_admin(req, res, next) {
 }
 
 //General Online
-app.get("/", controller.index);
-app.post("/login", controller.login);
-app.get("/load_application/:org_id", controller.load_application);
-app.get("/logout", controller.logout);
-app.get("/get_questions/:org_id", controller.get_questions);
+app.get("/", volunteer_controller.index);
+app.post("/login", volunteer_controller.login);
+app.get("/load_application/:org_id", volunteer_controller.load_application);
+app.get("/logout", volunteer_controller.logout);
+app.get("/get_questions/:org_id", volunteer_controller.get_questions);
 
 /***** Volunteer requests ******/
 
 //Loads data
-app.get("/volunteer/get_min_reviewed_application", ensure_auth, controller.getMinReviewedApplication);
-app.get("/volunteer/load", ensure_auth, controller.loadVolunteer); //loads data of a single User from session info
-app.get("/volunteer/get_completed_applications", ensure_auth, controller.getCompletedApplications);
-app.get("/volunteer/load_leaderboard", controller.load_leaderboard);
+app.get("/volunteer/get_min_reviewed_application", ensure_auth, volunteer_controller.getMinReviewedApplication);
+app.get("/volunteer/load", ensure_auth, volunteer_controller.loadVolunteer); //loads data of a single User from session info
+app.get("/volunteer/get_completed_applications", ensure_auth, volunteer_controller.getCompletedApplications);
+app.get("/volunteer/load_leaderboard", volunteer_controller.load_leaderboard);
 
 //signs up a volunteer
-app.post("/volunteer/submit-volunteer", ensure_auth, controller.createVolunteer);
-app.get("/volunteer/finished-training", ensure_auth, controller.volunteerFinishedTraining);
-app.get("/volunteer/get_achievements", ensure_auth, controller.getAchievements);
+app.post("/volunteer/submit-volunteer", ensure_auth, volunteer_controller.createVolunteer);
+app.get("/volunteer/finished-training", ensure_auth, volunteer_controller.volunteerFinishedTraining);
+app.get("/volunteer/get_achievements", ensure_auth, volunteer_controller.getAchievements);
 
 //pages
-app.get("/volunteer/home", ensure_auth, controller.volunteerHome);
-app.get("/volunteer/training", ensure_auth, controller.volunteerTraining);
-app.get("/volunteer/sign-up", ensure_auth, controller.volunteerSignupPage);
+app.get("/volunteer/home", ensure_auth, volunteer_controller.volunteerHome);
+app.get("/volunteer/training", ensure_auth, volunteer_controller.volunteerTraining);
+app.get("/volunteer/sign-up", ensure_auth, volunteer_controller.volunteerSignupPage);
 
 
 /****** Review-related Requests ********/
-app.post("/review/create/:id", ensure_auth, controller.create_review); // org_id
-app.get("/review/edit/:id", ensure_auth, controller.edit_review); // review id
-app.post("/review/save/:id", ensure_auth, controller.save_review); // review id
-app.get("/review/load/:id", ensure_auth, controller.load_unfinished_review); //review id
-app.post("/review/submit/:id", ensure_auth, controller.submit_review); // review id
-app.get("/review/completed/:org_id", ensure_auth, controller.completed_review_page); //org_id
-app.get("/review/completed/load/:org_id", ensure_auth, controller.load_completed_reviews);
-app.get("/review/organization_data/:org_id", ensure_auth, controller.load_organization_data);
-app.post("/review/create/:id", ensure_auth, controller.create_review); // org_id here
-app.get("/review/edit/:id", ensure_auth, controller.edit_review); // review id
-app.post("/review/save/:id", ensure_auth, controller.save_review); // review id
-app.get("/review/load/:id", ensure_auth, controller.load_unfinished_review);
-app.post("/review/submit/:id", ensure_auth, controller.submit_review); // review id
-app.get("/review/completed/:org_id", ensure_auth, controller.completed_review_page); //org_id
-app.get("/review/completed/load/:org_id", ensure_auth, controller.load_completed_reviews);
-app.get("/review/organization_docs/:org_id", ensure_auth, controller.load_organization_docs);
-app.get("/review/organization_data/:org_id", ensure_auth, controller.load_organization_data);
-app.post("/review/upvote_three_questions", ensure_auth, controller.upvote_three_questions);
+app.post("/review/create/:id", ensure_auth, volunteer_controller.create_review); // org_id
+app.get("/review/edit/:id", ensure_auth, volunteer_controller.edit_review); // review id
+app.post("/review/save/:id", ensure_auth, volunteer_controller.save_review); // review id
+app.get("/review/load/:id", ensure_auth, volunteer_controller.load_unfinished_review); //review id
+app.post("/review/submit/:id", ensure_auth, volunteer_controller.submit_review); // review id
+app.get("/review/completed/:org_id", ensure_auth, volunteer_controller.completed_review_page); //org_id
+app.get("/review/completed/load/:org_id", ensure_auth, volunteer_controller.load_completed_reviews);
+app.get("/review/organization_data/:org_id", ensure_auth, volunteer_controller.load_organization_data);
+app.post("/review/create/:id", ensure_auth, volunteer_controller.create_review); // org_id here
+app.get("/review/edit/:id", ensure_auth, volunteer_controller.edit_review); // review id
+app.post("/review/save/:id", ensure_auth, volunteer_controller.save_review); // review id
+app.get("/review/load/:id", ensure_auth, volunteer_controller.load_unfinished_review);
+app.post("/review/submit/:id", ensure_auth, volunteer_controller.submit_review); // review id
+app.get("/review/completed/:org_id", ensure_auth, volunteer_controller.completed_review_page); //org_id
+app.get("/review/completed/load/:org_id", ensure_auth, volunteer_controller.load_completed_reviews);
+app.get("/review/organization_docs/:org_id", ensure_auth, volunteer_controller.load_organization_docs);
+app.get("/review/organization_data/:org_id", ensure_auth, volunteer_controller.load_organization_data);
+app.post("/review/upvote_three_questions", ensure_auth, volunteer_controller.upvote_three_questions);
 
-//Admin
-app.get("/admin/sign-up", controller.admin_signup_page);
-app.post('/admin/submit-admin', controller.create_admin);
-app.get("/admin_submit", ensure_admin, controller.submit_application);
-app.post("/post-application", ensure_admin, controller.create_application);
-app.get("/admin_applications", ensure_admin, controller.view_applications);
-app.get("/admin/application/:id", ensure_admin, controller.view_one_application);
-app.get("/admin/load_application/:id", ensure_admin, controller.load_single_application);
-app.post("/admin/update_application/:id", ensure_admin, controller.save_application_changes);
+/***** Admin requests ******/
+app.get("/admin/sign-up", admin_controller.admin_signup_page);
+app.post('/admin/submit-admin', admin_controller.create_admin);
+app.get("/admin_submit", ensure_admin, admin_controller.submit_application);
+app.post("/post-application", ensure_admin, admin_controller.create_application);
+app.get("/admin_applications", ensure_admin, admin_controller.view_applications);
+app.get("/admin/application/:id", ensure_admin, admin_controller.view_one_application);
+app.get("/admin/load_application/:id", ensure_admin, admin_controller.load_single_application);
+app.post("/admin/update_application/:id", ensure_admin, admin_controller.save_application_changes);
 
-app.post("/admin/volunteer/approve", ensure_admin, controller.approve_volunteer);
-app.post("/admin/volunteer/deny", ensure_admin, controller.deny_volunteer);
-app.get("/admin/pull_applications_short", ensure_admin, controller.send_applications_short);
-app.get("/admin/pull_applications_rest", ensure_admin, controller.send_applications_rest);
+app.post("/admin/volunteer/approve", ensure_admin, admin_controller.approve_volunteer);
+app.post("/admin/volunteer/deny", ensure_admin, admin_controller.deny_volunteer);
+app.get("/admin/pull_applications_short", ensure_admin, admin_controller.send_applications_short);
+app.get("/admin/pull_applications_rest", ensure_admin, admin_controller.send_applications_rest);
 
 
-app.get("/admin/pull_volunteers:approval", ensure_admin, controller.send_volunteers);
-app.get("/admin_submit", controller.submit_application);
-app.post("/post-application", controller.create_application);
-app.get("/admin_applications", controller.view_applications);
-app.get("/admin/application/:id", controller.view_one_application);
-app.get("/admin/load_application/:id", controller.load_single_application);
-app.post("/admin/update_application/:id", controller.save_application_changes);
+app.get("/admin/pull_volunteers:approval", ensure_admin, admin_controller.send_volunteers);
+app.get("/admin_submit", admin_controller.submit_application);
+app.post("/post-application", admin_controller.create_application);
+app.get("/admin_applications", admin_controller.view_applications);
+app.get("/admin/application/:id", admin_controller.view_one_application);
+app.get("/admin/load_application/:id", admin_controller.load_single_application);
+app.post("/admin/update_application/:id", admin_controller.save_application_changes);
 
-app.post("/admin/volunteer/approve", controller.approve_volunteer);
-app.post("/admin/volunteer/deny", controller.deny_volunteer);
-app.get("/admin/pull_applications_short", controller.send_applications_short);
-app.get("/admin/pull_applications_rest", controller.send_applications_rest);
+app.post("/admin/volunteer/approve", admin_controller.approve_volunteer);
+app.post("/admin/volunteer/deny", admin_controller.deny_volunteer);
+app.get("/admin/pull_applications_short", admin_controller.send_applications_short);
+app.get("/admin/pull_applications_rest", admin_controller.send_applications_rest);
 
-app.get("/admin/pull_volunteers:approval", controller.send_volunteers);
+app.get("/admin/pull_volunteers:approval", admin_controller.send_volunteers);
 module.exports = app;
 

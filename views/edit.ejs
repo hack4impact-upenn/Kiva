@@ -1,89 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
-    <title>Submit your application!</title>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
+        <title>Submit your application!</title>
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
- <script>
-      var x = "<%= projects.date %>"
-      var date = new Date( "<%= projects.date %>");
-      var formatted = $.datepicker.formatDate('mm/dd/yy', date)
-      console.log(date);
-      $("#date").val(date);
-    </script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script>
+            var x = "<%= projects.date %>"
+            var date = new Date( "<%= projects.date %>");
+            var formatted = $.datepicker.formatDate('mm/dd/yy', date)
+            console.log(date);
+            $("#date").val(date);
+        </script>
 
-  </head>
+    </head>
+    <body>
 
-  <body>
+        <form action="/update" method="POST">
+            <label for="app_name"> What's your app called? </label>
+            <input type="text" name="app_name" size="20" class="form-control" placeholder="" value= "<%= projects.app_name %>" ><br>
 
-  <form action="/update" method="POST">
-    <label for="app_name"> What's your app called? </label>
-    <input type="text" name="app_name" size="20" class="form-control" placeholder="" value= "<%= projects.app_name %>" ><br>
-
-    <label for="description"> Please write three sentences describing your application </label>
-    <input type="text" name="description" size="80" class="form-control" placeholder="" value= "<%= projects.description %>" ><br>
-
-
-    <label for="demo"> Where is this hosted (Link?) </label>
-    <input type="url" name="demo" size="20" class="form-control" placeholder="ie. http://pennlabs.herokuapp.com" value = "<%= projects.demo_link %>" ><br>
-
-    <label for="location"> Where/When was this built? </label>
-    <input type="text" name="location" size="20" class="form-control" placeholder="ie. PennApps S14" value= "<%= projects.location %>" ><br>
-
-    <label for="technologies"> What technologies did you use to create your app? </label>
-    <input type="text" name="technologies" size="20" class="form-control" placeholder="ie. Python/Flask" value = "<%= projects.technologies %>>"<br>
-
-    <label for="builders"> Who built this? (Full Names?) </label>
-    <input type="text" name="builders" size="80" class="form-control" placeholder="ie. Amy Gutmann, Alexey Komisaalala" value = "<%= projects.builders %>"><br>
-
-    <label for="date"> Until when should this app stay up? </label>
-    <input type="date" name="date" id="date" size="20" class="form-control" placeholder="ie. 2/24/15"><br>
-
-    <label for="contact"> Who's the main contact for this?</label>
-    <input type="email" name="contact" size="20" class="form-
-    control" placeholder="me@ibuiltthis.com" value = "<%= projects.contact %>"><br>
-
-    <label for="github_permis"> Are you willing to make the github public:</label>
-    <% if (projects.github_permis == "yes") { %>
-        <input type="radio" name="github_permis" checked="checked" value="yes">Yes
-        <input type="radio" name="github_permis" value="no">No<br>
-     <% } else { %>
-      
-        <input type="radio" name="github_permis" value="yes">Yes
-        <input type="radio" name="github_permis" checked="checked" value="no">No<br>
-    <% } %>
-
-    <label for="github"> Github link?</label>
-    <input type="text" name="github" size="20" class="form-control" placeholder="me@ibuiltthis.com" value = "<%= projects.github %>"><br>
-
-    <label for="tags"> Tags</label>
-    <input type="text" name="tags" size="20" id="tags" class="form-control" placeholder="tag" value = "<%= projects.tags %>"><br>
-
-      <label for="personal"> Personal websites?</label>
-      <input type="text" name="personal" size="40" class="form-control" placeholder="http://pennlabs.org, http://penn.com" value = "<%= projects.personal %>"><br>
-  
-  <label for="approved"> Approved?</label>
-    <input type="number" name="approved" size="40" class="form-control" value = <%= projects.approved %> ><br>
-
-    <input type="hidden" name="id" value= <%= projects._id %> />
-
-    <input type="submit" />
-
-  </form>
-
-  <a href= <%= "/image_upload/" + projects._id %>> upload image </a>
-
-  </div>
+            <label for="description"> Please write three sentences describing your application </label>
+            <input type="text" name="description" size="80" class="form-control" placeholder="" value= "<%= projects.description %>" ><br>
 
 
+            <label for="demo"> Where is this hosted (Link?) </label>
+            <input type="url" name="demo" size="20" class="form-control" placeholder="ie. http://pennlabs.herokuapp.com" value = "<%= projects.demo_link %>" ><br>
 
-  </body>
-  </html>
+            <label for="location"> Where/When was this built? </label>
+            <input type="text" name="location" size="20" class="form-control" placeholder="ie. PennApps S14" value= "<%= projects.location %>" ><br>
+
+            <label for="technologies"> What technologies did you use to create your app? </label>
+            <input type="text" name="technologies" size="20" class="form-control" placeholder="ie. Python/Flask" value = "<%= projects.technologies %>>"<br>
+
+            <label for="builders"> Who built this? (Full Names?) </label>
+            <input type="text" name="builders" size="80" class="form-control" placeholder="ie. Amy Gutmann, Alexey Komisaalala" value = "<%= projects.builders %>"><br>
+
+            <label for="date"> Until when should this app stay up? </label>
+            <input type="date" name="date" id="date" size="20" class="form-control" placeholder="ie. 2/24/15"><br>
+
+            <label for="contact"> Who's the main contact for this?</label>
+            <input type="email" name="contact" size="20" class="form-
+            control" placeholder="me@ibuiltthis.com" value = "<%= projects.contact %>"><br>
+
+            <label for="github_permis"> Are you willing to make the github public:</label>
+            <% if (projects.github_permis == "yes") { %>
+            <input type="radio" name="github_permis" checked="checked" value="yes">Yes
+            <input type="radio" name="github_permis" value="no">No<br>
+            <% } else { %>
+
+            <input type="radio" name="github_permis" value="yes">Yes
+            <input type="radio" name="github_permis" checked="checked" value="no">No<br>
+            <% } %>
+
+            <label for="github"> Github link?</label>
+            <input type="text" name="github" size="20" class="form-control" placeholder="me@ibuiltthis.com" value = "<%= projects.github %>"><br>
+
+            <label for="tags"> Tags</label>
+            <input type="text" name="tags" size="20" id="tags" class="form-control" placeholder="tag" value = "<%= projects.tags %>"><br>
+
+            <label for="personal"> Personal websites?</label>
+            <input type="text" name="personal" size="40" class="form-control" placeholder="http://pennlabs.org, http://penn.com" value = "<%= projects.personal %>"><br>
+
+            <label for="approved"> Approved?</label>
+            <input type="number" name="approved" size="40" class="form-control" value = <%= projects.approved %> ><br>
+
+            <input type="hidden" name="id" value= <%= projects._id %> />
+
+            <input type="submit" />
+
+        </form>
+
+        <a href= <%= "/image_upload/" + projects._id %>> upload image </a>
+    </body>
+</html>
