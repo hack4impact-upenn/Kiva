@@ -248,7 +248,7 @@ exports.volunteerFinishedTraining = function(req, res) {
  * Loads page for volunteer signup
  */
 exports.volunteerSignupPage = function(req, res) {
-    var error = '';
+    var error = null;
     if (req.session.email_duplicate) {
         error = 'This email has already been registered.';
         req.session.email_duplicate = null;

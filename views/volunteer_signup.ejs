@@ -40,9 +40,14 @@
 
             <input type="text" name="last_name" size="20" class="form-control" placeholder="Last Name" required><br>
 
-            <input type="email" name="email_address" size="20" class="form-control" placeholder="Email Address" required><br>
+            <% if (error) { %>
+            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span><%= error %></span>
+            </div>
+            <% } %>
 
-            <span style="color:red"><%- error %></span>
+            <input type="email" name="email_address" size="20" class="form-control" placeholder="Email Address" required><br>
 
             <input type="password" name="password" size="20" class="form-control" placeholder="Password" required><br>
 
@@ -71,5 +76,5 @@
 
 
     </body>
-
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </html>
