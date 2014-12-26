@@ -71,14 +71,14 @@ app.get("/volunteer/get_completed_applications", ensure_auth, volunteer_controll
 app.get("/volunteer/load_leaderboard", volunteer_controller.load_leaderboard);
 
 //signs up a volunteer
-app.post("/volunteer/submit-volunteer", ensure_auth, volunteer_controller.createVolunteer);
+app.post("/volunteer/submit-volunteer", volunteer_controller.createVolunteer);
 app.get("/volunteer/finished-training", ensure_auth, volunteer_controller.volunteerFinishedTraining);
 app.get("/volunteer/get_achievements", ensure_auth, volunteer_controller.getAchievements);
 
 //pages
 app.get("/volunteer/home", ensure_auth, volunteer_controller.volunteerHome);
 app.get("/volunteer/training", ensure_auth, volunteer_controller.volunteerTraining);
-app.get("/volunteer/sign-up", ensure_auth, volunteer_controller.volunteerSignupPage);
+app.get("/volunteer/sign-up", volunteer_controller.volunteerSignupPage);
 
 
 /****** Review-related Requests ********/
