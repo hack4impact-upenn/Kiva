@@ -200,10 +200,14 @@
 	float: left;
 }
 
-.btn.btn-primary {
+.btn.btn-primary, .btn.btn-primary:disabled, .btn.btn-primary:hover {
 	background-color: green;
 	width: 100%;
 	margin-bottom: 2px;
+}
+
+textarea { 
+	resize: vertical;
 }
 
 #signup-form {
