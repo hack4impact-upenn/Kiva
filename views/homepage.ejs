@@ -115,13 +115,13 @@
                // console.log(leaders);      
                 var i = 1;  
                 $('#leaders table').append("<tr>" + 
-                    "<th>" +"Name" + "</th>" +
+                    "<th>" +"Username" + "</th>" +
                     "<th>" + "Points" + "</th>" +            
                     "</tr>");
                 $.each(leaders, function(index, value) {
                     console.log(value);
                     $('#leaders table').append("<tr>" + 
-                        "<td>" + (i++) +'. ' + value.first_name + "</td>" +
+                        "<td>" + (i++) +'. ' + value.username + "</td>" +
                         "<td>" + value.num_points + "</td>" +
                         "</tr>");
                 });

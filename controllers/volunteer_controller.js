@@ -185,17 +185,21 @@ exports.getAchievements = function(req, res) {
 
 exports.createVolunteer = function(req, res) {
     var email = req.body.email_address; 
-    Volunteer.findOne({'email_address': email}, 
+    var usern = req.body.username;
+    
+    Volunteer.findOne( {$or: [{'email_address': email}, {'username': usern}]}, 
         function(err, volunteer) {
             if(volunteer != null) {
                 //this is a duplicate entry
                 req.session.email_duplicate = true;
+                console.log("DUPLICATE!!");
                 res.redirect('/volunteer/sign-up');
             } else {
                 var volunteer = new Volunteer({
                     first_name: req.body.first_name,
                     last_name: req.body.last_name,
                     email_address: req.body.email_address,
+                    username: req.body.username,
                     password: SHA3(req.body.password).toString(),
                     //TODO: Add confirm password?
                     linked_in: req.body.linked_in,
@@ -250,7 +254,7 @@ exports.volunteerFinishedTraining = function(req, res) {
 exports.volunteerSignupPage = function(req, res) {
     var error = '';
     if (req.session.email_duplicate) {
-        error = 'This email has already been registered.';
+        error = 'This email or username has already been registered.';
         req.session.email_duplicate = null;
     }
     res.render("volunteer_signup.ejs", {error: error, name: req.session.fullname});
