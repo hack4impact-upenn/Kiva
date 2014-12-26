@@ -84,7 +84,7 @@ exports.login = function(req, res) {
                         res.redirect('/volunteer/home');
                     }
                 } else if (volunteer === null) {
-                    res.render("index.ejs", {message:"Your email or password is incorrect.", name: null});
+                    res.render("index.ejs", {message:"Your login is incorrect.", name: null});
             } else {
                 if(err) {
                 } else {

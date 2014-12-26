@@ -29,10 +29,13 @@
                 <h2>Login</h2>
                 <form action="/login" method="POST" class="kiva-form">
                     <% if (message) { %>
-                        <span style="color:red"><%= message %></span>
+                    <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <span><%= message %></span>
+                    </div>
                     <% } %>
-                    <input type="text" name="email_address" size="25" class="form-control" placeholder="Email">
-                    <input type="password" name="password" size="25" class="form-control" placeholder="Password"><br>
+                    <input type="email" name="email_address" size="25" class="form-control" placeholder="Email" required>
+                    <input type="password" name="password" size="25" class="form-control" placeholder="Password" required><br>
                     <input type="submit" class="btn btn-primary" value="Login" />
                 </form>
 
@@ -54,4 +57,5 @@
             });
         </script>
     </body>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </html>
