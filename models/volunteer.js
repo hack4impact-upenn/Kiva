@@ -38,7 +38,12 @@ VolunteerSchema.statics = {
     this.update({ _id: volunteer_id },
       { $set: {'current_review': null} },
       cb);
-  }
+  },
+  add_completed_review: function (volunteer_id, review_id, cb) {    
+    this.update({ _id: volunteer_id }, 
+      { $push: {'reviews_completed': review_id} }, 
+      cb);
+  },
 };
 
 var volunteer = mongoose.model("Volunteer", VolunteerSchema);

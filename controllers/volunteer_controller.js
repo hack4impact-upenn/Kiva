@@ -551,6 +551,13 @@ exports.submit_review = function(req, res) {
                                 callback();
                             });
                     },
+                    function(callback){
+                        Volunteer.add_completed_review(req.session.volunteerId, req.params.id, function(err) {
+                                if (err) {return callback(err)};
+                            console.log("added completed review");
+                                callback();
+                        });                        
+                    },
                     //in Application: add to volunteers list
                     function(callback) {
                         Application.update({_id: org_id},
