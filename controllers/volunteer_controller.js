@@ -100,9 +100,13 @@ exports.login = function(req, res) {
  * redirects to login screen
  */
 exports.logout = function(req, res) {
-    req.session.logged = false;
-    req.session.admin = false;
-    req.session.username = "";
+    req.session.logged = null;
+    req.session.admin = null;
+    req.session.username = null;
+    req.session.volunteerId = null;
+    req.session.email_duplicate = null;
+    req.session.email = null;
+    req.session.fullname = null;
     return res.redirect("/");
 };
 
