@@ -51,6 +51,7 @@ exports.login = function(req, res) {
                     req.session.fullname = volunteer.first_name + " " + volunteer.last_name;
                     req.session.volunteerId = ObjectId(volunteer._id.toString());
                     req.session.email = volunteer.email_address;
+                    req.session.finished_training = volunteer.finished_training;
                     if(req.session.admin) {
                         res.redirect('/admin_applications');
                     } else {
@@ -107,6 +108,7 @@ exports.logout = function(req, res) {
     req.session.email_duplicate = null;
     req.session.email = null;
     req.session.fullname = null;
+    req.session.finished_training = null;
     return res.redirect("/");
 };
 
@@ -231,6 +233,7 @@ exports.volunteerFinishedTraining = function(req, res) {
         var id = req.session.volunteerId;
         Volunteer.findOne({"_id": req.session.volunteerId}, function(err, volunteer) {
             volunteer.finished_training = true;
+            req.session.finished_training = true;
             volunteer.save(function(err, volunteer) {
                 if(err) {
                     console.log(err);

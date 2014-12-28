@@ -22,7 +22,31 @@
 		}
 	</style>
 	<title>Training</title>
-	<script>
+	</head>
+	<body>
+		<div id="wrapper">
+			<% include banner %>
+			<div id="content">
+				<h1>Kiva Advisors Training Page</h1>
+
+				<div id="training">
+					<p>Please review all the training material.</p>
+				</div>
+
+				<div class="popup" style="z-index:1; position:absolute; left:25%; display:block; height: 40%; width: 40%; background-color:#B1DF75; opacity:0.95; margin-top:3%; visibility:hidden;
+				border-style:solid; padding:5%"
+				id="quiz">
+					Please answer these questions:
+					<br>What is Penn's color that's not blue?<input id="ans1"></input>
+					<br>How many wheels in tricycle?<input id="ans2"></input>
+					<br>Write 'hack'<input id="ans3"></input>
+					<br>Write 'hack'<input id="ans4"></input>
+				</div>
+			</div>
+			<% include footer %>
+		</div>
+</body>
+<script>
 		var content = [
 		['Kiva Labs video overview (6 min)',
 		'a fun overview video of the types of unique loans and partnerships that Kiva is rolling out',
@@ -89,29 +113,5 @@
 		});
 
 	</script>
-	</head>
-	<body>
-		<div id="wrapper">
-			<% include banner %>
-			<div id="content">
-				<h1>Kiva Advisors Training Page</h1>
-
-				<div id="training">
-					<p>Please review all the training material.</p>
-				</div>
-
-				<div class="popup" style="z-index:1; position:absolute; left:25%; display:block; height: 40%; width: 40%; background-color:#B1DF75; opacity:0.95; margin-top:3%; visibility:hidden;
-				border-style:solid; padding:5%"
-				id="quiz">
-					Please answer these questions:
-					<br>What is Penn's color that's not blue?<input id="ans1"></input>
-					<br>How many wheels in tricycle?<input id="ans2"></input>
-					<br>Write 'hack'<input id="ans3"></input>
-					<br>Write 'hack'<input id="ans4"></input>
-				</div>
-			</div>
-			<% include footer %>
-		</div>
-</body>
 
 <html>

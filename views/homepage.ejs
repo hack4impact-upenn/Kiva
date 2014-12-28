@@ -129,16 +129,10 @@
         }
         $( document ).ready(function() {
             $.getJSON('/volunteer/load', function(volunteer) {
-                if (!volunteer.finished_training) {
-                    $('#training').append($('<a>')
-                                            .attr('href', '/volunteer/training')
-                                            .html('Get training first'));
-                } else {
-                    load_achievements();
-                    load_leaderboard();
-                    load_review(volunteer);
-                    load_completed_apps();
-                }
+                load_achievements();
+                load_leaderboard();
+                load_review(volunteer);
+                load_completed_apps();
             });
         });
 

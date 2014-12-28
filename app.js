@@ -55,51 +55,59 @@ function ensure_admin(req, res, next) {
   }
 }
 
+function ensure_training(req, res, next) {
+  if (req.session.finished_training) {
+    return next();
+  } else {
+    res.redirect('/volunteer/training');
+  }
+}
+
 //General Online
 app.get("/", volunteer_controller.index);
 app.post("/login", volunteer_controller.login);
-app.get("/load_application/:org_id", volunteer_controller.load_application);
+app.get("/load_application/:org_id", ensure_auth, ensure_training, volunteer_controller.load_application);
 app.get("/logout", volunteer_controller.logout);
-app.get("/get_questions/:org_id", volunteer_controller.get_questions);
+app.get("/get_questions/:org_id", ensure_auth, ensure_training, volunteer_controller.get_questions);
 
 /***** Volunteer requests ******/
 
 //Loads data
-app.get("/volunteer/get_min_reviewed_application", ensure_auth, volunteer_controller.getMinReviewedApplication);
+app.get("/volunteer/get_min_reviewed_application", ensure_auth, ensure_training, volunteer_controller.getMinReviewedApplication);
 app.get("/volunteer/load", ensure_auth, volunteer_controller.loadVolunteer); //loads data of a single User from session info
-app.get("/volunteer/get_completed_applications", ensure_auth, volunteer_controller.getCompletedApplications);
-app.get("/volunteer/load_leaderboard", volunteer_controller.load_leaderboard);
+app.get("/volunteer/get_completed_applications", ensure_auth, ensure_training, volunteer_controller.getCompletedApplications);
+app.get("/volunteer/load_leaderboard", ensure_auth, ensure_training, volunteer_controller.load_leaderboard);
 
 //signs up a volunteer
 app.post("/volunteer/submit-volunteer", volunteer_controller.createVolunteer);
 app.get("/volunteer/finished-training", ensure_auth, volunteer_controller.volunteerFinishedTraining);
-app.get("/volunteer/get_achievements", ensure_auth, volunteer_controller.getAchievements);
+app.get("/volunteer/get_achievements", ensure_auth, ensure_training, volunteer_controller.getAchievements);
 
 //pages
-app.get("/volunteer/home", ensure_auth, volunteer_controller.volunteerHome);
+app.get("/volunteer/home", ensure_auth, ensure_training, volunteer_controller.volunteerHome);
 app.get("/volunteer/training", ensure_auth, volunteer_controller.volunteerTraining);
 app.get("/volunteer/sign-up", volunteer_controller.volunteerSignupPage);
 
 
 /****** Review-related Requests ********/
-app.post("/review/create/:id", ensure_auth, volunteer_controller.create_review); // org_id
-app.get("/review/edit/:id", ensure_auth, volunteer_controller.edit_review); // review id
-app.post("/review/save/:id", ensure_auth, volunteer_controller.save_review); // review id
-app.get("/review/load/:id", ensure_auth, volunteer_controller.load_unfinished_review); //review id
-app.post("/review/submit/:id", ensure_auth, volunteer_controller.submit_review); // review id
-app.get("/review/completed/:org_id", ensure_auth, volunteer_controller.completed_review_page); //org_id
-app.get("/review/completed/load/:org_id", ensure_auth, volunteer_controller.load_completed_reviews);
-app.get("/review/organization_data/:org_id", ensure_auth, volunteer_controller.load_organization_data);
-app.post("/review/create/:id", ensure_auth, volunteer_controller.create_review); // org_id here
-app.get("/review/edit/:id", ensure_auth, volunteer_controller.edit_review); // review id
-app.post("/review/save/:id", ensure_auth, volunteer_controller.save_review); // review id
-app.get("/review/load/:id", ensure_auth, volunteer_controller.load_unfinished_review);
-app.post("/review/submit/:id", ensure_auth, volunteer_controller.submit_review); // review id
-app.get("/review/completed/:org_id", ensure_auth, volunteer_controller.completed_review_page); //org_id
-app.get("/review/completed/load/:org_id", ensure_auth, volunteer_controller.load_completed_reviews);
-app.get("/review/organization_docs/:org_id", ensure_auth, volunteer_controller.load_organization_docs);
-app.get("/review/organization_data/:org_id", ensure_auth, volunteer_controller.load_organization_data);
-app.post("/review/upvote_three_questions", ensure_auth, volunteer_controller.upvote_three_questions);
+app.post("/review/create/:id", ensure_auth, ensure_training, volunteer_controller.create_review); // org_id
+app.get("/review/edit/:id", ensure_auth, ensure_training, volunteer_controller.edit_review); // review id
+app.post("/review/save/:id", ensure_auth, ensure_training, volunteer_controller.save_review); // review id
+app.get("/review/load/:id", ensure_auth, ensure_training, volunteer_controller.load_unfinished_review); //review id
+app.post("/review/submit/:id", ensure_auth, ensure_training, volunteer_controller.submit_review); // review id
+app.get("/review/completed/:org_id", ensure_auth, ensure_training, volunteer_controller.completed_review_page); //org_id
+app.get("/review/completed/load/:org_id", ensure_auth, ensure_training, volunteer_controller.load_completed_reviews);
+app.get("/review/organization_data/:org_id", ensure_auth, ensure_training, volunteer_controller.load_organization_data);
+app.post("/review/create/:id", ensure_auth, ensure_training, volunteer_controller.create_review); // org_id here
+app.get("/review/edit/:id", ensure_auth, ensure_training, volunteer_controller.edit_review); // review id
+app.post("/review/save/:id", ensure_auth, ensure_training, volunteer_controller.save_review); // review id
+app.get("/review/load/:id", ensure_auth, ensure_training, volunteer_controller.load_unfinished_review);
+app.post("/review/submit/:id", ensure_auth, ensure_training, volunteer_controller.submit_review); // review id
+app.get("/review/completed/:org_id", ensure_auth, ensure_training, volunteer_controller.completed_review_page); //org_id
+app.get("/review/completed/load/:org_id", ensure_auth, ensure_training, volunteer_controller.load_completed_reviews);
+app.get("/review/organization_docs/:org_id", ensure_auth, ensure_training, volunteer_controller.load_organization_docs);
+app.get("/review/organization_data/:org_id", ensure_auth, ensure_training, volunteer_controller.load_organization_data);
+app.post("/review/upvote_three_questions", ensure_auth, ensure_training, volunteer_controller.upvote_three_questions);
 
 /***** Admin requests ******/
 app.get("/admin/sign-up", admin_controller.admin_signup_page);
