@@ -79,11 +79,12 @@
 	</body>
 	<script>
 		$(document).ready(function() {
-			$('#notifications-btn').hide();
-			$('#home-btn').hide();
 			$('#questions').hide();
+			$('#notifications-btn').hide();
 			if (<%= finished_training %>) {
 				$('#reviewed').hide();
+			} else {
+				$('#home-btn').hide();
 			}
 			$('#reviewed').click(function() {
 				$('#questions').show();

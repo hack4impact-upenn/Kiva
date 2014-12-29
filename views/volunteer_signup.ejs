@@ -14,16 +14,6 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
         <title>Become a Volunteer Today!</title>
-        <script>
-            function checkboxCheck() {
-                if($('#checkbox').is(":checked")) {
-                    $('#submit-button').removeAttr('disabled');
-                } else {
-                    $('#submit-button').attr('disabled', 'disabled');
-                }
-            }               
-        </script>
-
     </head>
 
     <body>
@@ -32,49 +22,50 @@
     <% include banner %>
 
     <div id="content">
-    <div id="signup-form">
+        <div id="signup-form">
+            <form id="signup-submit" action="/volunteer/submit-volunteer" method="POST">
+                <input type="text" name="first_name" size="20" class="form-control" placeholder="First Name" required><br>
+                <input type="text" name="last_name" size="20" class="form-control" placeholder="Last Name" required><br>
+                <% if (error) { %>
+                <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <span><%= error %></span>
+                </div>
+                <% } %>
+                <input type="email" name="email_address" size="20" class="form-control" placeholder="Email Address" required><br>
+                <input type="password" name="password" size="20" class="form-control" placeholder="Password" required><br>
+                <input type="url" name="linked_in" size="20" class="form-control" placeholder="Linkedin Profile" required><br>
+                <input type="url" name="resume_link" size="20" class="form-control" placeholder="Link to Most Recent Resume" required><br>
+                
+                <label for="why_kiva"> Why are you interested in becoming a volunteer for Kiva? </label>
+                <textarea name="why_kiva" size="3000" class="form-control" placeholder="" required></textarea>
 
-        <form id="signup-submit" action="/volunteer/submit-volunteer" method="POST">
+                <label for="what_skills"> What skills do you possess that make you a qualified reviewer? </label>
+                <textarea name="what_skills" size="100" class="form-control" placeholder="" required></textarea>
 
-            <input type="text" name="first_name" size="20" class="form-control" placeholder="First Name" required><br>
-
-            <input type="text" name="last_name" size="20" class="form-control" placeholder="Last Name" required><br>
-
-            <% if (error) { %>
-            <div class="alert alert-danger alert-dismissible fade in" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <span><%= error %></span>
-            </div>
-            <% } %>
-
-            <input type="email" name="email_address" size="20" class="form-control" placeholder="Email Address" required><br>
-
-            <input type="password" name="password" size="20" class="form-control" placeholder="Password" required><br>
-
-            <input type="url" name="linked_in" size="20" class="form-control" placeholder="Linkedin Profile" required><br>
-
-            <input type="url" name="resume_link" size="20" class="form-control" placeholder="Link to Most Recent Resume" required><br>
-
-            <label for="why_kiva"> Why are you interested in becoming a volunteer for Kiva? </label>
-            <textarea name="why_kiva" size="3000" class="form-control" placeholder="" required></textarea>
-
-            <label for="what_skills"> What skills do you possess that make you a qualified reviewer? </label>
-            <textarea name="what_skills" size="100" class="form-control" placeholder="" required></textarea>
-
-            <div class="checkbox" style="margin-left:3px">
-                <label>
-                <input type="checkbox" id="checkbox" onclick="checkboxCheck();"><b>I have already read and signed this <a href='https://secure.echosign.com/public/esign?aid=X4IJG3J7C2K6P4Q&eid=X4IKRJG854F2TXD&' target="_blank">volunteer agreement.</a></b>
-                </label>
-            </div>
-            <input type="submit" id="submit-button" class="btn btn-primary" disabled>
-        </form>
-    </div><br><br>
+                <div class="checkbox" style="margin-left:3px">
+                    <label>
+                        <input type="checkbox" id="checkbox" onclick="checkboxCheck();"><b>I have already read and signed this <a href='https://secure.echosign.com/public/esign?aid=X4IJG3J7C2K6P4Q&eid=X4IKRJG854F2TXD&' target="_blank">volunteer agreement.</a></b>
+                    </label>
+                </div>
+                <input type="submit" id="submit-button" class="btn btn-primary" disabled>
+            </form>
+        </div><br><br>
     </div>   
-    
     <% include footer %>
     </div>
-
-
     </body>
+    <script>
+        function checkboxCheck() {
+            if($('#checkbox').is(":checked")) {
+                $('#submit-button').removeAttr('disabled');
+            } else {
+                $('#submit-button').attr('disabled', 'disabled');
+            }
+        } 
+        $(document).ready(function() {
+            $('.banner-btn').hide();   
+        });
+        </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </html>
