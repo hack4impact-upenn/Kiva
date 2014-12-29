@@ -30,7 +30,7 @@
 
         <div id="review-form">
 
-            <form id="review" action="" method="POST">
+            <form id="review" action="<%= "/review/submit/" + review_id %>" method="POST">
                 <label for="clear_social_impact"> Does this company have a clear social impact? </label>
                 <div class="radio">
                     <label>
@@ -81,14 +81,14 @@
                 <p> Please list the top three questions you would want to ask about to determine this candidate's eligibility and fit for a Kiva loan? </p>
 
                 <label for="q_1"> Q1) </label>
-                <input type="text" id="q_1" name="q_1" size="20" class="form-control" placeholder=""><br>
+                <input type="text" id="q_1" name="q_1" size="20" class="form-control" placeholder="" required><br>
 
 
                 <label for="q_2"> Q2) </label>
-                <input id="q_2" name="q_2" type="text"  size="20" class="form-control" placeholder=""><br>
+                <input type="text" id="q_2" name="q_2" size="20" class="form-control" placeholder="" required><br>
 
                 <label for="q_3"> Q3) </label>
-                <input type="text" id="q_3" name="q_3" size="20" class="form-control" placeholder=""><br>
+                <input type="text" id="q_3" name="q_3" size="20" class="form-control" placeholder="" required><br>
 
 
                 <label for="recommend_rating"> How excited would you be to recommend this application for the next stage in the approval process?</label>
@@ -124,29 +124,19 @@
                 <input type="text" id="other_comments" name="other_comments" size="20" class="form-control" placeholder=""><br>
 
                 <input type="hidden" name="organization_id" id="organization_id">
-
-                <input type="button" value="Save" name="save_review" onclick="askForSave()" />
-                <input type="button" value="Submit" name="submit_review" onclick="askForSubmit()" />
+                
+                <a href="/volunteer/home" id="back-btn" class="btn btn-default" style="margin-right:25px;">Back</a>
+                <a id="save-btn" class="btn btn-default">Save</a>
+                <button id="submit-btn" class="btn btn-default" type="submit">Submit</button>
             </form>
       </div>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     </body>
     <script>
-        <!---- //stackoverflow.com/questions/16660734/html-form-with-multiple-actions ---!>
-        var form=document.getElementById("review");
-        function askForSave() {
-            form.action='<%= "/review/save/" + review_id %>';
-            form.submit();
-        };
-        function askForSubmit() {
-            form.action='<%= "/review/submit/" + review_id %>';
-            form.submit();
-        };
         function load_review() {
             var form=document.getElementById("review");
             $.getJSON('<%= "/review/load/" + review_id %>', function(review) {   
                 $.each(review, function(name, val) {
-                    console.log(name + ":" + val);
                     switch(name) {
                         case ("clear_social_impact"):
                         case ("kiva_fit"):
@@ -169,7 +159,6 @@
         function load_links() {
             $.getJSON("/review/organization_docs/" + $('#organization_id').val(), function(data) {  
                 data = JSON.parse(data);
-                console.log(data.links);
                 var html = "";
                 $.each(data.links, function(i, item) {
                     html += '<li class="document" role="presentation"><a role="menuitem" tabindex="-1" link="' +  item.link + '">' + item.name + '</a></li>'                                    
@@ -188,6 +177,9 @@
 
         $( document ).ready(function() {
             load_review();
+            $('#save-btn').click(function() {
+                $.post('<%= "/review/save/" + review_id %>', $('#review').serialize(), function(data) {});
+            });
         });
     </script>
 </html>

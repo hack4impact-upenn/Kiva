@@ -62,7 +62,6 @@
                         "<h2>No reviews yet!</h2>");
                 }
                 else {
-                    console.log("Apps");
                     $('#completed-table table').append("<tr>" + 
                         "<th>" + "Organization" + "</th>" +
                         "<th>" + "Status" + "</th>" +
@@ -98,8 +97,6 @@
                     "<th>" + "Date" + "</th>" +
                     "</tr>");
                 $.each(achievs, function(index, value) {
-                    //console.log(value);
-                  //  console.log(value.achievement_text);
                     var date = new Date(value.date);
                     $('#achievs table').append("<tr>" + 
                         "<td>" + value.achievement_text + "</td>" +
@@ -112,14 +109,12 @@
 
         var load_leaderboard = function() {
             $.getJSON('/volunteer/load_leaderboard', function(leaders) {
-               // console.log(leaders);      
                 var i = 1;  
                 $('#leaders table').append("<tr>" + 
                     "<th>" +"Name" + "</th>" +
                     "<th>" + "Points" + "</th>" +            
                     "</tr>");
                 $.each(leaders, function(index, value) {
-                    console.log(value);
                     $('#leaders table').append("<tr>" + 
                         "<td>" + (i++) +'. ' + value.first_name + "</td>" +
                         "<td>" + value.num_points + "</td>" +
