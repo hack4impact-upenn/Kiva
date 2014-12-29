@@ -232,6 +232,7 @@ textarea {
 
 #questions {
 	display: none;
+	margin: auto;
 }
 
 #firstTable {
@@ -252,30 +253,34 @@ textarea {
 			border-radius: 5px;
 			z-index: -1;
 		}
-		#training a:visited {
-			color: #3C8A0C;
-		}
-		#training a:hover {
-			background-color: #B1DF75
-		}
-		#training button, .submit {
-			background-color: #587F3A;
-			color: white;
-			width: 400px;
-			padding: 2px;
-			text-align: center;
-			margin-right: auto;
-			margin-left: auto;
-			display: block;
-			font-size: 100%;
-		}
-		#training .submit:hover {
-			background-color: #58AF3A
-		}
+#training a:visited {
+	color: #3C8A0C;
+}
+#training a:hover {
+	background-color: #B1DF75
+}
+#reviewed {
+	background-color: green;
+	color: white;
+	width: 400px;
+	text-align: center;
+	margin-right: auto;
+	margin-left: auto;
+	display: block;
+}
 
-.popup {
-	position: absolute;
-	top: 20%;
+#back {
+	float: right;
+	margin-top: 10px;
+}
+
+#check-answers {
+	margin-top: 10px;
+}
+
+
+#training .submit:hover {
+	background-color: #58AF3A
 }
 
 .dropdown li {

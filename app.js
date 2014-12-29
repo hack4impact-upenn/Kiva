@@ -80,7 +80,7 @@ app.get("/volunteer/load_leaderboard", ensure_auth, ensure_training, volunteer_c
 
 //signs up a volunteer
 app.post("/volunteer/submit-volunteer", volunteer_controller.createVolunteer);
-app.get("/volunteer/finished-training", ensure_auth, volunteer_controller.volunteerFinishedTraining);
+app.post("/volunteer/finished-training", ensure_auth, volunteer_controller.volunteerFinishedTraining);
 app.get("/volunteer/get_achievements", ensure_auth, ensure_training, volunteer_controller.getAchievements);
 
 //pages

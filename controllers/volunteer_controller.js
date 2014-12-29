@@ -151,7 +151,6 @@ exports.getMinReviewedApplication = function(req, res) {
             if(application === null) {
                 res.send({"data" : "none"});
             } else {
-                console.log("application: " + application);
                 res.send(application);
             }
         });
@@ -229,8 +228,11 @@ exports.createVolunteer = function(req, res) {
  * @param volunteer id (taken from session)
  */
 exports.volunteerFinishedTraining = function(req, res) {
-    if(req.session.logged) {
-        var id = req.session.volunteerId;
+    console.log(req.body.ans1 + " " + req.body.ans2 + " " + req.body.ans3 + " " + req.body.ans4);
+    if (req.body.ans1 != 'red' || req.body.ans2 != '3' || req.body.ans3 !='hack' || req.body.ans4 !='hack') {
+        var incorrect = 'Sorry, at least one of your answers is incorrect. Make sure to review all the materials first.';
+        res.render('training.ejs', {name: req.session.fullname, finished_training: req.session.finished_training, message: incorrect});
+    } else {
         Volunteer.findOne({"_id": req.session.volunteerId}, function(err, volunteer) {
             volunteer.finished_training = true;
             req.session.finished_training = true;
@@ -242,8 +244,6 @@ exports.volunteerFinishedTraining = function(req, res) {
                 }
             });
         });
-    } else {
-        res.redirect('/');
     }
 };
 
@@ -279,7 +279,7 @@ exports.volunteerHome = function(req, res) {
  */
 exports.volunteerTraining = function(req, res) {
     if(req.session.logged) {
-        res.render('training.ejs', {name: req.session.fullname});
+        res.render('training.ejs', {name: req.session.fullname, finished_training: req.session.finished_training, message: null});
     } else {
         res.redirect('/');
     }
