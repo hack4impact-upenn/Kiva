@@ -264,7 +264,7 @@ exports.volunteerFinishedTraining = function(req, res) {
 exports.volunteerSignupPage = function(req, res) {
     var error = null;
     if (req.session.email_duplicate) {
-        error = 'This email has already been registered.';
+        error = 'This email or username has already been registered.';
         req.session.email_duplicate = null;
     }
     res.render("volunteer_signup.ejs", {error: error, name: req.session.fullname});
@@ -315,6 +315,15 @@ exports.edit_review = function(req, res) {
  * Loads documents for reviewer to edit
  * TODO: Update based on Kiva's system
  * @return Set of links that can be loaded via GoogleDoc iFrame
+ */
+
+/* The goal of this function is to pass the links to the organization's documents
+ * to the webpage so they can be rendered in the iframe. Currently, there are a 
+ * couple of fake blank documents on a temporary myjson.com site (see func below). 
+ * I imagine when you actually implement this you will be pulling the links to the documents 
+ * from a database so the request would be unecessary. Please see the 'load_links'
+ * function in review.ejs to see how the dropbox menu is created and the 'dropdown' 
+ * function below it to see how the iframe src is manipulated.
  */
 
 exports.load_organization_docs = function(req, res) {
