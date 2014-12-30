@@ -220,7 +220,7 @@ textarea {
 	margin-top: 20px;
 }
 
-#apps-form {
+#apps-form, #new-app-form {
 	border-radius: 3px;
 	border: 1px solid black;
 	padding: 10px;
