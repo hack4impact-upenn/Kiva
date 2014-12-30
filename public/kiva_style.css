@@ -291,3 +291,30 @@ textarea {
 	margin-left: 10px;
 }
 
+/* Overwriting default plus button in DataTables responsive */
+
+table.dataTable.dtr-inline.collapsed tbody td:first-child:before, 
+table.dataTable.dtr-inline.collapsed tbody th:first-child:before {
+	top: 8px;
+	left: 4px;
+	height: 16px;
+	width: 16px;
+	display: block;
+	position: absolute;
+	color: black;
+	border: 0;
+	border-radius: 0;
+	text-align: center;
+	line-height: 14px;
+	box-shadow: 0 0 0 0;
+	box-sizing: content-box;
+	content: '\25BA';
+	background-color: transparent;
+	font-size: 10px;
+}
+
+table.dataTable.dtr-inline.collapsed tbody tr.parent td:first-child:before,
+table.dataTable.dtr-inline.collapsed tbody tr.parent th:first-child:before {
+	content: '\25BC';
+	background-color: transparent;
+}
