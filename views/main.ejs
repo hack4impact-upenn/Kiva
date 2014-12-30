@@ -48,7 +48,7 @@
                             <th>Social Impact</td>    
                             <th>Number of reviews</td>   
                             <th>Open to review</td> 
-                            <th>More details</td> 
+                            <th>More details/Update</td> 
                         </tr>
                     </thead>
                 </table>
@@ -66,7 +66,7 @@
                             <th>Social Impact</td>    
                             <th>Number of reviews</td>   
                             <th>Open to review</td> 
-                            <th>More details</td> 
+                            <th>More details/Update</td> 
                         </tr>
                     </thead>
                 </table>
@@ -140,7 +140,7 @@
                 var string = JSON.stringify(data);
                 $.each( data, function( key, value ) {
                     value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
-                    var linkstr = '<a href="/admin/application/'+ value._id + '">Click here</a>'
+                    var linkstr = '<a href="/admin/application/'+ value._id + '">More details/Update</a>'
                     value.details_view = linkstr;
                     value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
                     value.kiva_fit_count_display = value.kiva_fit_count + " / " + value.num_reviews;
@@ -176,7 +176,7 @@
                 var string = JSON.stringify(data);
                 $.each( data, function( key, value ) {
                     value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
-                    var linkstr = '<a href="/admin/application/'+ value._id + '">Click here</a>'
+                    var linkstr = '<a href="/admin/application/'+ value._id + '">More details/Update</a>'
                     value.details_view = linkstr;
                     value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
                     value.kiva_fit_count_display = value.kiva_fit_count + " / " + value.num_reviews;

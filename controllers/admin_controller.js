@@ -203,7 +203,7 @@ exports.create_application = function(req, res) {
         console.log(application);
         if(err) {console.log(err);}
         else {
-            res.redirect('/admin');
+            res.redirect('/admin_applications');
         }
     });
 };

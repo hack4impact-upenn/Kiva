@@ -16,6 +16,7 @@
     </head>
 
     <body>
+        <% include banner %>
         <div id="review-info">
             <div class="dropdown">
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
@@ -180,6 +181,26 @@
             $('#save-btn').click(function() {
                 $.post('<%= "/review/save/" + review_id %>', $('#review').serialize(), function(data) {});
             });
+            load_achievements();
         });
+
+        var load_achievements = function() {
+            $.getJSON('/volunteer/get_achievements', function(achievs) {
+                $('#achievs table').append("<tr>" + 
+                    "<th>" + "Text" + "</th>" +
+                    "<th>" + "Points" + "</th>" +
+                    "<th>" + "Date" + "</th>" +
+                    "</tr>");
+                $.each(achievs, function(index, value) {
+                    var date = new Date(value.date);
+                    $('#achievs table').append("<tr>" + 
+                        "<td>" + value.achievement_text + "</td>" +
+                        "<td>" + value.points + "</td>" +
+                        "<td>" + date.toLocaleDateString() + "</td>" +
+                        "</tr>");
+                });
+            });
+        }
+
     </script>
 </html>
