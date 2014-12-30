@@ -5,7 +5,8 @@ var VolunteerSchema = new Schema({
   first_name: {type: String, default: ''},
   last_name: {type: String, default: ''},
   email_address: {type: String, default: ''},
-  password: {type: String, default: ''},
+  username: {type: String, default: ''},
+  password: {type: String, default: ''},  
   linked_in: {type: String, default: ''},
   resume_link: {type: String, default: ''},
   why_kiva: {type: String, default: ''},
@@ -37,7 +38,12 @@ VolunteerSchema.statics = {
     this.update({ _id: volunteer_id },
       { $set: {'current_review': null} },
       cb);
-  }
+  },
+  add_completed_review: function (volunteer_id, review_id, cb) {    
+    this.update({ _id: volunteer_id }, 
+      { $push: {'reviews_completed': review_id} }, 
+      cb);
+  },
 };
 
 var volunteer = mongoose.model("Volunteer", VolunteerSchema);
