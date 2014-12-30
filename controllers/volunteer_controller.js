@@ -52,6 +52,7 @@ exports.login = function(req, res) {
                     req.session.volunteerId = ObjectId(volunteer._id.toString());
                     req.session.email = volunteer.email_address;
                     req.session.finished_training = volunteer.finished_training;
+                    req.session.approved = volunteer.approved;
                     if(req.session.admin) {
                         res.redirect('/admin_applications');
                     } else {
@@ -109,6 +110,7 @@ exports.logout = function(req, res) {
     req.session.email = null;
     req.session.fullname = null;
     req.session.finished_training = null;
+    req.session.approved = null;
     return res.redirect("/");
 };
 
@@ -203,6 +205,8 @@ exports.createVolunteer = function(req, res) {
                     email_address: req.body.email_address,
                     password: SHA3(req.body.password).toString(),
                     //TODO: Add confirm password?
+                    finished_training: false,
+                    approved: false,
                     linked_in: req.body.linked_in,
                     resume_link: req.body.resume_link,
                     why_kiva:  req.body.why_kiva,
@@ -216,6 +220,9 @@ exports.createVolunteer = function(req, res) {
                         console.log("Volunteer_id to string: " + (volunteer._id).toString());
                         req.session.volunteerId = ObjectId(volunteer._id.toString());
                         req.session.email = volunteer.email_address;
+                        req.session.fullname = volunteer.first_name + " " + volunteer.last_name;
+                        req.session.finished_training = volunteer.finished_training;
+                        req.session.approved = volunteer.approved;
                         res.redirect('/volunteer/training');
                     }
                 });

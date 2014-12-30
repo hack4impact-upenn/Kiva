@@ -21,7 +21,7 @@
             if(volunteer.current_review == null) {
                 //pulls new review  
                 $.getJSON('/volunteer/get_min_reviewed_application', function(data) {
-                    if(data.data !== "none") {
+                    if(data.data !== "none" && volunteer.approved) {
                             $('#review').append(
                                 "<h2>" + volunteer["first_name"] + "</h2>" +
                                 "<h2>" + "Points: " + volunteer.num_points + "</h2>" +
@@ -34,7 +34,7 @@
                                 "<h2><i>Help " + data["organization_name"] + " achieve its goal!</i></h2>" +
                                 "</div>"
                                 );
-                    } else {
+                    } else if (volunteer.approved) {
                           $('#review').append(
                             "<h2>" + volunteer["first_name"] + "</h2>" +
                             "<h2>" + "Points: " + volunteer.num_points + "</h2>" +
@@ -123,11 +123,15 @@
             });
         }
         $( document ).ready(function() {
+            $('.alert').hide();
             $.getJSON('/volunteer/load', function(volunteer) {
                 load_achievements();
                 load_leaderboard();
                 load_review(volunteer);
-                load_completed_apps();
+                load_completed_apps(volunteer);
+                if (!volunteer.approved) {
+                    $('.alert').show();
+                }
             });
         });
 
@@ -148,7 +152,13 @@
             <div id="training"></div>
             <div id="row">
                 <div id="leaders" class="col-md-4"><table class='table table-striped'></table></div>
-                <div id="review" class="col-md-4"></div>
+                <div id="review" class="col-md-4">
+                    </br>
+                    <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <span>You cannot review applications until you are approved.</span>
+                    </div>
+                </div>
                 <div id="completed-table" class="col-md-4"><table class='table table-striped'></table></div>
             </div>
             <% include footer %>   
