@@ -88,7 +88,6 @@ app.get("/volunteer/home", ensure_auth, ensure_training, volunteer_controller.vo
 app.get("/volunteer/training", ensure_auth, volunteer_controller.volunteerTraining);
 app.get("/volunteer/sign-up", volunteer_controller.volunteerSignupPage);
 
-
 /****** Review-related Requests ********/
 app.post("/review/create/:id", ensure_auth, ensure_training, volunteer_controller.create_review); // org_id
 app.get("/review/edit/:id", ensure_auth, ensure_training, volunteer_controller.edit_review); // review id

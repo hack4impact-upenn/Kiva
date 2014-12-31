@@ -305,11 +305,11 @@ table.dataTable.dtr-inline.collapsed tbody tr.parent th:first-child:before {
 	background-color: transparent;
 }
 
-.deny-button {
+#deny-btn {
 	background-color: #b20000 !important;
 	border-color: #b20000;
 }
 
-.btn.btn-primary, .btn.btn-primary:disabled, .btn.btn-primary:hover {
+.table-btn, .table-btn:disabled, .table-btn:hover {
 	width: auto;
 }

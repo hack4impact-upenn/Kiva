@@ -87,6 +87,7 @@
                             <tr>
                                 <th>First name</td>
                                 <th>Last name</td>
+                                <th>Username</td>
                                 <th>LinkedIn</td>
                                 <th>Resume</td>
                                 <th>Why Kiva?</td>    
@@ -104,8 +105,9 @@
                         <tr>
                             <th>First name</td>
                             <th>Last name</td>
-                            <th># of completed reviews</td>
-                            <th>Current review</td>    
+                            <th>Username</td>
+                            <th>Last login date</td>
+                            <th># of completed reviews</td>   
                             <th>Completed training?</td>
                             <th>Points</td>
                         </tr>
@@ -234,12 +236,12 @@
 
                     value.approve_vol = '<form class="volunteer-approve" action="/admin/volunteer/approve" method="post">' +
                                         '<input type="hidden" name="id" value="' + value._id + '" />' +
-                                        '<input type="submit" value="Approve" class="btn btn-primary">' +
+                                        '<input type="submit" value="Approve" id="approve-btn" class="table-btn btn btn-primary">' +
                                     '</form>';
 
                     value.deny_vol = '<form class="volunteer-deny" action="/admin/volunteer/deny" method="post">' +
                                         '<input type="hidden" name="id" value="' + value._id + '" />' +
-                                        '<input type="submit" value="Deny" class="btn btn-primary deny-button">' +
+                                        '<input type="submit" value="Deny" id="deny-btn" class="table-btn btn btn-primary">' +
                                  '</form>';
                 });
 
@@ -249,6 +251,7 @@
                     "columns": [
                         { "data": "first_name" },
                         { "data": "last_name" },
+                        { "data": "username" },
                         { "data": "linked_in" },
                         { "data": "resume_link" },
                         { "data": "why_kiva" },
@@ -271,6 +274,15 @@
                 $.each( data, function( key, value ) {
                     value.reviews_completed = value.reviews_completed.length;
                     value.finished_training = (value.finished_training) ? 'yes' : 'no';
+                    value.last_login_date= new Date(value.last_login_date);
+
+                    var month = value.last_login_date.getUTCMonth() + 1; //months from 1-12
+                    var day = value.last_login_date.getUTCDate();
+                    var year = value.last_login_date.getUTCFullYear();
+
+                    newdate = year + "/" + month + "/" + day;
+                    value.last_login_date = newdate;
+                    
                 });
             
                 var oTable = $(table).dataTable({
@@ -279,8 +291,9 @@
                         "columns": [
                         { "data": "first_name" },
                         { "data": "last_name" },
-                        { "data": "reviews_completed" },
-                        { "data": "current_review" },
+                        { "data": "username" },
+                        { "data": "last_login_date" },
+                        { "data": "reviews_completed" },                        
                         { "data": "finished_training" },
                         { "data": "num_points" }
                     ]

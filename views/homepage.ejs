@@ -111,12 +111,12 @@
             $.getJSON('/volunteer/load_leaderboard', function(leaders) {
                 var i = 1;  
                 $('#leaders table').append("<tr>" + 
-                    "<th>" +"Name" + "</th>" +
+                    "<th>" +"Username" + "</th>" +
                     "<th>" + "Points" + "</th>" +            
                     "</tr>");
                 $.each(leaders, function(index, value) {
                     $('#leaders table').append("<tr>" + 
-                        "<td>" + (i++) +'. ' + value.first_name + "</td>" +
+                        "<td>" + (i++) +'. ' + value.username + "</td>" +
                         "<td>" + value.num_points + "</td>" +
                         "</tr>");
                 });
