@@ -304,3 +304,12 @@ table.dataTable.dtr-inline.collapsed tbody tr.parent th:first-child:before {
 	content: '\25BC';
 	background-color: transparent;
 }
+
+.deny-button {
+	background-color: #b20000 !important;
+	border-color: #b20000;
+}
+
+.btn.btn-primary, .btn.btn-primary:disabled, .btn.btn-primary:hover {
+	width: auto;
+}
