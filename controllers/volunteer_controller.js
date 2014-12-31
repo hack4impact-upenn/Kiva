@@ -51,6 +51,8 @@ exports.login = function(req, res) {
                     req.session.fullname = volunteer.first_name + " " + volunteer.last_name;
                     req.session.volunteerId = ObjectId(volunteer._id.toString());
                     req.session.email = volunteer.email_address;
+                    req.session.finished_training = volunteer.finished_training;
+                    req.session.approved = volunteer.approved;
                     if(req.session.admin) {
                         res.redirect('/admin_applications');
                     } else {
@@ -84,7 +86,7 @@ exports.login = function(req, res) {
                         res.redirect('/volunteer/home');
                     }
                 } else if (volunteer === null) {
-                    res.render("index.ejs", {message:"Your email or password is incorrect.", name: null});
+                    res.render("index.ejs", {message:"Your login is incorrect.", name: null});
             } else {
                 if(err) {
                 } else {
@@ -100,9 +102,15 @@ exports.login = function(req, res) {
  * redirects to login screen
  */
 exports.logout = function(req, res) {
-    req.session.logged = false;
-    req.session.admin = false;
-    req.session.username = "";
+    req.session.logged = null;
+    req.session.admin = null;
+    req.session.username = null;
+    req.session.volunteerId = null;
+    req.session.email_duplicate = null;
+    req.session.email = null;
+    req.session.fullname = null;
+    req.session.finished_training = null;
+    req.session.approved = null;
     return res.redirect("/");
 };
 
@@ -145,7 +153,6 @@ exports.getMinReviewedApplication = function(req, res) {
             if(application === null) {
                 res.send({"data" : "none"});
             } else {
-                console.log("application: " + application);
                 res.send(application);
             }
         });
@@ -202,6 +209,8 @@ exports.createVolunteer = function(req, res) {
                     username: req.body.username,
                     password: SHA3(req.body.password).toString(),
                     //TODO: Add confirm password?
+                    finished_training: false,
+                    approved: false,
                     linked_in: req.body.linked_in,
                     resume_link: req.body.resume_link,
                     why_kiva:  req.body.why_kiva,
@@ -215,6 +224,9 @@ exports.createVolunteer = function(req, res) {
                         console.log("Volunteer_id to string: " + (volunteer._id).toString());
                         req.session.volunteerId = ObjectId(volunteer._id.toString());
                         req.session.email = volunteer.email_address;
+                        req.session.fullname = volunteer.first_name + " " + volunteer.last_name;
+                        req.session.finished_training = volunteer.finished_training;
+                        req.session.approved = volunteer.approved;
                         res.redirect('/volunteer/training');
                     }
                 });
@@ -227,10 +239,14 @@ exports.createVolunteer = function(req, res) {
  * @param volunteer id (taken from session)
  */
 exports.volunteerFinishedTraining = function(req, res) {
-    if(req.session.logged) {
-        var id = req.session.volunteerId;
+    console.log(req.body.ans1 + " " + req.body.ans2 + " " + req.body.ans3 + " " + req.body.ans4);
+    if (req.body.ans1 != 'red' || req.body.ans2 != '3' || req.body.ans3 !='hack' || req.body.ans4 !='hack') {
+        var incorrect = 'Sorry, at least one of your answers is incorrect. Make sure to review all the materials first.';
+        res.render('training.ejs', {name: req.session.fullname, finished_training: req.session.finished_training, message: incorrect});
+    } else {
         Volunteer.findOne({"_id": req.session.volunteerId}, function(err, volunteer) {
             volunteer.finished_training = true;
+            req.session.finished_training = true;
             volunteer.save(function(err, volunteer) {
                 if(err) {
                     console.log(err);
@@ -239,8 +255,6 @@ exports.volunteerFinishedTraining = function(req, res) {
                 }
             });
         });
-    } else {
-        res.redirect('/');
     }
 };
 
@@ -252,7 +266,7 @@ exports.volunteerFinishedTraining = function(req, res) {
  * Loads page for volunteer signup
  */
 exports.volunteerSignupPage = function(req, res) {
-    var error = '';
+    var error = null;
     if (req.session.email_duplicate) {
         error = 'This email or username has already been registered.';
         req.session.email_duplicate = null;
@@ -276,7 +290,7 @@ exports.volunteerHome = function(req, res) {
  */
 exports.volunteerTraining = function(req, res) {
     if(req.session.logged) {
-        res.render('training.ejs', {name: req.session.fullname});
+        res.render('training.ejs', {name: req.session.fullname, finished_training: req.session.finished_training, message: null});
     } else {
         res.redirect('/');
     }
@@ -305,6 +319,15 @@ exports.edit_review = function(req, res) {
  * Loads documents for reviewer to edit
  * TODO: Update based on Kiva's system
  * @return Set of links that can be loaded via GoogleDoc iFrame
+ */
+
+/* The goal of this function is to pass the links to the organization's documents
+ * to the webpage so they can be rendered in the iframe. Currently, there are a 
+ * couple of fake blank documents on a temporary myjson.com site (see func below). 
+ * I imagine when you actually implement this you will be pulling the links to the documents 
+ * from a database so the request would be unecessary. Please see the 'load_links'
+ * function in review.ejs to see how the dropbox menu is created and the 'dropdown' 
+ * function below it to see how the iframe src is manipulated.
  */
 
 exports.load_organization_docs = function(req, res) {

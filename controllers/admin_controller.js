@@ -41,7 +41,15 @@ exports.view_applications = function(req, res) {
  */
 
 exports.view_one_application = function(req, res) {
-    res.render('single_org.ejs', {app_id: req.params.id, name: req.session.fullname});
+
+    Application.findById(req.params.id, function(err, application) {
+        if(err) {
+            res.send(404);
+        } else {
+            res.render('single_org.ejs', {app_id: req.params.id, name: req.session.fullname});
+        }
+    });
+
 };
 
 /*
@@ -203,7 +211,7 @@ exports.create_application = function(req, res) {
         console.log(application);
         if(err) {console.log(err);}
         else {
-            res.redirect('/admin');
+            res.redirect('/admin_applications');
         }
     });
 };

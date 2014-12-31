@@ -1,108 +1,101 @@
-<html>
-<head>
-
-	<link href="/kiva_style.css" rel="stylesheet" type="text/css">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link href="/kiva_style.css" rel="stylesheet" type="text/css">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
 	<style>
 		h1, h2, p {
 		text-align: center;
 		margin: 5;
-		color: #587F3A;
+		color: green;
 		}
 	</style>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<title>Kiva Investment Advisors - Training</title>
+	<title>Training</title>
+	</head>
+	<body>
+		<% include banner %>
+		<h1>Kiva Advisors Training Page</h1>
+		<div id="training">
+			<div id="links">
+				<% if (message) { %>
+				<div class="alert alert-danger alert-dismissible fade in" style="width:50%;margin:auto;margin-bottom:10px;" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<span><%= message %></span>
+				</div>
+				<% } %>
+				<a class="box" href="https://www.youtube.com/watch?v=v2vetkuQivw" target="_blank">
+					<div><b>Kiva Labs video overview (6 min)</b>
+						<div>a fun overview video of the types of unique loans and partnerships that Kiva is rolling out</div>
+					</div>
+				</a>
+				<a class="box" href="https://www.dropbox.com/s/9vmw2dpne9ba9um/Volunteer_training_vid.mp4" target="_blank">
+					<div><b>Training video (9 min)</b>
+						<div>This short video walks through this application review pilot program in greater detail, with useful information on what we are hoping to accomplish and the criteria that we use in assessing our applications</div>
+					</div>
+				</a>
+				<a class="box" href="https://docs.google.com/file/d/0B9-D1z_HW15veUp0MHNTZVBEUXY5bDhTVnVnQjRGVTdsb3NF/edit" target="_blank">
+					<div><b>Kiva partnership guide</b>
+						<div>this PDF covers how a partnership with Kiva works. It has much more detail on the steps of the process and outlines a few examples of partnerships. This will be very useful.</div>
+					</div>
+				</a>
+				<a class="box" href="https://www.youtube.com/watch?v=n1V9jVtssfw" target="_blank">
+					<div><b>Kiva loan visualization (4 min)</b>
+						<div>a cool video that visualizes the loans that Kiva has been making around the world since its inception in 2005</div>
+					</div>
+				</a>
+				<a class="box" href="https://docs.google.com/file/d/0B9-D1z_HW15vQ2g0ZHFKZmNrX19NXzdLeEc5b1otdVZ5MDN3/edit" target="_blank">
+					<div><b>A copy of the slides from the first training video (PDF link)</b></div>
+				</a>
+				<button id="reviewed" class="btn btn-primary">I have carefully reviewed all the training material</button>
+			</div>
+			<form id="questions" action="/volunteer/finished-training" method="POST">
+				<div class="form-group">
+					What is Penn's color that's not blue?<input type="text" class="form-control" name="ans1" required></input>
+				</div>
+				<div class="form-group">
+					How many wheels in tricycle?<input type="text" class="form-control" name="ans2" required></input>
+				</div>
+				<div class="form-group">
+					Write 'hack'<input type="text" class="form-control" name="ans3" required></input>
+				</div>
+				<div class="form-group">
+					Write 'hack'<input type="text" class="form-control" name="ans4" required></input>
+				</div>
+				<button id="check-answers" type="submit" class="btn btn-default">Submit</button>
+				<a id="back" class="btn btn-default">Back</a>
+			</form>
+		</div>
+		<% include footer %>
+	</body>
 	<script>
-		var content = [
-		['Kiva Labs video overview (6 min)',
-		'a fun overview video of the types of unique loans and partnerships that Kiva is rolling out',
-		'https://www.youtube.com/watch?v=v2vetkuQivw'],
-		['Training video (9 min)',
-		'This short video walks through this application review pilot program in greater detail, with useful information on what we are hoping to accomplish and the criteria that we use in assessing our applications',
-		'https://www.dropbox.com/s/9vmw2dpne9ba9um/Volunteer_training_vid.mp4'],
-		['Kiva partnership guide',
-		'this PDF covers how a partnership with Kiva works. It has much more detail on the steps of the process and outlines a few examples of partnerships. This will be very useful.',
-		'https://docs.google.com/file/d/0B9-D1z_HW15veUp0MHNTZVBEUXY5bDhTVnVnQjRGVTdsb3NF/edit'],
-		['Kiva loan visualization (4 min)',
-		'a cool video that visualizes the loans that Kiva has been making around the world since its inception in 2005',
-		'https://www.youtube.com/watch?v=n1V9jVtssfw'],
-		['A copy of the slides from the first training video (PDF link)',
-		'',
-		'https://docs.google.com/file/d/0B9-D1z_HW15vQ2g0ZHFKZmNrX19NXzdLeEc5b1otdVZ5MDN3/edit']
-		]
-
 		$(document).ready(function() {
-
-			$.getJSON('/volunteer/load', function(volunteer) {
-				for (c in content) {
-					$('#training').append($('<a>')
-					.attr('href', content[c][2])
-					.attr('target', '_blank')
-					.append($('<div>')
-					.attr('id', 'title'+c)
-					.attr('class', 'block')
-					.append($('<b>').text(content[c][0]))
-					.append($('<div>')
-					.attr('class', 'info')
-					.text(content[c][1]))));
-				}
-
-				if (!volunteer.finished_training) {
-					console.log('get training first.');
-					var submitText = 'I have carefully reviewed all the training material.';			
-					$('#content').append($('<button>')
-						.text(submitText)
-						.click(function() {
-							$('#quiz').css('visibility', '');
-						}));
-					$('#quiz').append($('<form>')
-						.attr('id', 'submit')
-						.append($('<input>')
-						.attr('type', 'submit')
-						.attr('value', "Submit")
-						.attr('class', 'submit'))
-						.submit(function(event){
-							var ans1 = $('#ans1').val();
-							var ans2 = $('#ans2').val();
-							var ans3 = $('#ans3').val();
-							var ans4 = $('#ans4').val();
-							if (ans1 != 'red' || ans2 != '3' |
-								ans3 !='hack' || ans4 !='hack') {
-								alert('Sorry, one or more of your answers are incorrect. Make sure to review all the materials first.');
-							} else {
-							$('#submit').attr('action', '/volunteer/finished-training')
-								.attr('method', 'get').submit();
-						}
-					}));
-				}		
-			});
+			$('#questions').hide();
+			$('#notifications-btn').hide();
+			if (<%= finished_training %>) {
+				$('#reviewed').hide();
+			} else {
+				$('#home-btn').hide();
+			}
+			$('#reviewed').click(function() {
+				$('#questions').show();
+				$('#links').hide();
+			});	
+			$('#back').click(function() {
+				$('#questions').hide();
+				$('#links').show();
+			})
 		});
 
 	</script>
-	</head>
-	<body>
-		<div id="wrapper">
-			<% include banner %>
-			<div id="content">
-				<h1>Kiva Investment Advisors</h1>
-				<h2>Training Page</h2>
-
-				<div id="training">
-					<p>Please review all the training material.</p>
-				</div>
-
-				<div class="popup" style="z-index:1; position:absolute; left:25%; display:block; height: 40%; width: 40%; background-color:#B1DF75; opacity:0.95; margin-top:3%; visibility:hidden;
-				border-style:solid; padding:5%"
-				id="quiz">
-					Please answer these questions:
-					<br>What is Penn's color that's not blue?<input id="ans1"></input>
-					<br>How many wheels in tricycle?<input id="ans2"></input>
-					<br>Write 'hack'<input id="ans3"></input>
-					<br>Write 'hack'<input id="ans4"></input>
-				</div>
-			</div>
-			<% include footer %>
-		</div>
-</body>
 
 <html>

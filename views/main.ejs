@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
    
-        <link href="/kiva_style.css" rel="stylesheet" type="text/css">
+        
         <link href="/tabs_style.css" rel="stylesheet" type="text/css">
         <meta name="description" content="">
         <meta name="author" content="">
@@ -21,10 +21,15 @@
       
         <!-- DataTables -->
         <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+
+        <!-- Responsiveness for DataTables -->
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/responsive/1.0.3/css/dataTables.responsive.css">
+        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/responsive/1.0.3/js/dataTables.responsive.js"></script>
         
         <!-- Bootstrap -->
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <link href="/kiva_style.css" rel="stylesheet" type="text/css">
         <title>Submit an Application</title>
     </head> 
 
@@ -38,7 +43,7 @@
             <h1>Application Dashboard</h1>
             <div id = "firstTable">
                 <h3>Application Shortlist</h3>
-                <table id="appsTableShort" class="display" cellspacing="0" width="100%">
+                <table id="appsTableShort" class="display compact" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th>Name</td>
@@ -48,7 +53,7 @@
                             <th>Social Impact</td>    
                             <th>Number of reviews</td>   
                             <th>Open to review</td> 
-                            <th>More details</td> 
+                            <th>More details/Update</td> 
                         </tr>
                     </thead>
                 </table>
@@ -56,7 +61,7 @@
             </div>
             <div>
                 <h3>All other applications</h3>
-                <table id="appsTableRest" class="display" cellspacing="0" width="100%">
+                <table id="appsTableRest" class="display compact" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th>Name</td>
@@ -66,7 +71,7 @@
                             <th>Social Impact</td>    
                             <th>Number of reviews</td>   
                             <th>Open to review</td> 
-                            <th>More details</td> 
+                            <th>More details/Update</td> 
                         </tr>
                     </thead>
                 </table>
@@ -77,7 +82,7 @@
             <h2>Volunteer Dashboard</h2>
             <div id="firstTable">
                 <h3>Unprocessed volunteers</h3>
-                    <table id="volsTableUnapp" class="display" cellspacing="0" width="100%">
+                    <table id="volsTableUnapp" class="display compact" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>First name</td>
@@ -87,15 +92,15 @@
                                 <th>Resume</td>
                                 <th>Why Kiva?</td>    
                                 <th>Skills</td>   
-                                <th>Approve</td>   
-                                <th>Deny</td> 
+                                <th></td>   
+                                <th></td> 
                             </tr>
                         </thead>
                     </table>
             </div>
             <div>
                 <h3>Approved volunteers</h3>
-                <table id="volsTableApp" class="display" cellspacing="0" width="100%">
+                <table id="volsTableApp" class="display compact" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th>First name</td>
@@ -142,7 +147,7 @@
                 var string = JSON.stringify(data);
                 $.each( data, function( key, value ) {
                     value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
-                    var linkstr = '<a href="/admin/application/'+ value._id + '">Click here</a>'
+                    var linkstr = '<a href="/admin/application/'+ value._id + '">More details/Update</a>'
                     value.details_view = linkstr;
                     value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
                     value.kiva_fit_count_display = value.kiva_fit_count + " / " + value.num_reviews;
@@ -151,7 +156,8 @@
                 });
                  
                 $(table).dataTable({
-                    "data": data,        
+                    "data": data,
+                    responsive: true,        
                     "columns": [
                       { "data": "organization_name" },
                       { "data": "rating" },
@@ -178,7 +184,7 @@
                 var string = JSON.stringify(data);
                 $.each( data, function( key, value ) {
                     value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
-                    var linkstr = '<a href="/admin/application/'+ value._id + '">Click here</a>'
+                    var linkstr = '<a href="/admin/application/'+ value._id + '">More details/Update</a>'
                     value.details_view = linkstr;
                     value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
                     value.kiva_fit_count_display = value.kiva_fit_count + " / " + value.num_reviews;
@@ -189,6 +195,7 @@
                 console.log(jQuery.type(data));
                 $(table).dataTable({
                     "data": data,
+                    responsive: true,
                     "columns": [
                       { "data": "organization_name" },
                       { "data": "rating" },
@@ -229,17 +236,18 @@
 
                     value.approve_vol = '<form class="volunteer-approve" action="/admin/volunteer/approve" method="post">' +
                                         '<input type="hidden" name="id" value="' + value._id + '" />' +
-                                        '<input type="submit" value="Approve" class="btn btn-primary">' +
+                                        '<input type="submit" value="Approve" id="approve-btn" class="table-btn btn btn-primary">' +
                                     '</form>';
 
                     value.deny_vol = '<form class="volunteer-deny" action="/admin/volunteer/deny" method="post">' +
                                         '<input type="hidden" name="id" value="' + value._id + '" />' +
-                                        '<input type="submit" value="Deny" class="btn btn-primary">' +
+                                        '<input type="submit" value="Deny" id="deny-btn" class="table-btn btn btn-primary">' +
                                  '</form>';
                 });
 
                 $(table).dataTable({
                     "data": data,
+                    responsive: true,
                     "columns": [
                         { "data": "first_name" },
                         { "data": "last_name" },
@@ -279,6 +287,7 @@
             
                 var oTable = $(table).dataTable({
                     "data": data,
+                    responsive: true,
                         "columns": [
                         { "data": "first_name" },
                         { "data": "last_name" },

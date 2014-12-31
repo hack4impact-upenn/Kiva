@@ -200,10 +200,14 @@
 	float: left;
 }
 
-.btn.btn-primary {
+.btn.btn-primary, .btn.btn-primary:disabled, .btn.btn-primary:hover {
 	background-color: green;
 	width: 100%;
 	margin-bottom: 2px;
+}
+
+textarea { 
+	resize: vertical;
 }
 
 #signup-form {
@@ -216,7 +220,7 @@
 	margin-top: 20px;
 }
 
-#apps-form {
+#apps-form, #new-app-form {
 	border-radius: 3px;
 	border: 1px solid black;
 	padding: 10px;
@@ -228,13 +232,14 @@
 
 #questions {
 	display: none;
+	margin: auto;
 }
 
 #firstTable {
 	border-bottom: 2px solid green;
 }
 
-#training a {
+#training .box {
 			background-color: #B1FF75;
 			display: block;
 			margin-bottom: 1%;
@@ -248,30 +253,29 @@
 			border-radius: 5px;
 			z-index: -1;
 		}
-		#training a:visited {
-			color: #3C8A0C;
-		}
-		#training a:hover {
-			background-color: #B1DF75
-		}
-		#training button, .submit {
-			background-color: #587F3A;
-			color: white;
-			width: 400px;
-			padding: 2px;
-			text-align: center;
-			margin-right: auto;
-			margin-left: auto;
-			display: block;
-			font-size: 100%;
-		}
-		#training .submit:hover {
-			background-color: #58AF3A
-		}
+#training .box:visited {
+	color: #3C8A0C;
+}
+#training .box:hover {
+	background-color: #B1DF75
+}
+#reviewed {
+	background-color: green;
+	color: white;
+	width: 400px;
+	text-align: center;
+	margin-right: auto;
+	margin-left: auto;
+	display: block;
+}
 
-.popup {
-	position: absolute;
-	top: 20%;
+#back {
+	float: right;
+}
+
+
+#training .submit:hover {
+	background-color: #58AF3A
 }
 
 .dropdown li {
@@ -282,3 +286,30 @@
 	margin-left: 10px;
 }
 
+/* Overwriting default plus button in DataTables responsive */
+
+table.dataTable.dtr-inline.collapsed tbody td:first-child:before, 
+table.dataTable.dtr-inline.collapsed tbody th:first-child:before {
+	color: black;
+	border: 0;
+	border-radius: 0;
+	box-shadow: 0 0 0 0;
+	content: '\25BA';
+	background-color: transparent;
+	font-size: 10px;
+}
+
+table.dataTable.dtr-inline.collapsed tbody tr.parent td:first-child:before,
+table.dataTable.dtr-inline.collapsed tbody tr.parent th:first-child:before {
+	content: '\25BC';
+	background-color: transparent;
+}
+
+#deny-btn {
+	background-color: #b20000 !important;
+	border-color: #b20000;
+}
+
+.table-btn, .table-btn:disabled, .table-btn:hover {
+	width: auto;
+}

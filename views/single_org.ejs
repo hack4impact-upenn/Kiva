@@ -26,7 +26,7 @@
             <h3> Update organization information </h3>        
             <br />
             <form id="apps" action="" method="POST">
-                <label for="shortlisted"> Short list application? (Be sure to hit submit below!) </label>
+                <label for="shortlisted"> Short list application? (Be sure to hit 'Update' below!) </label>
                 <div class="radio">
                     <label>
                         <input type="radio" name="shortlisted" value=true>
@@ -138,10 +138,7 @@
         };
         
         function cancelGoBack() {
-            var form=document.getElementById("apps");
-            form.method ="GET";
-            form.action='<%= "/admin_applications/" %>';
-            form.submit();            
+            window.location.replace('/admin_applications/');           
         };
 
         $( document ).ready(function() {

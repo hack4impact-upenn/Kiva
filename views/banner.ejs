@@ -8,19 +8,22 @@
     <div id="nav">
         <ul> 
 
+            <% if (name) { %>
+            <li>Welcome, <%= name %>.</li>
+            <% } %>
+
             <li class="dropdown">
-                <a href="#" data-toggle="dropdown" class="dropdown-toggle">Notifications<b class="caret"></b></a>
+                <a id="notifications-btn" class="banner-btn" href="#" data-toggle="dropdown" class="dropdown-toggle">Notifications<b class="caret"></b></a>
 
                 <ul class="dropdown-menu">
                     <li id="achievs"><table class='table table-striped'></table></li>
                 </ul>
             </li>
-            <a class="banner-btn" href="/volunteer/home"><li>Home</li></a>
-            <a class="banner-btn" href="/volunteer/training"><li>Training/Resources</li></a>
-            <a class="banner-btn" href="/logout"><li>Logout</li></a></br>
-            <% if (name) { %>
-            Logged in as: <%= name %>
-            <% } %>
+            
+            <a id="home-btn" class="banner-btn" href="/volunteer/home"><li>Home</li></a>
+            <a id="training-btn" class="banner-btn" href="/volunteer/training"><li>Training/Resources</li></a>
+            <a id="logout-btn" class="banner-btn" href="/logout"><li>Logout</li></a></br>
+            
         </ul>
     </div>
 </div>
