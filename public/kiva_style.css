@@ -239,7 +239,7 @@ textarea {
 	border-bottom: 2px solid green;
 }
 
-#training a {
+#training .box {
 			background-color: #B1FF75;
 			display: block;
 			margin-bottom: 1%;
@@ -253,10 +253,10 @@ textarea {
 			border-radius: 5px;
 			z-index: -1;
 		}
-#training a:visited {
+#training .box:visited {
 	color: #3C8A0C;
 }
-#training a:hover {
+#training .box:hover {
 	background-color: #B1DF75
 }
 #reviewed {
@@ -271,11 +271,6 @@ textarea {
 
 #back {
 	float: right;
-	margin-top: 10px;
-}
-
-#check-answers {
-	margin-top: 10px;
 }
 
 
