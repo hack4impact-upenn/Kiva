@@ -378,10 +378,10 @@
                 console.log(form);
                 $.post('/admin/volunteer/approve', form, function() {
                     console.log('done');
-                    var oTable = $('#volsTableUnapp').dataTable({responsive: true});
+                    var oTable = $('#volsTableUnapp').dataTable();
                     oTable.fnDestroy();
                     load_vols_unapp();
-                    var oTable = $('#volsTableApp').dataTable({responsive: true});
+                    var oTable = $('#volsTableApp').dataTable();
                     oTable.fnDestroy();
                     load_vols_app();
                     console.log(form);
@@ -395,7 +395,7 @@
                 console.log('inside deny!!!');
                 $.post('/admin/volunteer/deny', form, function() {
                     console.log('done with deny!!!');
-                    var oTable = $('#volsTableUnapp').dataTable({responsive: true});
+                    var oTable = $('#volsTableUnapp').dataTable();
                     oTable.fnDestroy();
                     load_vols_unapp();
                 });
