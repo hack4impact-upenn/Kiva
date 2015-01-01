@@ -32,7 +32,15 @@
                     <span><%= error %></span>
                 </div>
                 <% } %>
+                <div id="username-alert" class="alert alert-danger alert-dismissible fade in" style="display:none;" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <span>This username has already been registered.</span>
+                </div>
                 <input type="text" name="username" size="20" class="form-control" placeholder="Username" required><br>
+                <div id="email-alert" class="alert alert-danger alert-dismissible fade in" style="display:none;" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <span>This email has already been registered.</span>
+                </div>
                 <input type="email" name="email_address" size="20" class="form-control" placeholder="Email Address" required><br>
                 <input type="password" name="password" size="20" class="form-control" placeholder="Password" required><br>
                 <input type="url" name="linked_in" size="20" class="form-control" placeholder="Linkedin Profile" required><br>
@@ -65,7 +73,36 @@
             }
         } 
         $(document).ready(function() {
-            $('.banner-btn').hide();   
+            $('.banner-btn').hide();  
+            $('#signup-submit').submit(function(e) {
+                console.log("about to post");
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "/volunteer/check_email_username",
+                    data: {username: $('[name=username]').val(), email: $('[name=email_address]').val()},
+                    success: function(data) {
+                        console.log(data);
+                        switch (data) {
+                            case "neither": 
+                                $('form').unbind('submit').submit();
+                                break;
+                            case "email":
+                                $('#email-alert').show();
+                                $('#username-alert').hide();
+                                break;
+                            case "username": 
+                                $('#email-alert').hide();
+                                $('#username-alert').show();
+                                break;
+                            case "both": 
+                                $('#email-alert').show();
+                                $('#username-alert').show();
+                                break;
+                        }
+                    }
+                });
+            });
         });
         </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>

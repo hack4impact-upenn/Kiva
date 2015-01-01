@@ -77,11 +77,12 @@ app.get("/volunteer/get_min_reviewed_application", ensure_auth, ensure_training,
 app.get("/volunteer/load", ensure_auth, volunteer_controller.loadVolunteer); //loads data of a single User from session info
 app.get("/volunteer/get_completed_applications", ensure_auth, ensure_training, volunteer_controller.getCompletedApplications);
 app.get("/volunteer/load_leaderboard", ensure_auth, ensure_training, volunteer_controller.load_leaderboard);
+app.get("/volunteer/get_achievements", ensure_auth, ensure_training, volunteer_controller.getAchievements);
 
 //signs up a volunteer
 app.post("/volunteer/submit-volunteer", volunteer_controller.createVolunteer);
 app.post("/volunteer/finished-training", ensure_auth, volunteer_controller.volunteerFinishedTraining);
-app.get("/volunteer/get_achievements", ensure_auth, ensure_training, volunteer_controller.getAchievements);
+app.post("/volunteer/check_email_username", volunteer_controller.check_email_username)
 
 //pages
 app.get("/volunteer/home", ensure_auth, ensure_training, volunteer_controller.volunteerHome);

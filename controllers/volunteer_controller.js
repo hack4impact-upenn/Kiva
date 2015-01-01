@@ -235,6 +235,31 @@ exports.createVolunteer = function(req, res) {
 };
 
 /*
+ * Checks whether the username and email are already taken
+ * and responds appropriately.
+ * @param user email and username
+ */
+exports.check_email_username = function(req, res) {
+    var email = req.body.email; 
+    var username = req.body.username;
+    Volunteer.findOne({'email_address': email}, function(err, volunteer_email) {
+        var email_exists = (volunteer_email != null);
+        Volunteer.findOne({'username': username}, function(err, volunteer_username) {
+            var username_exists = (volunteer_username != null);
+            if (email_exists && username_exists) {
+                res.send("both");
+            } else if (email_exists) {
+                res.send("email");
+            } else if (username_exists) {
+                res.send("username");
+            } else {
+                res.send("neither");
+            }
+        });
+    });
+}
+
+/*
  * Updates volunteer object field 'finished_training' to true
  * @param volunteer id (taken from session)
  */
