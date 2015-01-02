@@ -52,7 +52,6 @@ exports.login = function(req, res) {
                     req.session.volunteerId = ObjectId(volunteer._id.toString());
                     req.session.email = volunteer.email_address;
                     req.session.finished_training = volunteer.finished_training;
-                    req.session.approved = volunteer.approved;
                     if(req.session.admin) {
                         res.redirect('/admin_applications');
                     } else {
@@ -110,7 +109,6 @@ exports.logout = function(req, res) {
     req.session.email = null;
     req.session.fullname = null;
     req.session.finished_training = null;
-    req.session.approved = null;
     return res.redirect("/");
 };
 
@@ -226,7 +224,6 @@ exports.createVolunteer = function(req, res) {
                         req.session.email = volunteer.email_address;
                         req.session.fullname = volunteer.first_name + " " + volunteer.last_name;
                         req.session.finished_training = volunteer.finished_training;
-                        req.session.approved = volunteer.approved;
                         res.redirect('/volunteer/training');
                     }
                 });
