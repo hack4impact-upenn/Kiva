@@ -67,7 +67,6 @@ function ensure_approved(req, res, next) {
   Volunteer.findById(req.session.volunteerId, function(err, volunteer) {
     if (!err) {
       if (volunteer.approved) {
-        console.log("returning next");
         return next();
       } else {
         res.redirect('/volunteer/home');
