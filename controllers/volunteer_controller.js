@@ -52,7 +52,6 @@ exports.login = function(req, res) {
                     req.session.volunteerId = ObjectId(volunteer._id.toString());
                     req.session.email = volunteer.email_address;
                     req.session.finished_training = volunteer.finished_training;
-                    req.session.approved = volunteer.approved;
                     if(req.session.admin) {
                         res.redirect('/admin_applications');
                     } else {
@@ -110,7 +109,6 @@ exports.logout = function(req, res) {
     req.session.email = null;
     req.session.fullname = null;
     req.session.finished_training = null;
-    req.session.approved = null;
     return res.redirect("/");
 };
 
@@ -226,13 +224,37 @@ exports.createVolunteer = function(req, res) {
                         req.session.email = volunteer.email_address;
                         req.session.fullname = volunteer.first_name + " " + volunteer.last_name;
                         req.session.finished_training = volunteer.finished_training;
-                        req.session.approved = volunteer.approved;
                         res.redirect('/volunteer/training');
                     }
                 });
             }
         });
 };
+
+/*
+ * Checks whether the username and email are already taken
+ * and responds appropriately.
+ * @param user email and username
+ */
+exports.check_email_username = function(req, res) {
+    var email = req.body.email; 
+    var username = req.body.username;
+    Volunteer.findOne({'email_address': email}, function(err, volunteer_email) {
+        var email_exists = (volunteer_email != null);
+        Volunteer.findOne({'username': username}, function(err, volunteer_username) {
+            var username_exists = (volunteer_username != null);
+            if (email_exists && username_exists) {
+                res.send("both");
+            } else if (email_exists) {
+                res.send("email");
+            } else if (username_exists) {
+                res.send("username");
+            } else {
+                res.send("neither");
+            }
+        });
+    });
+}
 
 /*
  * Updates volunteer object field 'finished_training' to true
