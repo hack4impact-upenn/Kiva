@@ -75,14 +75,12 @@
         $(document).ready(function() {
             $('.banner-btn').hide();  
             $('#signup-submit').submit(function(e) {
-                console.log("about to post");
                 e.preventDefault();
                 $.ajax({
                     type: "POST",
                     url: "/volunteer/check_email_username",
                     data: {username: $('[name=username]').val(), email: $('[name=email_address]').val()},
                     success: function(data) {
-                        console.log(data);
                         switch (data) {
                             case "neither": 
                                 $('form').unbind('submit').submit();
