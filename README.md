@@ -1,7 +1,7 @@
 The Kiva Crowdsourced Due Diligence App, built by Hack4Impact
 
 #About Us
-[Hack4Impact](http://hack4impact.weebly.com) is a student organization 
+[Hack4Impact](http://hack4impact.org/) is a student organization 
 at the University of Pennsylvania that connects nonprofits with student software 
 developers. Through semester-long projects, we build webapps to help 
 socially-oriented organizations accomplish their goals even better. Inspired by 
