@@ -79,3 +79,6 @@ will hold any libraries you install.
 		node app.js
 
 9. Head on over to http://0.0.0.0:5000/!
+
+## License
+[MIT License](LICENSE.md)
