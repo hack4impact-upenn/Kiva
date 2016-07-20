@@ -4,9 +4,10 @@ var Schema = mongoose.Schema;
 var ApplicationSchema = new Schema({
   organization_name: { type: String, default: '', trim : true },
   description: { type: String, default: '', trim : true },
-  token: { type: String, default: '' },
+  organization_gdocs_token: { type: String, default: '' },
   organization_address: { type: String, default: ''},
   organization_url: { type: String, default: '' },
+  organization_gdocs_url: { type: String, default: '' },
   num_reviews: { type: Number, default: 0 },
   open_to_review: {type: Boolean, default: true},
   reviews_in_progress: [Schema.Types.ObjectId],
