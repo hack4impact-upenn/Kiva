@@ -118,7 +118,6 @@ app.get("/review/organization_docs/:org_id", volunteer_controller.load_organizat
 app.post("/review/upvote_three_questions", volunteer_controller.upvote_three_questions);
 
 /***** Admin requests ******/
-app.get("/admin/sign-up", admin_controller.admin_signup_page);
 app.post('/admin/submit-admin', admin_controller.create_admin);
 app.get("/admin_submit", ensure_admin, admin_controller.submit_application);
 app.post("/post-application", ensure_admin, admin_controller.create_application);
