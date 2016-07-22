@@ -1,23 +1,23 @@
 /*html, body {
   height: 100%;
-   The html and body elements cannot have any padding or margin. 
+   The html and body elements cannot have any padding or margin.
   margin:0;
   padding:0;
 }*/
 
 #left {
 	float: left;
-	width: 50%;	
+	width: 50%;
 }
 
 #review-info {
 	float: left;
-	width: 50%;
+	width: 15%;
 }
 
 #right {
 	float: right;
-	width: 50%;
+	width: 85%;
 }
 
 /*#applicant-documents {
@@ -136,7 +136,7 @@
 	margin-top: 10px;
 }
 
-#title { 
+#title {
 	margin-left: auto;
 	margin-right: auto;
 	display: block;
@@ -187,7 +187,6 @@
 	border-radius: 3px;
 	border-left: 1px solid black;
 	padding: 10px;
-	height: 600px;
 	overflow: scroll;
 	/*border-bottom: 2px solid*/
 }
@@ -206,7 +205,7 @@
 	margin-bottom: 2px;
 }
 
-textarea { 
+textarea {
 	resize: vertical;
 }
 
@@ -288,7 +287,7 @@ textarea {
 
 /* Overwriting default plus button in DataTables responsive */
 
-table.dataTable.dtr-inline.collapsed tbody td:first-child:before, 
+table.dataTable.dtr-inline.collapsed tbody td:first-child:before,
 table.dataTable.dtr-inline.collapsed tbody th:first-child:before {
 	color: black;
 	border: 0;
