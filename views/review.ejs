@@ -23,7 +23,21 @@
 
         <div id="review-form">
             <form id="review" action="<%= "/review/submit/" + review_id %>" method="POST">
-                <label for="clear_social_impact"> Does this company have a clear social impact? </label>
+                <label for="clear_business_model"> Does the business model make sense? </label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="clear_business_model" value=true>
+                        Yes
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="clear_business_model" value=false>
+                        No
+                    </label>
+                </div>
+                <br />
+                <label for="clear_social_impact"> Does the social impact model make sense? </label>
                 <div class="radio">
                     <label>
                         <input type="radio" name="clear_social_impact" value=true>
@@ -37,40 +51,52 @@
                     </label>
                 </div>
                 <br />
-                <label for="sustainable_model"> Is there a clear savings/revenue model to repay the loan? </label>
+                <label for="loan_well_structured"> Based on the loan use, is the loan appropriately structured? </label>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="sustainable_model" value=true size="20">
+                        <input type="radio" name="loan_well_structured" value=true size="20">
                         Yes
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="sustainable_model" value=false size="20">
+                        <input type="radio" name="loan_well_structured" value=false size="20">
                         No
                     </label>
                 </div>
                 <br />
 
-                <label for="kiva_fit"> Is the company a good fit with the Kiva model? </label>
+                <label for="well_positioned_to_repay"> Do they have financial capacity to repay the loan? </label>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="kiva_fit" value=true size="20">
+                        <input type="radio" name="well_positioned_to_repay" value=true size="20">
                         Yes
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="kiva_fit" value=false size="20">
+                        <input type="radio" name="well_positioned_to_repay" value=false size="20">
                         No
                     </label>
                 </div>
                 <br />
 
-                <label for="kiva_fit_comments"> If not a good fit, why? </label>
-                <input type="text" id="kiva_fit_comments" name="kiva_fit_comments" size="20" class="form-control" placeholder=""><br>
+                <label for="well_positioned_to_communicate"> Do they have a strong ability communicate and market themselves? </label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="well_positioned_to_communicate" value=true size="20">
+                        Yes
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="well_positioned_to_communicate" value=false size="20">
+                        No
+                    </label>
+                </div>
+                <br />
 
-                <label for="recommend_rating"> How excited would you be to recommend this application for the next stage in the approval process?</label>
+                <label for="recommend_rating"> Would you, if you had the capital, give them the loan? </label>
                 <div class="radio">
                     <label>
                         <input type="radio" name="recommend_rating" value=1 size="20">
@@ -99,7 +125,7 @@
                 </div>
                 <br>
 
-                <label for="other_comments"> If you have other comments or questions, please visit the <a href="https://www.reddit.com/r/kivacrowdvetting">Reddit Page</a> </label>
+                <label> If you have other comments or questions, please visit the <a href="https://www.reddit.com/r/kivacrowdvetting">Reddit Page</a> </label>
 
                 <input type="hidden" name="organization_id" id="organization_id">
 
@@ -116,12 +142,11 @@
             $.getJSON('<%= "/review/load/" + review_id %>', function(review) {
                 $.each(review, function(name, val) {
                     switch(name) {
+                        case ("clear_business_model"):
                         case ("clear_social_impact"):
-                        case ("kiva_fit"):
-                        case("sustainable_model"):
-                            var i = val ? 0 : 1;
-                            $('input[name=' + name + ']:nth(' + i + ')').attr('checked', true);
-                            break;
+                        case ("loan_well_structured"):
+                        case ("well_positioned_to_repay"):
+                        case ("well_positioned_to_communicate"):
                         case ("recommend_rating"):
                             $('input[name=' + name + ']:nth('+ (val-1) + ')').attr('checked', true);
                             break;

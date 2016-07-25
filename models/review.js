@@ -11,11 +11,11 @@ var ReviewSchema = new Schema({
   date_review_started: {type: Date, default: Date.now},
   date_review_submitted: {type: Date},
   clear_social_impact: {type: Boolean, default: false},
-  kiva_fit: {type: Boolean, default: false},
-  sustainable_model: {type: Boolean, default: false},
-  kiva_fit_comments: {type: String, default: ''},
+  clear_business_model: {type: Boolean, default: false},
+  loan_well_structured: {type: Boolean, default: false},
+  well_positioned_to_repay: {type: Boolean, default: false},
+  well_positioned_to_communicate: {type: Boolean, default: false},
   recommend_rating: {type: Number, min:1, max:4},
-  //1 is bad, 5 is good
   submitted: {type: Boolean, default: false}
 });
 

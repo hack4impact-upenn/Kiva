@@ -498,10 +498,11 @@ exports.load_unfinished_review = function(req, res) {
 exports.save_review = function(req, res) {
     Review.update({"_id": ObjectId(req.params.id)},
             {
+                clear_business_model: req.body.clear_business_model,
                 clear_social_impact: req.body.clear_social_impact,
-                kiva_fit: req.body.kiva_fit,
-                sustainable_model: req.body.sustainable_model,
-                kiva_fit_comments: req.body.kiva_fit_comments,
+                loan_well_structured: req.body.loan_well_structured,
+                well_positioned_to_repay: req.body.well_positioned_to_repay,
+                well_positioned_to_communicate: req.body.well_positioned_to_communicate,
                 recommend_rating: req.body.recommend_rating,
             }, function(err, numAffected) {
                 if(err) {
@@ -601,10 +602,11 @@ exports.submit_review = function(req, res) {
                             "_id": ObjectId(req.params.id)},{
                                 submitted: true,
                                 date_review_submitted: Date.now(),
+                                clear_business_model: req.body.clear_business_model,
                                 clear_social_impact: req.body.clear_social_impact,
-                                kiva_fit: req.body.kiva_fit,
-                                sustainable_model: req.body.sustainable_model,
-                                kiva_fit_comments: req.body.kiva_fit_comments,
+                                loan_well_structured: req.body.loan_well_structured,
+                                well_positioned_to_repay: req.body.well_positioned_to_repay,
+                                well_positioned_to_communicate: req.body.well_positioned_to_communicate,
                                 recommend_rating: req.body.recommend_rating,
                             }, function(err) {
                                 if (err) {return callback(err)};
@@ -656,16 +658,19 @@ exports.submit_review = function(req, res) {
                     },
                     function(callback) {
                         //update average score/counts
-                        console.log(req.body.kiva_fit);
-                        var kiva_fit = (req.body.kiva_fit === 'true' ? 1 : 0);
+                        console.log(req.body.clear_business_model);
+                        var clear_business_model = (req.body.clear_business_model === 'true' ? 1 : 0);
                         var clear_social_impact = (req.body.clear_social_impact === 'true' ? 1 : 0);
-                        var sustainable_model = (req.body.sustainable_model === 'true' ? 1 : 0);
-                        console.log("kiva fit:" + kiva_fit);
+                        var loan_well_structured = (req.body.loan_well_structured === 'true' ? 1 : 0);
+                        var well_positioned_to_repay = (req.body.well_positioned_to_repay === 'true' ? 1 : 0);
+                        var well_positioned_to_communicate = (req.body.well_positioned_to_communicate === 'true' ? 1 : 0);
 
                         Application.update({"_id": org_id},
                             {$inc: {score_sum: req.body.recommend_rating,
-                                    kiva_fit_count: kiva_fit,
-                                    sustainable_model_count: sustainable_model,
+                                    clear_business_model_count: clear_business_model,
+                                    loan_well_structured_count: loan_well_structured,
+                                    well_positioned_to_repay_count: well_positioned_to_repay,
+                                    well_positioned_to_communicate_count: well_positioned_to_communicate,
                                     clear_social_impact_count: clear_social_impact}
                                 }, function(err) {
                             if (err) {return callback(err)};

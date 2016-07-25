@@ -54,11 +54,15 @@
             $.getJSON("/load_application/" + org_id, function(application) {
             $('#data').append(
                         "<div id='average-reviews'>" + 
-                        "<p>" +  application.kiva_fit_count + " out of " + application.num_reviews + " thought " + application.organization_name + " fit in with Kiva's culture. </p>" + 
-
-                        "<p>" +  application.sustainable_model_count + " out of " + application.num_reviews + " thought " + application.organization_name + " has a sustainable business model. </p>" + 
+                        "<p>" +  application.clear_business_model_count + " out of " + application.num_reviews + " thought " + application.organization_name + " has a clear business model. </p>" + 
 
                         "<p>" +  application.clear_social_impact_count + " out of " + application.num_reviews + " thought " + application.organization_name + " has a clear social impact. </p>" + 
+
+                        "<p>" +  application.loan_well_structured_count + " out of " + application.num_reviews + " thought " + application.organization_name + " structures its loans well. </p>" + 
+
+                        "<p>" +  application.well_positioned_to_repay_count + " out of " + application.num_reviews + " thought " + application.organization_name + " is well positioned to repay its loans. </p>" + 
+
+                        "<p>" +  application.well_positioned_to_communicate_count + " out of " + application.num_reviews + " thought " + application.organization_name + " is well positioned to communicate and market itself effectively. </p>" + 
 
                         "<p> Average rating was: " + (application.score_sum/application.num_reviews).toFixed(1) + " out of 5.0 </p>" +
                         "</div>"
@@ -69,16 +73,20 @@
         var load_completed_review = function() {
             $.getJSON('/review/completed/load/' + org_id, function(reviews) {
                 $('#completed-table table').append("<tr>" + 
+                    "<th>" + "Clear Business Model" + "</th>" +
                     "<th>" + "Clear Social Impact" + "</th>" +
-                    "<th>" + "Good Kiva Fit" + "</th>" +
-                    "<th>" + "Sustainable Business Model" + "</th>" +
+                    "<th>" + "Loan Well Structured" + "</th>" +
+                    "<th>" + "Well Positioned to Repay the Loan" + "</th>" +
+                    "<th>" + "Well Positioned to Communicate and Market Self" + "</th>" +
                     "<th>" + "Recommended Rating" + "</th>" +
                     "</tr>");
                  $.each(reviews, function(index, review) {
                     $('#completed-table table').append("<tr>" + 
+                        "<td>" + review["clear_business_model"] + "</td>" +
                         "<td>" + review["clear_social_impact"] + "</td>" +
-                        "<td>" + review["kiva_fit"] + "</td>" +
-                        "<td>" + review["sustainable_model"] + "</td>" +
+                        "<td>" + review["loan_well_structured"] + "</td>" +
+                        "<td>" + review["well_positioned_to_repay"] + "</td>" +
+                        "<td>" + review["well_positioned_to_communicate"] + "</td>" +
                         "<td>" + review["recommend_rating"] + "</td>" +
                         "</tr>"
                         );
