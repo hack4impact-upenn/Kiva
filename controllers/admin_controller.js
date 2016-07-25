@@ -172,7 +172,6 @@ exports.save_application_changes = function(req, res) {
         }
         application.organization_name = req.body.organization_name;
         application.description = req.body.description;
-        application.organization_gdocs_token = req.body.organization_gdocs_token;
         application.organization_gdocs_url = req.body.organization_gdocs_url;
         application.organization_url = req.body.organization_url;
         application.open_to_review = req.body.open_to_review;
@@ -200,7 +199,6 @@ exports.create_application = function(req, res) {
     var application = new Application({
         organization_name: req.body.organization_name,
         description: req.body.description,
-        organization_gdocs_token: req.body.organization_gdocs_token,
         organization_gdocs_url: req.body.organization_gdocs_url,
         organization_url: req.body.organization_url,
         volunteer_list: []
