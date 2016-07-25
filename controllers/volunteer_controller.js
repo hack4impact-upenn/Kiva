@@ -366,7 +366,7 @@ exports.load_organization_docs = function(req, response) {
   Application.findById(req.params.org_id, function(err, application) {
       var folderId = getParameterByName('id', application.organization_gdocs_url);
 
-      if (folderId.length > 0){
+      if (folderId && folderId.length > 0){
         var gAuth = gDocsUtil.readTokenSync();
         var chunk_num = 0;
 
