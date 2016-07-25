@@ -262,8 +262,8 @@ exports.check_email_username = function(req, res) {
  * @param volunteer id (taken from session)
  */
 exports.volunteerFinishedTraining = function(req, res) {
-    console.log(req.body.ans1 + " " + req.body.ans2 + " " + req.body.ans3 + " " + req.body.ans4);
-    if (req.body.ans1 != 'red' || req.body.ans2 != '3' || req.body.ans3 !='hack' || req.body.ans4 !='hack') {
+    console.log(req.body.ans1 + " " + req.body.ans2 + " ");
+    if (req.body.ans1 != 'crowdfunded' || req.body.ans2 != '50') {
         var incorrect = 'Sorry, at least one of your answers is incorrect. Make sure to review all the materials first.';
         res.render('training.ejs', {name: req.session.fullname, finished_training: req.session.finished_training, message: incorrect});
     } else {

@@ -60,16 +60,21 @@
 			</div>
 			<form id="questions" action="/volunteer/finished-training" method="POST">
 				<div class="form-group">
-					What is Penn's color that's not blue?<input type="text" class="form-control" name="ans1" required></input>
+					Where does Kiva get its money to lend?
+					<select name="ans1" required class="form-control">
+						<option value="banks">Banks</option>
+						<option value="donors">Donors</option>
+						<option value="crowdfunded">Crowdfunded</option>
+					</select>
 				</div>
 				<div class="form-group">
-					How many wheels in tricycle?<input type="text" class="form-control" name="ans2" required></input>
-				</div>
-				<div class="form-group">
-					Write 'hack'<input type="text" class="form-control" name="ans3" required></input>
-				</div>
-				<div class="form-group">
-					Write 'hack'<input type="text" class="form-control" name="ans4" required></input>
+					What is the maximum size of a DSE loan?
+					<select name="ans2" required class="form-control">
+						<option value="10">$10,000</option>
+						<option value="20">$20,000</option>
+						<option value="50">$50,000</option>
+						<option value="100">$100,000</option>
+					</select>
 				</div>
 				<button id="check-answers" type="submit" class="btn btn-default">Submit</button>
 				<a id="back" class="btn btn-default">Back</a>
