@@ -8,7 +8,6 @@ var VolunteerSchema = new Schema({
   username: {type: String, default: ''},
   password: {type: String, default: ''},  
   linked_in: {type: String, default: ''},
-  resume_link: {type: String, default: ''},
   why_kiva: {type: String, default: ''},
   what_skills: {type: String, default: ''},
   terms_accepted: {type: Boolean, default: 1},

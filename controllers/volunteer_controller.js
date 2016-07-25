@@ -212,7 +212,6 @@ exports.createVolunteer = function(req, res) {
                     finished_training: false,
                     approved: false,
                     linked_in: req.body.linked_in,
-                    resume_link: req.body.resume_link,
                     why_kiva:  req.body.why_kiva,
                     what_skills: req.body.what_skills
                 });

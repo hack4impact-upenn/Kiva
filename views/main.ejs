@@ -89,7 +89,6 @@
                                 <th>Last name</td>
                                 <th>Username</td>
                                 <th>LinkedIn</td>
-                                <th>Resume</td>
                                 <th>Why Kiva?</td>    
                                 <th>Skills</td>   
                                 <th></td>   
@@ -221,8 +220,6 @@
                 $.each( data, function( key, value ) {
                     value.linked_in = '<a href = "' + value.linked_in + 
                     '" target="_blank">' + value.first_name + '\'s LinkedIn</a>';
-                    value.resume_link = '<a href = "' + value.resume_link + 
-                    '" target="_blank">' + value.first_name + '\'s resume</a>';
 
                     //Escaping the " signs in the text
                     //var escape = require('escape-html');
@@ -253,7 +250,6 @@
                         { "data": "last_name" },
                         { "data": "username" },
                         { "data": "linked_in" },
-                        { "data": "resume_link" },
                         { "data": "why_kiva" },
                         { "data": "what_skills" },
                         { "data": "approve_vol" },

@@ -8,7 +8,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var uristring =
 	process.env.MONGOLAB_URI ||
 	process.env.MONGOHQ_URL ||
-	'mongodb://localhost/kiva-project';
+	'mongodb://localhost/kiva-project2';
 
 mongoose.connect(uristring, function (err, res) {
   if (err) {
