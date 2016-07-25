@@ -502,11 +502,7 @@ exports.save_review = function(req, res) {
                 kiva_fit: req.body.kiva_fit,
                 sustainable_model: req.body.sustainable_model,
                 kiva_fit_comments: req.body.kiva_fit_comments,
-                q_1: req.body.q_1,
-                q_2: req.body.q_2,
-                q_3: req.body.q_3,
                 recommend_rating: req.body.recommend_rating,
-                other_comments: req.body.other_comments
             }, function(err, numAffected) {
                 if(err) {
                     console.log(err);
@@ -609,11 +605,7 @@ exports.submit_review = function(req, res) {
                                 kiva_fit: req.body.kiva_fit,
                                 sustainable_model: req.body.sustainable_model,
                                 kiva_fit_comments: req.body.kiva_fit_comments,
-                                q_1: req.body.q_1,
-                                q_2: req.body.q_2,
-                                q_3: req.body.q_3,
                                 recommend_rating: req.body.recommend_rating,
-                                other_comments: req.body.other_comments
                             }, function(err) {
                                 if (err) {return callback(err)};
                                 callback();
@@ -660,48 +652,6 @@ exports.submit_review = function(req, res) {
                                 if (err) {return callback(err)};
                             console.log("review removed from volunteer's current list");
                                 callback();
-                            });
-                    },
-                    function(callback) {
-                            //save q_1
-                            var q_1 = new Question({
-                                reviewer_id: req.session.volunteerId,
-                                organization_id: org_id,
-                                question_text: req.body.q_1,
-                            });
-                            //TODO: do we have to edit the q in the review to make it point to the q_id?
-                            q_1.save(function(err, question) {
-                                if (err) {return callback(err)};
-                                console.log("q1 saved");
-                                callback(err);
-                            });
-                    },
-                    function(callback) {
-                            //save q_2
-                            var q_2 = new Question({
-                                reviewer_id: req.session.volunteerId,
-                                organization_id: org_id,
-                                question_text: req.body.q_2,
-                            });
-                            //TODO: do we have to edit the q in the review to make it point to the q_id?
-                            q_2.save(function(err, question) {
-                                if (err) {return callback(err)};
-                                console.log("q2 saved");
-                                callback(err);
-                            });
-                    },
-                    function(callback) {
-                            //save q_3
-                            var q_3 = new Question({
-                                reviewer_id: req.session.volunteerId,
-                                organization_id: org_id,
-                                question_text: req.body.q_3,
-                            });
-                            //TODO: do we have to edit the q in the review to make it point to the q_id?
-                            q_3.save(function(err, question) {
-                                if (err) {return callback(err)};
-                                console.log("q3 saved");
-                                callback(err);
                             });
                     },
                     function(callback) {
