@@ -95,7 +95,7 @@ exports.send_applications_short= function(req, res) {
  */
 
 exports.send_applications_rest= function(req, res) {
-    Application.find( {"shortlisted": true}, {"_id": 1, "organization_name": 1, "reviews_in_progress": 1, 
+    Application.find( {"shortlisted": false}, {"_id": 1, "organization_name": 1, "reviews_in_progress": 1, 
         "score_sum": 1, "reviews_submitted": 1, "clear_business_model_count":1, "loan_well_structured_count": 1,
         "well_positioned_to_repay_count":1, "well_positioned_to_communicate_count": 1,
         "clear_social_impact_count": 1, "num_reviews": 1, "open_to_review": 1},
