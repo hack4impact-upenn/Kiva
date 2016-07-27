@@ -77,11 +77,9 @@ exports.login = function(req, res) {
                                 var achievement = create_achievement (3, req.session.volunteerId, -1);
                                 achievement.save(function(err, achiev) {
                                     if (err) {console.log(err)};
-                                    console.log("achievement saved ");
                                 });
                             }
                             volunteer.save(function(err, vol) {
-                                    console.log("Updated login day and consec");
                                 });
                         }
                         res.redirect('/volunteer/home');
@@ -137,7 +135,6 @@ exports.logout = function(req, res) {
  */
 
 exports.loadVolunteer = function(req, res) {
-    console.log("ajax call is working");
     Volunteer.findOne({"_id": req.session.volunteerId}, function(err, volunteer) {
         res.send(volunteer);
     });
@@ -148,7 +145,6 @@ exports.loadVolunteer = function(req, res) {
  * @return application object
 */
 exports.getMinReviewedApplication = function(req, res) {
-        console.log(req.session.volunteerId);
         Application.get_min_reviewed_application(ObjectId(req.session.volunteerId), function (err, application) {
             if(application === null) {
                 res.send({"data" : "none"});
@@ -199,7 +195,6 @@ exports.createVolunteer = function(req, res) {
             if(volunteer != null) {
                 //this is a duplicate entry
                 req.session.email_duplicate = true;
-                console.log("DUPLICATE!!");
                 res.redirect('/volunteer/sign-up');
             } else {
                 var volunteer = new Volunteer({
@@ -220,7 +215,6 @@ exports.createVolunteer = function(req, res) {
                     else {
                         req.session.admin = volunteer.is_admin;
                         req.session.logged = true;
-                        console.log("Volunteer_id to string: " + (volunteer._id).toString());
                         req.session.volunteerId = ObjectId(volunteer._id.toString());
                         req.session.email = volunteer.email_address;
                         req.session.fullname = volunteer.first_name + " " + volunteer.last_name;
@@ -262,7 +256,6 @@ exports.check_email_username = function(req, res) {
  * @param volunteer id (taken from session)
  */
 exports.volunteerFinishedTraining = function(req, res) {
-    console.log(req.body.ans1 + " " + req.body.ans2 + " ");
     if (req.body.ans1 != 'crowdfunded' || req.body.ans2 != '50') {
         var incorrect = 'Sorry, at least one of your answers is incorrect. Make sure to review all the materials first.';
         res.render('training.ejs', {name: req.session.fullname, finished_training: req.session.finished_training, message: incorrect});
@@ -399,7 +392,6 @@ exports.load_organization_docs = function(req, response) {
  */
 
 exports.load_organization_data = function(req, res) {
-    console.log("loading organization data");
     Application.findById(req.params.org_id, function(err, application) {
         return res.json(application);
     });
@@ -429,11 +421,9 @@ exports.upvote_three_questions = function(req, res) {
     for (var id in req.body.box) {
         Question.upvote(id, function(err) {
             if (err) {
-                console.log("error in upvoting question");
                 return callback(err)
             };
             count++;
-            console.log(count);
             if (count == 3) {
                 return res.redirect('/');
             }
@@ -509,7 +499,6 @@ exports.save_review = function(req, res) {
                     console.log(err);
                     res.send(404);
                 } else {
-                    console.log(numAffected);
                     res.redirect('/review/edit/' + req.params.id);
                 }
             }
@@ -625,7 +614,6 @@ exports.submit_review = function(req, res) {
                     function(callback){
                         Volunteer.add_completed_review(req.session.volunteerId, req.params.id, function(err) {
                                 if (err) {return callback(err)};
-                            console.log("added completed review");
                                 callback();
                         });
                     },
@@ -643,7 +631,6 @@ exports.submit_review = function(req, res) {
                     function(callback) {
                         Application.remove_review_in_progress(org_id, req.params.id, function(err) {
                                 if (err) {return callback(err)};
-                                console.log("review removed from application current list");
                                 callback();
                             });
                     },
@@ -652,13 +639,11 @@ exports.submit_review = function(req, res) {
 
                         Volunteer.remove_review_in_progress(req.session.volunteerId, function(err) {
                                 if (err) {return callback(err)};
-                            console.log("review removed from volunteer's current list");
                                 callback();
                             });
                     },
                     function(callback) {
                         //update average score/counts
-                        console.log(req.body.clear_business_model);
                         var clear_business_model = (req.body.clear_business_model === 'true' ? 1 : 0);
                         var clear_social_impact = (req.body.clear_social_impact === 'true' ? 1 : 0);
                         var loan_well_structured = (req.body.loan_well_structured === 'true' ? 1 : 0);
@@ -674,7 +659,6 @@ exports.submit_review = function(req, res) {
                                     clear_social_impact_count: clear_social_impact}
                                 }, function(err) {
                             if (err) {return callback(err)};
-                            console.log("score updated");
                             callback(err);
                         })
                     },
@@ -682,19 +666,16 @@ exports.submit_review = function(req, res) {
                         var achievement = create_achievement (1, req.session.volunteerId, 0);
                         achievement.save(function(err, achiev) {
                                 if (err) {return callback(err)};
-                                console.log("achievement saved");
                                 Volunteer.update({"_id": req.session.volunteerId},
                                     {$inc: {num_points: achievement.points}
                                         }, function(err) {
                                     if (err) {return callback(err)};
-                                    console.log("points updated");
                                 })
                                 callback(err);
                             });
                     },
                 ], function(err) {
                     if (err) {res.send(404);};
-                    console.log("submission complete");
                     res.redirect('/review/completed/' + org_id);
                 });
             }

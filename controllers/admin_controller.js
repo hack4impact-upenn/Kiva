@@ -81,7 +81,6 @@ exports.send_applications_short= function(req, res) {
         "well_positioned_to_repay_count":1, "well_positioned_to_communicate_count": 1,
         "clear_social_impact_count": 1, "num_reviews": 1, "open_to_review": 1},
         function(err, applications) {
-            console.log(applications);
             res.send(applications);
         });
 };
@@ -101,7 +100,6 @@ exports.send_applications_rest= function(req, res) {
         "well_positioned_to_repay_count":1, "well_positioned_to_communicate_count": 1,
         "clear_social_impact_count": 1, "num_reviews": 1, "open_to_review": 1},
         function(err, applications) {
-        console.log(applications);
         res.send(applications);
     });
 };
@@ -132,7 +130,6 @@ exports.send_volunteers= function(req, res) {
 exports.load_single_application = function(req, res) {
     Application.findById(req.params.id, function(err, application) {
         if(err) {
-            console.log(err);
             res.send(404);
         } else {
             res.send(application);
@@ -152,7 +149,6 @@ exports.save_application_changes = function(req, res) {
                 var achievement = create_achievement(4, application.volunteer_list[i], application.organization_name);
                 achievement.save(function(err, achiev) {
                     if (err) {console.log(err)};
-                    console.log("achievement saved ");
                 }); 
             };
             for (var i = 0; i < application.reviews_submitted.length; i++) {
@@ -161,11 +157,9 @@ exports.save_application_changes = function(req, res) {
                         var achievement = create_achievement(5, review.reviewer_id, application.organization_name);
                         achievement.save(function(err, achiev) {
                             if (err) {console.log(err)};
-                            console.log("achievement saved ");
                             Volunteer.update({"_id": review.reviewer_id}, 
                             {$inc: {num_points: achievement.points}}, function(err) {
                                 if (err) {return callback(err)};
-                                console.log("points updated");                          
                             })
                         }); 
                     }
@@ -180,10 +174,8 @@ exports.save_application_changes = function(req, res) {
         application.shortlisted = req.body.shortlisted;             
         application.save();
         if(err) {
-            console.log(err);
             res.send(404);
         } else {
-            console.log("submission complete");
             res.redirect('/admin_applications');
         }
     }); 
@@ -197,7 +189,6 @@ exports.save_application_changes = function(req, res) {
  */
 
 exports.create_application = function(req, res) {
-    console.log("does this work");
     var application = new Application({
         organization_name: req.body.organization_name,
         description: req.body.description,
@@ -207,7 +198,6 @@ exports.create_application = function(req, res) {
     });
 
     application.save(function(err, application) {
-        console.log(application);
         if(err) {console.log(err);}
         else {
             res.redirect('/admin_applications');
@@ -236,12 +226,9 @@ exports.approve_volunteer = function(req, res) {
                         '<br /> Thanks, <br /> Folks at Kiva</p>');
             sendgrid.send(email, function(err, json) {
                 if (err) { return res.send(err); }
-                console.log(json);
-                console.log('done with the request!');
                 res.send(200);
             });
         } else {
-            console.log("error found: " + err);
             res.send(err);  
         }
         });
@@ -256,9 +243,7 @@ exports.deny_volunteer = function(req, res) {
     Volunteer.findOneAndUpdate({"_id": new ObjectId(req.body.id)},
         {approved: null}, function(err, data) {
         if(!err) {
-            console.log(data);
             // Send a rejection email?
-            console.log('done with the deny request!');
             res.send(200);
         } else {
             res.send(err);
@@ -279,7 +264,6 @@ exports.deny_volunteer = function(req, res) {
         function(err, volunteer) {
             if(volunteer != null) {
                 //this is a duplicate entry
-                console.log('duplicate');
                 req.session.email_duplicate = true;
                 res.redirect('/admin/sign-up');
             } else {
@@ -296,12 +280,10 @@ exports.deny_volunteer = function(req, res) {
         res.render('/');
     } else {*/
         admin.save(function(err, admin) {
-            console.log(admin);
             if(err) {console.log(err);}
             else {
                 req.session.admin = admin.is_admin;
                 req.session.logged = true;
-                console.log("Volunteer_id to string: " + (admin._id).toString());
                 req.session.volunteerId = ObjectId(admin._id.toString());
                 req.session.email = admin.email_address;
                 res.redirect('/admin_applications');

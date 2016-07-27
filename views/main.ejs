@@ -178,12 +178,8 @@
     // Ajax call for shortilisted applications data
         var load_apps_rest = function() {
             $.getJSON( "/admin/pull_applications_rest", function( data ) {
-                console.log(data);
                 var data2 = {"data" : data};
-                console.log(JSON.stringify(data2));
                 var table = document.getElementById("appsTableRest");
-                console.log($(table));
-                console.log(jQuery.type(data));
                 var string = JSON.stringify(data);
                 $.each( data, function( key, value ) {
                     value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
@@ -197,7 +193,6 @@
                     value.well_positioned_to_communicate_count_display = value.well_positioned_to_communicate_count + " / " + value.num_reviews;
                 });
              
-                console.log(jQuery.type(data));
                 $(table).dataTable({
                     "data": data,
                     responsive: true,
@@ -335,7 +330,6 @@
             for ( var id in tabLinks ) {
                 tabLinks[id].onclick = showTab;
                 tabLinks[id].onfocus = function() { this.blur() };
-                console.log($(tabLinks[id]).attr('href'));
 
                 if (lastTab == undefined && i == 0) {
                     lastTab = $(tabLinks[id]).attr('href');
@@ -392,26 +386,20 @@
             $('body').delegate('.volunteer-approve', 'submit', function(e) {
                 e.preventDefault();
                 var form = $(this).serializeArray();
-                console.log(form);
                 $.post('/admin/volunteer/approve', form, function() {
-                    console.log('done');
                     var oTable = $('#volsTableUnapp').dataTable();
                     oTable.fnDestroy();
                     load_vols_unapp();
                     var oTable = $('#volsTableApp').dataTable();
                     oTable.fnDestroy();
                     load_vols_app();
-                    console.log(form);
                 });
             });
 
             $('body').delegate('.volunteer-deny', 'submit', function(ee) {
                 ee.preventDefault();
                 var form = $(this).serializeArray();
-                console.log(form);
-                console.log('inside deny!!!');
                 $.post('/admin/volunteer/deny', form, function() {
-                    console.log('done with deny!!!');
                     var oTable = $('#volsTableUnapp').dataTable();
                     oTable.fnDestroy();
                     load_vols_unapp();
