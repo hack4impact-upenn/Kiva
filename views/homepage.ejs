@@ -65,6 +65,8 @@
                         "<th>" + "Organization" + "</th>" +
                         "<th>" + "Status" + "</th>" +
                         "<th>" + "Folder" + "</th>" +
+                        "<th>" + "Score (Personal/Avg)" + "</th>" +
+                        "<th>" + "# Reviews" + "</th>" +
                         "</tr>");
                     $.each(completed_apps, function(index, value) {
                         $.getJSON("/review/organization_data/" + value.organization_id, function(organization) {  
@@ -77,6 +79,8 @@
                                 "<td>" + organization.organization_name + "</td>" +
                                 "<td>" + status + "</td>" +
                                 "<td><a href='" + organization.organization_gdocs_url + "' target=_blank>Documents</a></td>" +
+                                "<td>" + value.recommend_rating + "/" + organization.score_sum + "</td>" +
+                                "<td>" + organization.num_reviews + "</td>" +
                                 "</tr>");
                             })
                     });
