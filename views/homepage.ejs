@@ -55,24 +55,20 @@
 
         var load_completed_apps = function() {
             $.getJSON('/volunteer/get_completed_applications', function(completed_apps) {
-                // $('#completed-table').append(
-                //         "<h2>Completed</h2>");
                 if (completed_apps.length == 0) {
                     $('#completed-table').append(
                         "<h2>No reviews yet!</h2>");
                 }
                 else {
-                    $('#completed-table table').append("<tr>" + 
+                    $('#completed-table table').append(
+			"<tr>" + 
                         "<th>" + "Organization" + "</th>" +
                         "<th>" + "Status" + "</th>" +
-                        "<th>" + "Date Started" + "</th>" +
-                        "<th>" + "Date Submitted" + "</th>" +
+                        "<th>" + "Folder" + "</th>" +
                         "</tr>");
                     $.each(completed_apps, function(index, value) {
                         $.getJSON("/review/organization_data/" + value.organization_id, function(organization) {  
                             
-                            var start = new Date(value.date_review_started);
-                            var submitted = new Date(value.date_review_submitted);
                             var status = "ShortListed";
                             if (!organization.shortlisted) {
                                 status = " - ";
@@ -80,8 +76,7 @@
                             $('#completed-table table').append("<tr>" + 
                                 "<td>" + organization.organization_name + "</td>" +
                                 "<td>" + status + "</td>" +
-                                "<td>" + start.toLocaleDateString() + "</td>" +
-                                "<td>" + submitted.toLocaleDateString() + "</td>" +
+                                "<td><a href='" + organization.organization_gdocs_url + "' target=_blank>Documents</a></td>" +
                                 "</tr>");
                             })
                     });
