@@ -152,7 +152,7 @@
                     value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
                     var linkstr = '<a href="/admin/application/'+ value._id + '">More details/Update</a>'
                     value.details_view = linkstr;
-                    value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
+                    value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews).toFixed(2) : "No reviews yet";
                     value.clear_business_model_count_display = value.clear_business_model_count + " / " + value.num_reviews;
                     value.clear_social_impact_count_display = value.clear_social_impact_count + " / " + value.num_reviews;
                     value.loan_well_structured_count_display = value.loan_well_structured_count + " / " + value.num_reviews;
@@ -188,7 +188,7 @@
                 $.each( data, function( key, value ) {
                     value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
                     value.details_view = '<a href="/admin/application/'+ value._id + '">More details/Update</a>';
-                    value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
+                    value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews).toFixed(2) : "No reviews yet";
                     value.clear_business_model_count_display = value.clear_business_model_count + " / " + value.num_reviews;
                     value.clear_social_impact_count_display = value.clear_social_impact_count + " / " + value.num_reviews;
                     value.loan_well_structured_count_display = value.loan_well_structured_count + " / " + value.num_reviews;
