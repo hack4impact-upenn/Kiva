@@ -338,7 +338,10 @@ exports.edit_review = function(req, res) {
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
         results = regex.exec(str);
-    if (!results) return null;
+    if (!results) {
+        str_array = str.split('/');
+        return str_array[str_array.length-1];
+    };
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
