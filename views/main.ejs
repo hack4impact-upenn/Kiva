@@ -48,11 +48,13 @@
                         <tr>
                             <th>Name</td>
                             <th>Avg. Rating</td>
-                            <th>Kiva Fit</td>
-                            <th>Business Model</td>
-                            <th>Social Impact</td>    
-                            <th>Number of reviews</td>   
-                            <th>Open to review</td> 
+                            <th>Clear Business Model</td>
+                            <th>Clear Social Impact</td>
+                            <th>Well Structured Loans</td>    
+                            <th>Well Positioned to Repay</td>
+                            <th>Well Positioned to Market Self</td> 
+                            <th>Total Reviews</td> 
+                            <th>Open To Review</td> 
                             <th>More details/Update</td> 
                         </tr>
                     </thead>
@@ -66,11 +68,13 @@
                         <tr>
                             <th>Name</td>
                             <th>Avg. Rating</td>
-                            <th>Kiva Fit</td>
-                            <th>Business Model</td>
-                            <th>Social Impact</td>    
-                            <th>Number of reviews</td>   
-                            <th>Open to review</td> 
+                            <th>Clear Business Model</td>
+                            <th>Clear Social Impact</td>
+                            <th>Well Structured Loans</td>    
+                            <th>Well Positioned to Repay</td>
+                            <th>Well Positioned to Market Self</td> 
+                            <th>Total Reviews</td> 
+                            <th>Open To Review</td> 
                             <th>More details/Update</td> 
                         </tr>
                     </thead>
@@ -183,8 +187,7 @@
                 var string = JSON.stringify(data);
                 $.each( data, function( key, value ) {
                     value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
-                    var linkstr = '<a href="/admin/application/'+ value._id + '">More details/Update</a>'
-                    value.details_view = linkstr;
+                    value.details_view = '<a href="/admin/application/'+ value._id + '">More details/Update</a>';
                     value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
                     value.clear_business_model_count_display = value.clear_business_model_count + " / " + value.num_reviews;
                     value.clear_social_impact_count_display = value.clear_social_impact_count + " / " + value.num_reviews;
@@ -224,14 +227,6 @@
                     value.linked_in = '<a href = "' + value.linked_in + 
                     '" target="_blank">' + value.first_name + '\'s LinkedIn</a>';
 
-                    //Escaping the " signs in the text
-                    //var escape = require('escape-html');
-                    //value.why_kiva = escape(value.why_kiva);
-                    value.why_kiva = value.why_kiva.replace(/"/g, '&quot;');
-
-                    value.why_kiva = '<!-- Button trigger modal -->' +
-                    '<a class="modal-button" data-toggle="modal"' +
-                    ' data-target="#myModal" content="' + value.why_kiva + '">' +
                     value.first_name + '\'s response' + '</a>'
 
                     value.approve_vol = '<form class="volunteer-approve" action="/admin/volunteer/approve" method="post">' +
@@ -253,8 +248,6 @@
                         { "data": "last_name" },
                         { "data": "username" },
                         { "data": "linked_in" },
-                        { "data": "why_kiva" },
-                        { "data": "what_skills" },
                         { "data": "approve_vol" },
                         { "data": "deny_vol" }
                     ]

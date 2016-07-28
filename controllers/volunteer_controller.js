@@ -207,8 +207,6 @@ exports.createVolunteer = function(req, res) {
                     finished_training: false,
                     approved: false,
                     linked_in: req.body.linked_in,
-                    why_kiva:  req.body.why_kiva,
-                    what_skills: req.body.what_skills
                 });
                 volunteer.save(function(err, volunteer) {
                     if(err) {console.log(err);}

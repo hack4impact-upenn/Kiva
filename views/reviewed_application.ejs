@@ -37,8 +37,6 @@
 		</div></p>
                 <br></br>
 
-		<h4 style="text-align:center">All Results</h4>
-                <p><div id="completed-table" ><table class='table table-striped' style="margin: 0em 1em"></table></div></p>            
     </body>
 
     <script>
@@ -46,35 +44,9 @@
         var org_id = "<%= org_id %>";
 
         var load_page = function() {
-            load_completed_review();
             load_org_info();
             load_questions();
             press_submit();
-        }
-
-       //would like to refactor later
-        var load_completed_review = function() {
-            $.getJSON('/review/completed/load/' + org_id, function(reviews) {
-                $('#completed-table table').append("<tr>" + 
-                    "<th>" + "Clear Business Model" + "</th>" +
-                    "<th>" + "Clear Social Impact" + "</th>" +
-                    "<th>" + "Loan Well Structured" + "</th>" +
-                    "<th>" + "Well Positioned to Repay the Loan" + "</th>" +
-                    "<th>" + "Well Positioned to Communicate and Market Self" + "</th>" +
-                    "<th>" + "Recommended Rating" + "</th>" +
-                    "</tr>");
-                 $.each(reviews, function(index, review) {
-                    $('#completed-table table').append("<tr>" + 
-                        "<td>" + review["clear_business_model"] + "</td>" +
-                        "<td>" + review["clear_social_impact"] + "</td>" +
-                        "<td>" + review["loan_well_structured"] + "</td>" +
-                        "<td>" + review["well_positioned_to_repay"] + "</td>" +
-                        "<td>" + review["well_positioned_to_communicate"] + "</td>" +
-                        "<td>" + review["recommend_rating"] + "</td>" +
-                        "</tr>"
-                        );
-                }); 
-            });
         }
 
         var load_questions = function() {

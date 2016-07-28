@@ -8,8 +8,6 @@ var VolunteerSchema = new Schema({
   username: {type: String, default: ''},
   password: {type: String, default: ''},  
   linked_in: {type: String, default: ''},
-  why_kiva: {type: String, default: ''},
-  what_skills: {type: String, default: ''},
   terms_accepted: {type: Boolean, default: 1},
   approved: {type: Boolean, default: 0}, // false - not processed; true - approved; null - denied
   finished_training: {type: Boolean, default: false},
