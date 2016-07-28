@@ -43,7 +43,7 @@ ApplicationSchema.statics = {
 	},
 	
 	get_min_reviewed_application: function(volunteer_id, cb) {
-		this.findOne({"open_to_review": true, "volunteer_list": {$ne: volunteer_id}}).sort({"num_reviews":1}).exec(cb);
+		this.findOne({"open_to_review": true, "volunteer_list": {$ne: volunteer_id}}).sort({"date_submitted":1}).exec(cb);
 		}
 	};
 
