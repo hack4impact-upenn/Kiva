@@ -67,6 +67,9 @@
                 <label for="organization_url"> Org. URL </label>
                 <input type="text" id="organization_url" name="organization_url" size="20" class="form-control" placeholder=""><br>   
 
+                <label for="description"> Date Submitted </label>
+                <input type="text" id="date_submitted" name="date_submitted" size="20" class="form-control" placeholder=""><br>
+
                 <label for="open_to_review"> Open to review? </label>
                 <div class="radio">
                     <label>
@@ -90,10 +93,16 @@
     <script type='text/javascript'>    
      
         function load_application() {
+            var date_options = {
+                year: "numeric", month: "short",
+                day: "numeric", hour: "2-digit", minute: "2-digit"
+            };
             var form=document.getElementById("apps");
                 $.getJSON('<%= "/admin/load_application/" + app_id %>', function(application) {   $.each(application, function(name, val) {
                     switch(name) {
-                        case ("shortlisted"): 
+			case ("date_submitted"):
+                            $("#" + name).val(new Date(val).toLocaleDateString("en-US", date_options));
+			    break;
                         case ("open_to_review"):
                             var i = val ? 0 : 1;        
                             $('input[name=' + name + ']:nth(' + i + ')').attr('checked', true);
@@ -108,10 +117,7 @@
 
         var load_questions = function() {
             $.getJSON( ' <%= "/get_questions/" + app_id %> ', function(data) {
-                console.log(data);
                 var table = document.getElementById("questionsTable");
-                console.log($(table));
-                console.log(jQuery.type(data));
                 var string = JSON.stringify(data);
                 var oTable = $(table).dataTable({
                     "data": data,  
