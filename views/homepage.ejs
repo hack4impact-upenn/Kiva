@@ -65,7 +65,8 @@
                         "<th>" + "Organization" + "</th>" +
                         "<th>" + "Status" + "</th>" +
                         "<th>" + "Folder" + "</th>" +
-                        "<th>" + "Score (Personal/Avg)" + "</th>" +
+                        "<th>" + "Personal Score" + "</th>" +
+                        "<th>" + "Avg Score" + "</th>" +
                         "<th>" + "# Reviews" + "</th>" +
                         "</tr>");
                     $.each(completed_apps, function(index, value) {
@@ -79,7 +80,8 @@
                                 "<td>" + organization.organization_name + "</td>" +
                                 "<td>" + status + "</td>" +
                                 "<td><a href='" + organization.organization_gdocs_url + "' target=_blank>Documents</a></td>" +
-                                "<td>" + value.recommend_rating + "/" + organization.score_sum + "</td>" +
+                                "<td>" + value.recommend_rating + "</td>" +
+                                "<td>" + organization.score_sum + "</td>" +
                                 "<td>" + organization.num_reviews + "</td>" +
                                 "</tr>");
                             })
@@ -150,15 +152,15 @@
             </style>
             <div id="training"></div>
             <div id="row">
-                <div id="leaders" class="col-md-4"><table class='table table-striped'></table></div>
-                <div id="review" class="col-md-4">
+                <div id="leaders" class="col-md-3"><table class='table table-striped'></table></div>
+                <div id="review" class="col-md-3">
                     </br>
                     <div class="alert alert-danger alert-dismissible fade in" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <span>You cannot review applications until you are approved.</span>
                     </div>
                 </div>
-                <div id="completed-table" class="col-md-4"><table class='table table-striped'></table></div>
+                <div id="completed-table" class="col-md-6"><table class='table table-striped'></table></div>
             </div>
             <% include footer %>   
         </div>
