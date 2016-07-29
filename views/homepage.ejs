@@ -81,7 +81,7 @@
                                 "<td>" + status + "</td>" +
                                 "<td><a href='" + organization.organization_gdocs_url + "' target=_blank>Documents</a></td>" +
                                 "<td>" + value.recommend_rating + "</td>" +
-                                "<td>" + organization.score_sum + "</td>" +
+                                "<td>" + (organization.score_sum/organization.num_reviews).toFixed(2) + "</td>" +
                                 "<td>" + organization.num_reviews + "</td>" +
                                 "</tr>");
                             })
