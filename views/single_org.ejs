@@ -41,12 +41,12 @@
                 </div>
                 <br />           
 
-                <p id="click_for_questions"> Click this to see the most popular questions by reviewers. </p>
+                <a id="click_for_questions"> Click this to see the most popular questions by reviewers. </a>
 
-                <br />
+                <br /><br />
 
                 <div id=questions>
-                      <h3>Reviewer Questions</h3>
+                      <h4>Reviewer Questions</h4>
                       <table id="questionsTable" class="display" cellspacing="0" width="100%">
                           <thead>
                               <tr>
@@ -88,6 +88,9 @@
                 <a class="btn btn-default" href="/admin_applications/">Cancel</a>
             </form>
         </div>
+
+	<br/><br/>
+	<div id="completed-table"><h4 style="text-align:center">Application Reviews</h4><table class='table table-striped'></table></div>
         
     </body>
     <script type='text/javascript'>    
@@ -130,6 +133,35 @@
             });
         }; 
 
+        var load_completed_review = function() {
+             $.getJSON('/review/completed/load/<%= app_id %>', function(reviews) {
+                 $('#completed-table table').append("<tr>" + 
+                     "<th>" + "Reviewer" + "</th>" +
+                     "<th>" + "Clear Business Model" + "</th>" +
+                     "<th>" + "Clear Social Impact" + "</th>" +
+                     "<th>" + "Loan Well Structured" + "</th>" +
+                     "<th>" + "Well Positioned to Repay the Loan" + "</th>" +
+                     "<th>" + "Well Positioned to Communicate and Market Self" + "</th>" +
+                     "<th>" + "Recommended Rating" + "</th>" +
+                     "</tr>");
+                  $.each(reviews, function(index, review) {
+                     $.getJSON('/volunteer/load', function(reviewer) {
+                       $('#completed-table table').append("<tr>" + 
+                           "<td>" + reviewer.first_name + ' ' + reviewer.last_name + "</td>" +
+                           "<td>" + review["clear_business_model"] + "</td>" +
+                           "<td>" + review["clear_social_impact"] + "</td>" +
+                           "<td>" + review["loan_well_structured"] + "</td>" +
+                           "<td>" + review["well_positioned_to_repay"] + "</td>" +
+                           "<td>" + review["well_positioned_to_communicate"] + "</td>" +
+                           "<td>" + review["recommend_rating"] + "</td>" +
+                           "</tr>"
+                        );
+                     });
+                 }); 
+             });
+         }
+
+
         $( document ).ready(function() {
             $( "#click_for_questions" ).click(function() {
                 $( "#questions" ).toggle( "slow", function() {
@@ -137,6 +169,7 @@
                 });
             });
 
+            load_completed_review();
             load_application();
             load_questions();
         });
