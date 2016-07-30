@@ -56,11 +56,14 @@ function ensure_admin(req, res, next) {
 }
 
 function ensure_training(req, res, next) {
+  return next();
+  /*
   if (req.session.finished_training) {
     return next();
   } else {
     res.redirect('/volunteer/training');
   }
+  */
 }
 
 function ensure_approved(req, res, next) {
