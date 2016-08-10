@@ -63,7 +63,7 @@
                     $('#completed-table table').append(
 			"<tr>" + 
                         "<th>" + "Organization" + "</th>" +
-                        "<th>" + "Status" + "</th>" +
+                        "<th>" + "Shortlisted" + "</th>" +
                         "<th>" + "Folder" + "</th>" +
                         "<th>" + "Personal Score" + "</th>" +
                         "<th>" + "Avg Score" + "</th>" +
@@ -78,8 +78,8 @@
                             }
                             $('#completed-table table').append("<tr>" + 
                                 "<td>" + organization.organization_name + "</td>" +
-                                "<td>" + status + "</td>" +
-                                "<td><a href='" + organization.organization_gdocs_url + "' target=_blank>Documents</a></td>" +
+                                "<td>" + (status === 'ShortListed' ? 'Yes' : 'No') + "</td>" +
+                                "<td><a href='" + organization.organization_gdocs_url + "' target=_new>Documents</a></td>" +
                                 "<td>" + value.recommend_rating + "</td>" +
                                 "<td>" + (organization.score_sum/organization.num_reviews).toFixed(2) + "</td>" +
                                 "<td>" + organization.num_reviews + "</td>" +
