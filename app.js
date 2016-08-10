@@ -135,20 +135,4 @@ app.post("/admin/volunteer/deny", ensure_admin, admin_controller.deny_volunteer)
 app.get("/admin/pull_applications_short", ensure_admin, admin_controller.send_applications_short);
 app.get("/admin/pull_applications_rest", ensure_admin, admin_controller.send_applications_rest);
 
-
 app.get("/admin/pull_volunteers:approval", ensure_admin, admin_controller.send_volunteers);
-app.get("/admin_submit", admin_controller.submit_application);
-app.post("/post-application", admin_controller.create_application);
-app.get("/admin_applications", admin_controller.view_applications);
-app.get("/admin/application/:id", admin_controller.view_one_application);
-app.get("/admin/load_application/:id", admin_controller.load_single_application);
-app.post("/admin/update_application/:id", admin_controller.save_application_changes);
-
-app.post("/admin/volunteer/approve", admin_controller.approve_volunteer);
-app.post("/admin/volunteer/deny", admin_controller.deny_volunteer);
-app.get("/admin/pull_applications_short", admin_controller.send_applications_short);
-app.get("/admin/pull_applications_rest", admin_controller.send_applications_rest);
-
-app.get("/admin/pull_volunteers:approval", admin_controller.send_volunteers);
-module.exports = app;
-
