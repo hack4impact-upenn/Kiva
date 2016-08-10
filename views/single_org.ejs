@@ -41,10 +41,6 @@
                 </div>
                 <br />           
 
-                <a id="click_for_questions"> Click this to see the most popular questions by reviewers. </a>
-
-                <br /><br />
-
                 <div id=questions>
                       <h4>Reviewer Questions</h4>
                       <table id="questionsTable" class="display" cellspacing="0" width="100%">
@@ -113,6 +109,10 @@
                             var i = val ? 0 : 1;        
                             $('input[name=' + name + ']:nth(' + i + ')').attr('checked', true);
                             break;                                  
+                        case ("shortlisted"):
+                            var i = val ? 0 : 1;        
+                            $('input[name=' + name + ']:nth(' + i + ')').attr('checked', true);
+                            break;                                  
                         default:
                             $("#" + name).val(val);
                             break;
@@ -120,21 +120,6 @@
                 });
             });
         };
-
-        var load_questions = function() {
-            $.getJSON( ' <%= "/get_questions/" + app_id %> ', function(data) {
-                var table = document.getElementById("questionsTable");
-                var string = JSON.stringify(data);
-                var oTable = $(table).dataTable({
-                    "data": data,  
-                    "columns": [
-                        { "data": "question_text" },
-                        { "data": "votes" },
-                        ], 
-                    "order": [[ 1, "desc" ]]
-                });  
-            });
-        }; 
 
         var load_completed_review = function() {
              $.getJSON('/review/completed/load/<%= app_id %>', function(reviews) {
@@ -166,15 +151,8 @@
 
 
         $( document ).ready(function() {
-            $( "#click_for_questions" ).click(function() {
-                $( "#questions" ).toggle( "slow", function() {
-                // Animation complete.
-                });
-            });
-
             load_completed_review();
             load_application();
-            load_questions();
         });
 
     </script>
