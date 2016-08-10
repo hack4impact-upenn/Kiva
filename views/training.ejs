@@ -24,7 +24,7 @@
 	</head>
 	<body>
 		<% include banner %>
-		<h1>Kiva Advisors Training Page</h1>
+		<h1>Training Material!</h1><br/>
 		<div id="training">
 			<div id="links">
 				<% if (message) { %>
@@ -46,12 +46,13 @@
 				<button id="reviewed" class="btn btn-primary">I have carefully reviewed all the training material</button>
 			</div>
 			<form id="questions" action="/volunteer/finished-training" method="POST">
+				<h5>Let's do a quick quiz to make sure you're up to speed on the basics. Good Luck!</h5><br/>
 				<div class="form-group">
 					Where does Kiva get its money to lend?
 					<select name="ans1" required class="form-control">
 						<option value="banks">Banks</option>
 						<option value="donors">Donors</option>
-						<option value="crowdfunded">Crowdfunded</option>
+						<option value="crowdfunded">Crowdfunding</option>
 					</select>
 				</div>
 				<div class="form-group">
