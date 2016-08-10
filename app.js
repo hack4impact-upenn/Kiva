@@ -1,14 +1,17 @@
 var express = require('express');
 var app = express();
+var fs = require('fs');
+
 var Volunteer = require('./models/volunteer.js').Volunteer;
 var mongoose = require("mongoose");
 var passport = require("passport");
 var LocalStrategy = require('passport-local').Strategy;
+var db = JSON.parse(fs.readFileSync('db.conf', 'utf8'));
 
 var uristring =
 	process.env.MONGOLAB_URI ||
 	process.env.MONGOHQ_URL ||
-	'mongodb://localhost/kiva-project3';
+	db.path;
 
 mongoose.connect(uristring, function (err, res) {
   if (err) {
