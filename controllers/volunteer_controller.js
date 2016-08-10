@@ -135,7 +135,7 @@ exports.logout = function(req, res) {
  */
 
 exports.loadVolunteer = function(req, res) {
-    Volunteer.findOne({"_id": req.session.volunteerId}, function(err, volunteer) {
+    Volunteer.findOne({"_id": req.params.volunteer_id}, function(err, volunteer) {
         res.send(volunteer);
     });
 };

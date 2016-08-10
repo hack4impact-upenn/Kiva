@@ -133,7 +133,7 @@
                      "<th>" + "Recommended Rating" + "</th>" +
                      "</tr>");
                   $.each(reviews, function(index, review) {
-                     $.getJSON('/volunteer/load', function(reviewer) {
+                     $.getJSON('/volunteer/load/' + review.reviewer_id, function(reviewer) {
                        $('#completed-table table').append("<tr>" + 
                            "<td>" + reviewer.first_name + ' ' + reviewer.last_name + "</td>" +
                            "<td>" + review["clear_business_model"] + "</td>" +
