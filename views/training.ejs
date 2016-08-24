@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link href="/kiva_style.css" rel="stylesheet" type="text/css">
     <meta name="description" content="">
@@ -24,7 +24,8 @@
 	</head>
 	<body>
 		<% include banner %>
-		<h1>Training Material!</h1><br/>
+    <p align="center"><iframe src="https://docs.google.com/presentation/d/1aXODisXfIMZRox6uEUArfuBC-rG3t1YJ9DbcIh7zItQ/embed?start=false&loop=false&delayms=60000" frameborder="0" width="1440" height="839" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></img>
+		<h1>Slides and Video</h1><br/>
 		<div id="training">
 			<div id="links">
 				<% if (message) { %>
@@ -33,16 +34,11 @@
 					<span><%= message %></span>
 				</div>
 				<% } %>
-				<a class="box" href="https://docs.google.com/document/d/1hxQIUjO4HbeN7rvEO-AqOE8Aq3w-qyh05hICG3qfe4Q" target="_blank">
-					<div><b>Link to Training Materials</b>
-						<div>Please Review</div>
-					</div>
-				</a>
-				<a class="box" href="https://www.reddit.com/r/kivacrowdvetting" target="_blank">
-					<div><b>Community Conversation on Reddit</b>
-						<div>We would like to know the 3 most important questions the community would like to ask the applicant. After reviewing your first application, head to this Reddit page. Please post and vote.</div>
-					</div>
-				</a>
+      </div>
+          <p align="center"><iframe src="https://docs.google.com/presentation/d/1fX39f-lTNmMdXdoWMrtITbkZtpmQAWhNscSlfn8qgeI/embed?start=true&loop=true&delayms=3000" frameborder="no" width="1440" height="839" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" align="center"></iframe>
+        </div>
+        <br> <br>
+        </a>
 				<button id="reviewed" class="btn btn-primary">I have carefully reviewed all the training material</button>
 			</div>
 			<form id="questions" action="/volunteer/finished-training" method="POST">
@@ -82,7 +78,7 @@
 			$('#reviewed').click(function() {
 				$('#questions').show();
 				$('#links').hide();
-			});	
+			});
 			$('#back').click(function() {
 				$('#questions').hide();
 				$('#links').show();

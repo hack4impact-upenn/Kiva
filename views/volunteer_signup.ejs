@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       
+
 
         <link href="/kiva_style.css" rel="stylesheet" type="text/css">
         <meta name="description" content="">
@@ -47,13 +47,13 @@
 
                 <div class="checkbox" style="margin-left:3px">
                     <label>
-                        <input type="checkbox" id="checkbox" onclick="checkboxCheck();"><b>I have already read and signed this <a href='https://na2.docusign.net/member/PowerFormSigning.aspx?PowerFormId=dfc19b21-39ee-40ac-98c0-ecda07cbc268' target="_blank">volunteer agreement.</a></b>
+                        <input type="checkbox" id="checkbox" onclick="checkboxCheck();"><b>Please take a moment to read and sign this agreement. It is a two step process.<a href='https://na2.docusign.net/member/PowerFormSigning.aspx?PowerFormId=dfc19b21-39ee-40ac-98c0-ecda07cbc268' target="_blank">volunteer agreement.</a></b>
                     </label>
                 </div>
                 <input type="submit" id="submit-button" class="btn btn-primary" disabled>
             </form>
         </div><br><br>
-    </div>   
+    </div>
     <% include footer %>
     </div>
     </body>
@@ -64,9 +64,9 @@
             } else {
                 $('#submit-button').attr('disabled', 'disabled');
             }
-        } 
+        }
         $(document).ready(function() {
-            $('.banner-btn').hide();  
+            $('.banner-btn').hide();
             $('#signup-submit').submit(function(e) {
                 e.preventDefault();
                 $.ajax({
@@ -75,18 +75,18 @@
                     data: {username: $('[name=username]').val(), email: $('[name=email_address]').val()},
                     success: function(data) {
                         switch (data) {
-                            case "neither": 
+                            case "neither":
                                 $('form').unbind('submit').submit();
                                 break;
                             case "email":
                                 $('#email-alert').show();
                                 $('#username-alert').hide();
                                 break;
-                            case "username": 
+                            case "username":
                                 $('#email-alert').hide();
                                 $('#username-alert').show();
                                 break;
-                            case "both": 
+                            case "both":
                                 $('#email-alert').show();
                                 $('#username-alert').show();
                                 break;

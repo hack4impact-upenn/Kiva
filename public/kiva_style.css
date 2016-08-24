@@ -172,12 +172,12 @@
 }
 
 #blurb {
-	width: 40%;
+	width: 70%;
 	float: left;
-	margin-left: 15%;
+	margin-left: 3%;
 	border-radius: 3px;
-	border: 1px solid black;
-	padding: 10px;
+	border: 2px solid white;
+	padding: 1px;
 	text-align: center;
 }
 
@@ -192,10 +192,11 @@
 }
 
 #form {
-	border-radius: 3px;
-	border: 1px solid black;
-	padding: 10px;
-	margin-left: 100px;
+	border-radius: 1px;
+	border: 2px solid white;
+	padding: 3px;
+	margin-left: 45px;
+	text-align:center;
 	float: left;
 }
 

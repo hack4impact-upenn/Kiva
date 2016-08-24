@@ -17,37 +17,57 @@
 
     <body>
         <% include banner %>
-        <div id="wrapper">
-        <!-- <div id="content"> -->
 
-            <p><div id="blurb"></p>
-                <h2> Welcome to the Crowd Vetting Pilot Program! </h2>
+      </div>
+                </div>
+
+                <div id="form">
+                    <h2>Login</h2>
+                    <form action="/login" method="POST" class="kiva-form">
+                        <% if (message) { %>
+                        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <span><%= message %></span>
+                        </div>
+                        <% } %>
+                        <input type="email" name="email_address" size="25" class="form-control" placeholder="Email" required>
+                        <input type="password" name="password" size="25" class="form-control" placeholder="Password" required><br>
+                        <input type="submit" class="btn btn-primary" value="Login" />
+                    </form>
+
+                    <form action="/volunteer/sign-up" method="GET">
+                        <input type="submit" class="btn btn-primary" value="Sign Up to Volunteer"/>
+                    </form>
+                        <h5><strong>Questions? Please contact carlos@kiva.org<strong><h5>
+                </div>
+            </div>
+
+            <div id="blurb">
+                <h2> Welcome to Crowd Vetting! </h2>
+                <div align="left">
 		<p>
-			Kiva Corps are experience graduate students and professionals who believe there are many investment worthy social enterprises that fall in the missing middle - too large for microfinance yet too small for commercial banking suffer from lack of access to capital.</br>
-			Our thesis is not only that crowdfunding can serve as the solution to this crucial financing problem, but that the crowd can also help us identify the right investments. Because Kiva believes in the power of our community and the crowd, we want to democratize our due diligence process. This is where crowd-vetting and Kiva Corps come in.<br/><br/>
-			Kiva wants YOU to join our Kiva Corps to vet social enterprises..
+      <i>Interested in impact investing? Want to learn about the business models of social enterprises? Want to get experience doing due diligence of early stage social ventures? Join Kiva’s crowd-vetting pilot program. We want to democratize the due diligence process.</i><br><br>
+      <h3>Why did we make this pilot program?</h3>
+      Kiva believes that there are too many investment worthy social enterprises that fall in the missing middle -- too large for micro-finance yet too small for traditional banking --  that suffer from lack of access to capital. We believe not only can the crowd serve as funders to the developing world, but that the crowd can help us identify the right investments.
+      <br><br>
+      <h3>Who are we looking for?</h3>
+      We are looking for graduate students, professionals, and social impact enthusiasts. But no actual prior due diligence experience needed!
+      <br><br>
+      <h3>How does the pilot program work?</h3>
+      This crowd-vetting platform will help you develop expertise on how to perform due diligence on social enterprises. As a volunteer you will: <br>
+      1. Receive some basic training materials through a slide deck and video and will you be given a link to an online bibliography and reference materials that can help expand and solidify your understanding of this space.<br>
+      2. Review the application and documentation that were officially submitted by aspiring social enterprise borrowers.<br>
+      3. Answer 6 yes/no questions that will determine if the enterprise is a good fit for our lending program. Each application will be reviewed by multiple volunteers and their answers aggregated into the “wisdom of the crowd” can help determine which social enterprises should be approved to appear on the Kiva website.<br>
+      <br>
+      <h3>What is in it for me?</h3>
+      You will be given access to the same materials Kiva’s Portfolio Managers use to vet potential investments, including their financial statements. This is an excellent view “behind the curtains” to understand what is considered when assessing an enterprise for a loan. You will see a diverse range of organizations, not only in size and scale, but also in sector and geographical area.
+      <br><br>
+      <i>These organizations are not just ideas, they are real companies trying to change the world. Social Enterprises need your help to access Kiva’s crowd-funded, risk tolerant, 0% interest loans from socially minded lenders.<i>
+        <br><br>
+        <strong>This is a pilot program and this is the alpha version of the website.  We thank you for your patience on any bugs you might encounter and look forward to your thoughtful feedback. Let us know how we can make this a better experience for you.<strong>
 		</p>
-            </div>
+  </div>
 
-            <div id="form">
-                <h2>Login</h2>
-                <form action="/login" method="POST" class="kiva-form">
-                    <% if (message) { %>
-                    <div class="alert alert-danger alert-dismissible fade in" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <span><%= message %></span>
-                    </div>
-                    <% } %>
-                    <input type="email" name="email_address" size="25" class="form-control" placeholder="Email" required>
-                    <input type="password" name="password" size="25" class="form-control" placeholder="Password" required><br>
-                    <input type="submit" class="btn btn-primary" value="Login" />
-                </form>
-
-                <form action="/volunteer/sign-up" method="GET">
-                    <input type="submit" class="btn btn-primary" value="Sign Up to Volunteer"/>
-                </form>
-            </div>
-        </div>
 
         <% include footer %>
 
