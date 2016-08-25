@@ -95,6 +95,7 @@ app.get("/get_questions/:org_id", ensure_auth, ensure_training, volunteer_contro
 
 //Loads data
 app.get("/volunteer/get_min_reviewed_application", ensure_auth, ensure_training, ensure_approved, volunteer_controller.getMinReviewedApplication);
+app.get("/volunteer/load", ensure_auth, volunteer_controller.loadVolunteer); //loads data of a single User from session info
 app.get("/volunteer/load/:volunteer_id", ensure_auth, volunteer_controller.loadVolunteer); //loads data of a single User from session info
 app.get("/volunteer/get_completed_applications", ensure_auth, ensure_training, volunteer_controller.getCompletedApplications);
 app.get("/volunteer/load_leaderboard", ensure_auth, ensure_training, volunteer_controller.load_leaderboard);
