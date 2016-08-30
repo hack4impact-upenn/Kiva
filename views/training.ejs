@@ -27,7 +27,13 @@
 
    <p align="center"><iframe src="https://docs.google.com/presentation/d/1aXODisXfIMZRox6uEUArfuBC-rG3t1YJ9DbcIh7zItQ/embed?start=false&loop=false&delayms=60000" frameborder="0" width="864" height="504" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></img>
   <!--  <img src="Flow.png" width="864" height="504" alt="dope pic"> -->
+  <h1>See the beginning of Crowd Vetting!</h1>
+  <p align="center"><object width="638" height="516"><param name="movie" value="http://swf.tubechop.com/tubechop.swf?vurl=v83bMtWCTXI&start=2607&end=2807&cid=8303722"></param><embed src="http://swf.tubechop.com/tubechop.swf?vurl=v83bMtWCTXI&start=2607&end=2807&cid=8303722" type="application/x-shockwave-flash" allowfullscreen="true" width="638" height="516"></embed></object>
+
     <h1>Slides and Video</h1><br/>
+  <div>
+      <p align="center"><iframe src="https://docs.google.com/presentation/d/1fX39f-lTNmMdXdoWMrtITbkZtpmQAWhNscSlfn8qgeI/embed?start=true&loop=true&delayms=3000" frameborder="no" width="864" height="504" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" align="center"></iframe>
+    </div>
 		<div id="training">
 			<div id="links">
 				<% if (message) { %>
@@ -36,9 +42,7 @@
 					<span><%= message %></span>
 				</div>
 				<% } %>
-      </div>
-          <p align="center"><iframe src="https://docs.google.com/presentation/d/1fX39f-lTNmMdXdoWMrtITbkZtpmQAWhNscSlfn8qgeI/embed?start=true&loop=true&delayms=3000" frameborder="no" width="864" height="504" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" align="center"></iframe>
-        </div>
+
         <br> <br><br><br><br>
         </a>
 				<button id="reviewed" class="btn btn-primary">I have carefully reviewed all the training material</button>
@@ -46,20 +50,20 @@
 			<form id="questions" action="/volunteer/finished-training" method="POST">
 				<h5>Let's do a quick quiz to make sure you're up to speed on the basics. Good Luck!</h5><br/>
 				<div class="form-group">
-					Where does Kiva get its money to lend?
+					Which size of enterprise does the direct to social enterprise program target?
 					<select name="ans1" required class="form-control">
-						<option value="banks">Banks</option>
-						<option value="donors">Donors</option>
-						<option value="crowdfunded">Crowdfunding</option>
+						<option value="micro enterprisess">micro organizations</option>
+						<option value="small and medium sized enterprises">small and medium sized enterprises</option>
+						<option value="large enterprises">large firms</option>
 					</select>
 				</div>
 				<div class="form-group">
-					What is the maximum size of a DSE loan?
+					Why do these enterprises specifically need Kiva capital?
 					<select name="ans2" required class="form-control">
-						<option value="10">$10,000</option>
-						<option value="20">$20,000</option>
-						<option value="50">$50,000</option>
-						<option value="100">$100,000</option>
+						<option value="Lack of enough capital from micro finance instiutions">Lack of enough capital from micro finance instiutions</option>
+						<option value="Barriers to capital from traditional banks">Barriers to capital from traditional banks</option>
+						<option value="Starved for working capital">Starved for working capital</option>
+						<option value="All of the above">All of the above</option>
 					</select>
 				</div>
 				<button id="check-answers" type="submit" class="btn btn-default">Submit</button>
