@@ -23,9 +23,13 @@
 
     <div id="content">
         <div id="signup-form">
+            <h1>Sign Up</h1>
+            <br><br>
             <form id="signup-submit" action="/volunteer/submit-volunteer" method="POST">
-                <input type="text" name="first_name" size="20" class="form-control" placeholder="First Name" required><br>
-                <input type="text" name="last_name" size="20" class="form-control" placeholder="Last Name" required><br>
+                <span>First Name</span>
+                    <input type="text" name="first_name" size="20" class="form-control" required><br>
+                <span>Last Name</span>
+                    <input type="text" name="last_name" size="20" class="form-control" required><br>
                 <% if (error) { %>
                 <div class="alert alert-danger alert-dismissible fade in" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -36,15 +40,23 @@
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <span>This username has already been registered.</span>
                 </div>
-                <input type="text" name="username" size="20" class="form-control" placeholder="Reddit Username - please signup for a free account with reddit.com if you have not already" required><br>
+                <span>Username</span>
+                    <input type="text" name="username" size="20" class="form-control" required>
+                        <br>
+
                 <div id="email-alert" class="alert alert-danger alert-dismissible fade in" style="display:none;" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <span>This email has already been registered.</span>
                 </div>
-                <input type="email" name="email_address" size="20" class="form-control" placeholder="Email Address" required><br>
-                <input type="password" name="password" size="20" class="form-control" placeholder="Password" required><br>
-                <input type="url" name="linked_in" size="20" class="form-control" placeholder="Linkedin Profile" required><br>
 
+                <span>Email Address</span>
+                    <input type="email" name="email_address" size="20" class="form-control" required><br>
+                <span>Password</span>
+                    <input type="password" name="password" size="20" class="form-control" required><br>
+                <span>Linkedin Profile</span>
+                <input type="url" name="linked_in" size="20" class="form-control" required><br>
+
+              
                 <div class="checkbox" style="margin-left:3px">
                     <label>
                         <input type="checkbox" id="checkbox" onclick="checkboxCheck();"><b>Please take a moment to read and sign this agreement. It is a two step process.<a href='https://na2.docusign.net/member/PowerFormSigning.aspx?PowerFormId=dfc19b21-39ee-40ac-98c0-ecda07cbc268' target="_blank">volunteer agreement.</a></b>
@@ -52,12 +64,13 @@
                 </div>
                 <input type="submit" id="submit-button" class="btn btn-primary" disabled>
             </form>
-        </div><br><br>
+        </div><br>
     </div>
     <% include footer %>
     </div>
     </body>
     <script>
+
         function checkboxCheck() {
             if($('#checkbox').is(":checked")) {
                 $('#submit-button').removeAttr('disabled');
