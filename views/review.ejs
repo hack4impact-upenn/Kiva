@@ -20,7 +20,7 @@
         <div style="margin:1em" id="review-info">
           <p> <strong>Click "Review These Materials"</strong><br>
                 to access the enterprise's complete documentation.</p>
-          <ul id="gdocs-file-list"></ul>
+          <div id="gdocs-file-list"></div>
         </div>
 
         <div id="review-form">
@@ -183,25 +183,28 @@
           var xhr = new XMLHttpRequest();
           xhr.open("GET", "/review/organization_docs/" + $('#organization_id').val(), true);
           xhr.onprogress = function () {
-
             var delta = responses[responses.length - 1];
             var parse_string = xhr.responseText;
 
             if (delta !== undefined && delta.length > 0){
-              console.log('...adding to compareStings');
               parse_string = compareStrings(delta, xhr.responseText);
             }
 
             var str_array = parse_string.slice(1, -1).split('}{');
             var html = '';
 
+          var documents_link = $.getJSON('/load_application/' + $('#organization_id').val(), function(app) {
+            $('#gdocs-file-list').append('<span style="font-weight:bold;text-decoration:underline;font-size:1.1em"><a target=_blank href="'+app.organization_gdocs_url+'">Review These Materials</a></span><br/><br/>');
+            $('#gdocs-file-list').append('<span style="font-weight:bold;font-size:1.1em">Full Document List</span>');
             str_array.forEach(function(st){
               data = JSON.parse('{' + st + '}');
               if (data.name !== undefined){
-                html = '<li class="document"><a target="_blank" href="' +  data.link + '">' + data.name + '</a></li>';
+                html = '<br/><span class="document"><a target="_blank" href="' +  data.link + '">- ' + data.name + '</a></span>';
                 $('#gdocs-file-list').append(html);
               }
             });
+            $('#gdocs-file-list').append('<br/>');
+          });
 
             responses.push(xhr.responseText);
           };
