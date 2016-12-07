@@ -48,12 +48,13 @@
                         <tr>
                             <th>Name</td>
                             <th>Avg. Rating</td>
-                            <th>Kiva Fit</td>
-                            <th>Business Model</td>
-                            <th>Social Impact</td>    
-                            <th>Number of reviews</td>   
-                            <th>Open to review</td> 
-                            <th>More details/Update</td> 
+                            <th>Clear Business Model</td>
+                            <th>Clear Social Impact</td>
+                            <th>Well Structured Loans</td>    
+                            <th>Well Positioned to Repay</td>
+                            <th>Well Positioned to Market Self</td> 
+                            <th>Total Reviews</td> 
+                            <th>Open To Review</td> 
                         </tr>
                     </thead>
                 </table>
@@ -66,12 +67,13 @@
                         <tr>
                             <th>Name</td>
                             <th>Avg. Rating</td>
-                            <th>Kiva Fit</td>
-                            <th>Business Model</td>
-                            <th>Social Impact</td>    
-                            <th>Number of reviews</td>   
-                            <th>Open to review</td> 
-                            <th>More details/Update</td> 
+                            <th>Clear Business Model</td>
+                            <th>Clear Social Impact</td>
+                            <th>Well Structured Loans</td>    
+                            <th>Well Positioned to Repay</td>
+                            <th>Well Positioned to Market Self</td> 
+                            <th>Total Reviews</td> 
+                            <th>Open To Review</td> 
                         </tr>
                     </thead>
                 </table>
@@ -89,7 +91,6 @@
                                 <th>Last name</td>
                                 <th>Username</td>
                                 <th>LinkedIn</td>
-                                <th>Resume</td>
                                 <th>Why Kiva?</td>    
                                 <th>Skills</td>   
                                 <th></td>   
@@ -106,6 +107,7 @@
                             <th>First name</td>
                             <th>Last name</td>
                             <th>Username</td>
+                            <th>Email</td>
                             <th>Last login date</td>
                             <th># of completed reviews</td>   
                             <th>Completed training?</td>
@@ -147,26 +149,28 @@
                 var string = JSON.stringify(data);
                 $.each( data, function( key, value ) {
                     value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
-                    var linkstr = '<a href="/admin/application/'+ value._id + '">More details/Update</a>'
-                    value.details_view = linkstr;
-                    value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
-                    value.kiva_fit_count_display = value.kiva_fit_count + " / " + value.num_reviews;
-                    value.sustainable_model_count_display = value.sustainable_model_count + " / " + value.num_reviews;
+                    value.details_view = '<a href="/admin/application/'+ value._id + '">' + value.organization_name +  '</a>';
+                    value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews).toFixed(2) : "No reviews yet";
+                    value.clear_business_model_count_display = value.clear_business_model_count + " / " + value.num_reviews;
                     value.clear_social_impact_count_display = value.clear_social_impact_count + " / " + value.num_reviews;
+                    value.loan_well_structured_count_display = value.loan_well_structured_count + " / " + value.num_reviews;
+                    value.well_positioned_to_repay_count_display = value.well_positioned_to_repay_count + " / " + value.num_reviews;
+                    value.well_positioned_to_communicate_count_display = value.well_positioned_to_communicate_count + " / " + value.num_reviews;
                 });
                  
                 $(table).dataTable({
                     "data": data,
                     responsive: true,        
                     "columns": [
-                      { "data": "organization_name" },
+                      { "data": "details_view" },
                       { "data": "rating" },
-                      { "data": "kiva_fit_count_display" },
-                      { "data": "sustainable_model_count_display" },
+                      { "data": "clear_business_model_count_display" },
                       { "data": "clear_social_impact_count_display" },
+                      { "data": "loan_well_structured_count_display" },
+                      { "data": "well_positioned_to_repay_count_display" },
+                      { "data": "well_positioned_to_communicate_count_display" },
                       { "data": "num_reviews" },
-                      { "data": "open_to_review" },
-                      { "data": "details_view" }
+                      { "data": "open_to_review" }
                     ]
                 });
             });
@@ -175,36 +179,33 @@
     // Ajax call for shortilisted applications data
         var load_apps_rest = function() {
             $.getJSON( "/admin/pull_applications_rest", function( data ) {
-                console.log(data);
                 var data2 = {"data" : data};
-                console.log(JSON.stringify(data2));
                 var table = document.getElementById("appsTableRest");
-                console.log($(table));
-                console.log(jQuery.type(data));
                 var string = JSON.stringify(data);
                 $.each( data, function( key, value ) {
                     value.open_to_review = (value.open_to_review) ? 'yes' : 'no';
-                    var linkstr = '<a href="/admin/application/'+ value._id + '">More details/Update</a>'
-                    value.details_view = linkstr;
-                    value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews) : "No reviews yet";
-                    value.kiva_fit_count_display = value.kiva_fit_count + " / " + value.num_reviews;
-                    value.sustainable_model_count_display = value.sustainable_model_count + " / " + value.num_reviews;
+                    value.details_view = '<a href="/admin/application/'+ value._id + '">' + value.organization_name +  '</a>';
+                    value.rating = (value.num_reviews != 0) ? (value.score_sum / value.num_reviews).toFixed(2) : "No reviews yet";
+                    value.clear_business_model_count_display = value.clear_business_model_count + " / " + value.num_reviews;
                     value.clear_social_impact_count_display = value.clear_social_impact_count + " / " + value.num_reviews;
+                    value.loan_well_structured_count_display = value.loan_well_structured_count + " / " + value.num_reviews;
+                    value.well_positioned_to_repay_count_display = value.well_positioned_to_repay_count + " / " + value.num_reviews;
+                    value.well_positioned_to_communicate_count_display = value.well_positioned_to_communicate_count + " / " + value.num_reviews;
                 });
              
-                console.log(jQuery.type(data));
                 $(table).dataTable({
                     "data": data,
                     responsive: true,
                     "columns": [
-                      { "data": "organization_name" },
+                      { "data": "details_view" },
                       { "data": "rating" },
-                      { "data": "kiva_fit_count_display" },
-                      { "data": "sustainable_model_count_display" },
+                      { "data": "clear_business_model_count_display" },
                       { "data": "clear_social_impact_count_display" },
+                      { "data": "loan_well_structured_count_display" },
+                      { "data": "well_positioned_to_repay_count_display" },
+                      { "data": "well_positioned_to_communicate_count_display" },
                       { "data": "num_reviews" },
-                      { "data": "open_to_review" },
-                      { "data": "details_view" }
+                      { "data": "open_to_review" }
                     ]
                 });
             });
@@ -221,17 +222,7 @@
                 $.each( data, function( key, value ) {
                     value.linked_in = '<a href = "' + value.linked_in + 
                     '" target="_blank">' + value.first_name + '\'s LinkedIn</a>';
-                    value.resume_link = '<a href = "' + value.resume_link + 
-                    '" target="_blank">' + value.first_name + '\'s resume</a>';
 
-                    //Escaping the " signs in the text
-                    //var escape = require('escape-html');
-                    //value.why_kiva = escape(value.why_kiva);
-                    value.why_kiva = value.why_kiva.replace(/"/g, '&quot;');
-
-                    value.why_kiva = '<!-- Button trigger modal -->' +
-                    '<a class="modal-button" data-toggle="modal"' +
-                    ' data-target="#myModal" content="' + value.why_kiva + '">' +
                     value.first_name + '\'s response' + '</a>'
 
                     value.approve_vol = '<form class="volunteer-approve" action="/admin/volunteer/approve" method="post">' +
@@ -253,9 +244,6 @@
                         { "data": "last_name" },
                         { "data": "username" },
                         { "data": "linked_in" },
-                        { "data": "resume_link" },
-                        { "data": "why_kiva" },
-                        { "data": "what_skills" },
                         { "data": "approve_vol" },
                         { "data": "deny_vol" }
                     ]
@@ -282,7 +270,6 @@
 
                     newdate = year + "/" + month + "/" + day;
                     value.last_login_date = newdate;
-                    
                 });
             
                 var oTable = $(table).dataTable({
@@ -292,6 +279,7 @@
                         { "data": "first_name" },
                         { "data": "last_name" },
                         { "data": "username" },
+                        { "data": "email_address" },
                         { "data": "last_login_date" },
                         { "data": "reviews_completed" },                        
                         { "data": "finished_training" },
@@ -331,7 +319,6 @@
             for ( var id in tabLinks ) {
                 tabLinks[id].onclick = showTab;
                 tabLinks[id].onfocus = function() { this.blur() };
-                console.log($(tabLinks[id]).attr('href'));
 
                 if (lastTab == undefined && i == 0) {
                     lastTab = $(tabLinks[id]).attr('href');
@@ -388,26 +375,20 @@
             $('body').delegate('.volunteer-approve', 'submit', function(e) {
                 e.preventDefault();
                 var form = $(this).serializeArray();
-                console.log(form);
                 $.post('/admin/volunteer/approve', form, function() {
-                    console.log('done');
                     var oTable = $('#volsTableUnapp').dataTable();
                     oTable.fnDestroy();
                     load_vols_unapp();
                     var oTable = $('#volsTableApp').dataTable();
                     oTable.fnDestroy();
                     load_vols_app();
-                    console.log(form);
                 });
             });
 
             $('body').delegate('.volunteer-deny', 'submit', function(ee) {
                 ee.preventDefault();
                 var form = $(this).serializeArray();
-                console.log(form);
-                console.log('inside deny!!!');
                 $.post('/admin/volunteer/deny', form, function() {
-                    console.log('done with deny!!!');
                     var oTable = $('#volsTableUnapp').dataTable();
                     oTable.fnDestroy();
                     load_vols_unapp();

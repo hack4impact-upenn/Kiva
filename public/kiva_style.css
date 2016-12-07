@@ -1,23 +1,23 @@
 /*html, body {
   height: 100%;
-   The html and body elements cannot have any padding or margin. 
+   The html and body elements cannot have any padding or margin.
   margin:0;
   padding:0;
 }*/
 
 #left {
 	float: left;
-	width: 50%;	
+	width: 50%;
 }
 
 #review-info {
 	float: left;
-	width: 50%;
+	width: 15%;
 }
 
 #right {
 	float: right;
-	width: 50%;
+	width: 85%;
 }
 
 /*#applicant-documents {
@@ -63,13 +63,13 @@
 }
 
 #data {
-	width: 60%;
+	width: 40%;
 	float: center;
-	margin-left: 20%;
+	margin-left: 30%;
 	border-radius: 3px;
 	border: 1px solid green;
 	padding: 10px;
-	text-align: center;
+	text-align: left;
 	margin: 5;
 	/*color: #587F3A;*/
 }
@@ -128,7 +128,7 @@
 #logo {
 	height: 50px;
 	width: 100px;
-	background-image: url(logo.png);
+	background-image: url(logo-new.png);
 	background-size: contain;
     background-repeat: no-repeat;
 	float: left;
@@ -136,7 +136,7 @@
 	margin-top: 10px;
 }
 
-#title { 
+#title {
 	margin-left: auto;
 	margin-right: auto;
 	display: block;
@@ -172,12 +172,12 @@
 }
 
 #blurb {
-	width: 40%;
+	width: 70%;
 	float: left;
-	margin-left: 15%;
+	margin-left: 3%;
 	border-radius: 3px;
-	border: 1px solid black;
-	padding: 10px;
+	border: 2px solid white;
+	padding: 1px;
 	text-align: center;
 }
 
@@ -187,16 +187,16 @@
 	border-radius: 3px;
 	border-left: 1px solid black;
 	padding: 10px;
-	height: 600px;
 	overflow: scroll;
 	/*border-bottom: 2px solid*/
 }
 
 #form {
-	border-radius: 3px;
-	border: 1px solid black;
-	padding: 10px;
-	margin-left: 100px;
+	border-radius: 1px;
+	border: 2px solid white;
+	padding: 3px;
+	margin-left: 45px;
+	text-align:center;
 	float: left;
 }
 
@@ -206,15 +206,14 @@
 	margin-bottom: 2px;
 }
 
-textarea { 
+textarea {
 	resize: vertical;
 }
 
 #signup-form {
 	border-radius: 3px;
-	border: 1px solid black;
-	padding: 10px;
-	width: 600px;
+	padding: 10px 175px 10px 175px;
+	width: 800px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 20px;
@@ -288,7 +287,7 @@ textarea {
 
 /* Overwriting default plus button in DataTables responsive */
 
-table.dataTable.dtr-inline.collapsed tbody td:first-child:before, 
+table.dataTable.dtr-inline.collapsed tbody td:first-child:before,
 table.dataTable.dtr-inline.collapsed tbody th:first-child:before {
 	color: black;
 	border: 0;

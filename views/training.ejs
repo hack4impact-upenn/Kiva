@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link href="/kiva_style.css" rel="stylesheet" type="text/css">
     <meta name="description" content="">
@@ -23,8 +23,18 @@
 	<title>Training</title>
 	</head>
 	<body>
-		<% include banner %>
-		<h1>Kiva Advisors Training Page</h1>
+		<% include banner %> <br><br>
+
+  <h1>How This Platform Works</h1>
+   <p align="center"><iframe src="https://docs.google.com/presentation/d/1aXODisXfIMZRox6uEUArfuBC-rG3t1YJ9DbcIh7zItQ/embed?start=false&loop=false&delayms=60000" frameborder="0" width="864" height="504" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></img>
+  <!--  <img src="Flow.png" width="864" height="504" alt="dope pic"> --> <br>
+  <h1>See the beginning of Crowd Vetting!</h1>
+  <p align="center"><object width="638" height="516"><param name="movie" value="http://swf.tubechop.com/tubechop.swf?vurl=v83bMtWCTXI&start=2607&end=2807&cid=8303722"></param><embed src="http://swf.tubechop.com/tubechop.swf?vurl=v83bMtWCTXI&start=2607&end=2807&cid=8303722" type="application/x-shockwave-flash" allowfullscreen="true" width="638" height="516"></embed></object>
+<br>
+    <h1>Slides and Video</h1>
+  <div>
+      <p align="center"><iframe src="https://docs.google.com/presentation/d/1fX39f-lTNmMdXdoWMrtITbkZtpmQAWhNscSlfn8qgeI/embed?start=true&loop=true&delayms=3000" frameborder="no" width="864" height="504" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" align="center"></iframe>
+    </div>
 		<div id="training">
 			<div id="links">
 				<% if (message) { %>
@@ -33,48 +43,44 @@
 					<span><%= message %></span>
 				</div>
 				<% } %>
-				<a class="box" href="https://www.youtube.com/watch?v=v2vetkuQivw" target="_blank">
-					<div><b>Kiva Labs video overview (6 min)</b>
-						<div>a fun overview video of the types of unique loans and partnerships that Kiva is rolling out</div>
-					</div>
-				</a>
-				<a class="box" href="https://www.dropbox.com/s/9vmw2dpne9ba9um/Volunteer_training_vid.mp4" target="_blank">
-					<div><b>Training video (9 min)</b>
-						<div>This short video walks through this application review pilot program in greater detail, with useful information on what we are hoping to accomplish and the criteria that we use in assessing our applications</div>
-					</div>
-				</a>
-				<a class="box" href="https://docs.google.com/file/d/0B9-D1z_HW15veUp0MHNTZVBEUXY5bDhTVnVnQjRGVTdsb3NF/edit" target="_blank">
-					<div><b>Kiva partnership guide</b>
-						<div>this PDF covers how a partnership with Kiva works. It has much more detail on the steps of the process and outlines a few examples of partnerships. This will be very useful.</div>
-					</div>
-				</a>
-				<a class="box" href="https://www.youtube.com/watch?v=n1V9jVtssfw" target="_blank">
-					<div><b>Kiva loan visualization (4 min)</b>
-						<div>a cool video that visualizes the loans that Kiva has been making around the world since its inception in 2005</div>
-					</div>
-				</a>
-				<a class="box" href="https://docs.google.com/file/d/0B9-D1z_HW15vQ2g0ZHFKZmNrX19NXzdLeEc5b1otdVZ5MDN3/edit" target="_blank">
-					<div><b>A copy of the slides from the first training video (PDF link)</b></div>
-				</a>
+
+        <br> <br><br><br><br>
+        </a>
 				<button id="reviewed" class="btn btn-primary">I have carefully reviewed all the training material</button>
 			</div>
 			<form id="questions" action="/volunteer/finished-training" method="POST">
+				<h5>Let's do a quick quiz to make sure you're up to speed on the basics. Good Luck!</h5><br/>
 				<div class="form-group">
-					What is Penn's color that's not blue?<input type="text" class="form-control" name="ans1" required></input>
+					Which size of enterprise does the direct to social enterprise program target?
+					<select name="ans1" required class="form-control">
+						<option value="micro enterprisess">micro organizations</option>
+						<option value="small and medium sized enterprises">small and medium sized enterprises</option>
+						<option value="large enterprises">large firms</option>
+					</select>
 				</div>
 				<div class="form-group">
-					How many wheels in tricycle?<input type="text" class="form-control" name="ans2" required></input>
-				</div>
-				<div class="form-group">
-					Write 'hack'<input type="text" class="form-control" name="ans3" required></input>
-				</div>
-				<div class="form-group">
-					Write 'hack'<input type="text" class="form-control" name="ans4" required></input>
+					Why do these enterprises specifically need Kiva capital?
+					<select name="ans2" required class="form-control">
+						<option value="Lack of enough capital from micro finance instiutions">Lack of enough capital from micro finance instiutions</option>
+						<option value="Barriers to capital from traditional banks">Barriers to capital from traditional banks</option>
+						<option value="Starved for working capital">Starved for working capital</option>
+						<option value="All of the above">All of the above</option>
+					</select>
 				</div>
 				<button id="check-answers" type="submit" class="btn btn-default">Submit</button>
 				<a id="back" class="btn btn-default">Back</a>
 			</form>
 		</div>
+
+    <div id="form">
+      <h3>For background information on: <br>
+          -Kiva <br>
+          -the "Missing Middle" space<br>
+          -the DSE program<br>
+          <a href="https://docs.google.com/document/d/1hxQIUjO4HbeN7rvEO-AqOE8Aq3w-qyh05hICG3qfe4Q/edit?usp=sharing">
+            <i>visit this document</i></a> </h3>
+    </div>
+
 		<% include footer %>
 	</body>
 	<script>
@@ -89,7 +95,7 @@
 			$('#reviewed').click(function() {
 				$('#questions').show();
 				$('#links').hide();
-			});	
+			});
 			$('#back').click(function() {
 				$('#questions').hide();
 				$('#links').show();

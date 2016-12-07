@@ -1,14 +1,17 @@
 var express = require('express');
 var app = express();
+var fs = require('fs');
+
 var Volunteer = require('./models/volunteer.js').Volunteer;
 var mongoose = require("mongoose");
 var passport = require("passport");
 var LocalStrategy = require('passport-local').Strategy;
+var db = JSON.parse(fs.readFileSync('db.conf', 'utf8'));
 
 var uristring =
 	process.env.MONGOLAB_URI ||
 	process.env.MONGOHQ_URL ||
-	'mongodb://localhost/kiva-project';
+	db.path;
 
 mongoose.connect(uristring, function (err, res) {
   if (err) {
@@ -34,7 +37,7 @@ app.use(express.bodyParser())
    .use(express.multipart());
 
 
-var port = Number(process.env.PORT || 5000);
+var port = Number(process.env.PORT || 8081);
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
@@ -56,11 +59,14 @@ function ensure_admin(req, res, next) {
 }
 
 function ensure_training(req, res, next) {
+  return next();
+  /*
   if (req.session.finished_training) {
     return next();
   } else {
     res.redirect('/volunteer/training');
   }
+  */
 }
 
 function ensure_approved(req, res, next) {
@@ -90,6 +96,7 @@ app.get("/get_questions/:org_id", ensure_auth, ensure_training, volunteer_contro
 //Loads data
 app.get("/volunteer/get_min_reviewed_application", ensure_auth, ensure_training, ensure_approved, volunteer_controller.getMinReviewedApplication);
 app.get("/volunteer/load", ensure_auth, volunteer_controller.loadVolunteer); //loads data of a single User from session info
+app.get("/volunteer/load/:volunteer_id", ensure_auth, volunteer_controller.loadVolunteer); //loads data of a single User from session info
 app.get("/volunteer/get_completed_applications", ensure_auth, ensure_training, volunteer_controller.getCompletedApplications);
 app.get("/volunteer/load_leaderboard", ensure_auth, ensure_training, volunteer_controller.load_leaderboard);
 app.get("/volunteer/get_achievements", ensure_auth, volunteer_controller.getAchievements);
@@ -118,7 +125,7 @@ app.get("/review/organization_docs/:org_id", volunteer_controller.load_organizat
 app.post("/review/upvote_three_questions", volunteer_controller.upvote_three_questions);
 
 /***** Admin requests ******/
-app.get("/admin/sign-up", admin_controller.admin_signup_page);
+app.get("/admin/sign-up", ensure_admin, admin_controller.admin_signup_page);
 app.post('/admin/submit-admin', admin_controller.create_admin);
 app.get("/admin_submit", ensure_admin, admin_controller.submit_application);
 app.post("/post-application", ensure_admin, admin_controller.create_application);
@@ -132,20 +139,4 @@ app.post("/admin/volunteer/deny", ensure_admin, admin_controller.deny_volunteer)
 app.get("/admin/pull_applications_short", ensure_admin, admin_controller.send_applications_short);
 app.get("/admin/pull_applications_rest", ensure_admin, admin_controller.send_applications_rest);
 
-
 app.get("/admin/pull_volunteers:approval", ensure_admin, admin_controller.send_volunteers);
-app.get("/admin_submit", admin_controller.submit_application);
-app.post("/post-application", admin_controller.create_application);
-app.get("/admin_applications", admin_controller.view_applications);
-app.get("/admin/application/:id", admin_controller.view_one_application);
-app.get("/admin/load_application/:id", admin_controller.load_single_application);
-app.post("/admin/update_application/:id", admin_controller.save_application_changes);
-
-app.post("/admin/volunteer/approve", admin_controller.approve_volunteer);
-app.post("/admin/volunteer/deny", admin_controller.deny_volunteer);
-app.get("/admin/pull_applications_short", admin_controller.send_applications_short);
-app.get("/admin/pull_applications_rest", admin_controller.send_applications_rest);
-
-app.get("/admin/pull_volunteers:approval", admin_controller.send_volunteers);
-module.exports = app;
-

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       
+
 
         <link href="/kiva_style.css" rel="stylesheet" type="text/css">
         <meta name="description" content="">
@@ -17,38 +17,60 @@
 
     <body>
         <% include banner %>
-        <div id="wrapper">
-        <!-- <div id="content"> -->
 
-            <p><div id="blurb"></p>
-                <h2> Empower people around the world. </h2>
-                <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce fringilla ipsum ipsum, tempus fringilla turpis adipiscing eu. Phasellus ac elit nec urna ultrices fermentum. Ut a urna at erat pharetra imperdiet. Integer vitae lacus quam. Duis laoreet dui vitae velit ultrices, id scelerisque felis scelerisque. Quisque blandit sit amet libero eget bibendum. Nam vestibulum accumsan molestie. Nulla facilisi. Vivamus pretium lorem ut sem ultricies, sed fringilla lectus mollis.
-                </p>
+      </div>
+                </div>
+
+                <div id="form">
+                    <h2>Login</h2>
+                    <form action="/login" method="POST" class="kiva-form">
+                        <% if (message) { %>
+                        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <span><%= message %></span>
+                        </div>
+                        <% } %>
+                        <input type="email" name="email_address" size="25" class="form-control" placeholder="Email" required>
+                        <input type="password" name="password" size="25" class="form-control" placeholder="Password" required><br>
+                        <input type="submit" class="btn btn-primary" value="Login" />
+                    </form>
+
+                    <form action="/volunteer/sign-up" method="GET">
+                        <input type="submit" class="btn btn-primary" value="Sign Up to Volunteer"/>
+                    </form>
+                        <h5><strong>Questions? Please contact carlos@kiva.org<strong><h5>
+                </div>
             </div>
 
-            <div id="form">
-                <h2>Login</h2>
-                <form action="/login" method="POST" class="kiva-form">
-                    <% if (message) { %>
-                    <div class="alert alert-danger alert-dismissible fade in" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <span><%= message %></span>
-                    </div>
-                    <% } %>
-                    <input type="email" name="email_address" size="25" class="form-control" placeholder="Email" required>
-                    <input type="password" name="password" size="25" class="form-control" placeholder="Password" required><br>
-                    <input type="submit" class="btn btn-primary" value="Login" />
-                </form>
+            <div id="blurb">
+                <h2> Welcome to Crowd Vetting! </h2>
+                <div align="left">
+		<p>
+      <i>Interested in impact investing? Want to learn about the business models of social enterprises? Want to build experience conducting due diligence on early stage social ventures? Join Kiva’s crowd-vetting pilot program. We want to democratize the due diligence process.</i><br><br>
+      <h3>Who are we looking for?</h3>
+      Graduate students, professionals, and social impact enthusiasts. No prior due diligence experience required.
+      <br><br>
 
-                <form action="/volunteer/sign-up" method="GET">
-                    <input type="submit" class="btn btn-primary" value="Sign Up to Volunteer"/>
-                </form>
+      <h3>Why did we create this pilot program?</h3>
+      Kiva believes there are too many investment-worthy social enterprises that lack access to capital because they fall in the missing middle -- too large for micro-finance yet too small for traditional banking. We believe not only can the crowd serve as funders to the developing world, but that the crowd can help us identify the right investments.
+      <br><br>
 
-                <form action="/admin/sign-up" method="GET">
-                    <input type="submit" class="btn btn-primary" value="Admins Only"/>
-                </form>
-            </div>
-        </div>
+      <h3>How does the pilot program work?</h3>
+      Through the crowd-vetting program, you will develop expertise on how to perform due diligence on social enterprises. As a volunteer you will: <br>
+      1. Receive training and reference materials that will expand and solidify your understanding of the social enterprise space.<br>
+      2. Review applications submitted by social enterprises seeking to raise funds on Kiva's platform. You will be given access to the same application materials that Kiva's Portfolio Managers use to vet potential borrowers, including business plans, financial statements, and impact reports.<br>
+      3. Answer 6 yes/no questions that will help Kiva if the enterprise is a good fit for our lending program. Each application will be reviewed by multiple volunteers and their answers aggregated into the “wisdom of the crowd”.<br>
+      <br>
+      <h3>What is in it for me?</h3>
+      This is an excellent view “behind the curtain" of impact investing. You will also gain exposure to a diverse range of social enterprises, not only in size and scale, but also in sector and geographical area.
+      <br><br>
+      <i>These organizations are not just ideas, they are real companies trying to change the world. Social enterprises need your help to access Kiva’s crowd-funded, risk tolerant, 0% interest capital from socially minded lenders.<i>
+        <br><br>
+        <strong>This is a pilot program and this is the alpha version of the website.  We thank you for your patience on any bugs you might encounter and look forward to your thoughtful feedback. Let us know how we can make this a better experience for you.<strong>
+		</p>
+  </div>
+
+
         <% include footer %>
 
         <!-- </div> -->

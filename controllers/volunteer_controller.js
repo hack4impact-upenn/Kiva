@@ -14,6 +14,8 @@ var sendgrid  = require('sendgrid')('hack4impact', 'dhruvmadethis1');
 var request = require('request');
 var ObjectId= mongoose.Types.ObjectId;
 
+var gDocsUtil = require("google-drive-util");
+
 /*--------------  General Functions ----------- */
 
 
@@ -43,7 +45,7 @@ exports.index = function(req, res) {
 exports.login = function(req, res) {
     var email = req.body.email_address;
     var password = SHA3(req.body.password).toString();
-    Volunteer.findOne({'email_address': email, 'password':password}, 
+    Volunteer.findOne({'email_address': email, 'password':password},
         function(err, volunteer) {
             if(volunteer != null) {
                     req.session.admin = volunteer.is_admin;
@@ -64,23 +66,21 @@ exports.login = function(req, res) {
                             volunteer.consecutive_login_days++;
                             var achievement = create_achievement (2, req.session.volunteerId, volunteer.consecutive_login_days);
                             achievement.save(function(err, achiev) {
-                                if (err) {console.log(err)};    
+                                if (err) {console.log(err)};
                                 volunteer.num_points += achievement.points;
                                 volunteer.save(function(err, vol) {
-                                });                                 
+                                });
                             });
                         } else {
                             if(Date.parse(today) - Date.parse(last_login_day) > 86400000){
-                                volunteer.consecutive_login_days = 1;   
+                                volunteer.consecutive_login_days = 1;
                                 var achievement = create_achievement (3, req.session.volunteerId, -1);
                                 achievement.save(function(err, achiev) {
                                     if (err) {console.log(err)};
-                                    console.log("achievement saved ");
-                                });                         
+                                });
                             }
                             volunteer.save(function(err, vol) {
-                                    console.log("Updated login day and consec");                        
-                                }); 
+                                });
                         }
                         res.redirect('/volunteer/home');
                     }
@@ -129,24 +129,25 @@ exports.logout = function(req, res) {
 
 /* pulls data */
 
-/* loads volunter model data for sesssion 
+/* loads volunter model data for sesssion
  * @param volunteer id (taken from session)
  * @return Volunteer object
  */
 
 exports.loadVolunteer = function(req, res) {
-    console.log("ajax call is working");
-    Volunteer.findOne({"_id": req.session.volunteerId}, function(err, volunteer) {
+    var volunteer_id = req.params.volunteer_id ? req.params.volunteer_id : req.session.volunteerId;
+
+    Volunteer.findOne({"_id": volunteer_id}, function(err, volunteer) {
         res.send(volunteer);
     });
 };
 
-/* loads next review for volunteer to complete 
+
+/* loads next review for volunteer to complete
  * @param volunteer id (taken from session)
  * @return application object
 */
 exports.getMinReviewedApplication = function(req, res) {
-        console.log(req.session.volunteerId);
         Application.get_min_reviewed_application(ObjectId(req.session.volunteerId), function (err, application) {
             if(application === null) {
                 res.send({"data" : "none"});
@@ -156,7 +157,7 @@ exports.getMinReviewedApplication = function(req, res) {
         });
 };
 
-/** 
+/**
  * Gets completed applications for the logged in volunteer
  * @param volunteer id (taken from session)
  * @return list of review objects that the volunteer completed
@@ -183,21 +184,20 @@ exports.getAchievements = function(req, res) {
 };
 
 
-/*  
- * Creates volunteer object (for signup) 
+/*
+ * Creates volunteer object (for signup)
  * @param request form that includes first_name, last_name, email_address, and password
  */
 
 exports.createVolunteer = function(req, res) {
-    var email = req.body.email_address; 
+    var email = req.body.email_address;
     var usern = req.body.username;
-    
-    Volunteer.findOne( {$or: [{'email_address': email}, {'username': usern}]}, 
+
+    Volunteer.findOne( {$or: [{'email_address': email}, {'username': usern}]},
         function(err, volunteer) {
             if(volunteer != null) {
                 //this is a duplicate entry
                 req.session.email_duplicate = true;
-                console.log("DUPLICATE!!");
                 res.redirect('/volunteer/sign-up');
             } else {
                 var volunteer = new Volunteer({
@@ -210,16 +210,12 @@ exports.createVolunteer = function(req, res) {
                     finished_training: false,
                     approved: false,
                     linked_in: req.body.linked_in,
-                    resume_link: req.body.resume_link,
-                    why_kiva:  req.body.why_kiva,
-                    what_skills: req.body.what_skills
                 });
                 volunteer.save(function(err, volunteer) {
                     if(err) {console.log(err);}
                     else {
                         req.session.admin = volunteer.is_admin;
                         req.session.logged = true;
-                        console.log("Volunteer_id to string: " + (volunteer._id).toString());
                         req.session.volunteerId = ObjectId(volunteer._id.toString());
                         req.session.email = volunteer.email_address;
                         req.session.fullname = volunteer.first_name + " " + volunteer.last_name;
@@ -237,7 +233,7 @@ exports.createVolunteer = function(req, res) {
  * @param user email and username
  */
 exports.check_email_username = function(req, res) {
-    var email = req.body.email; 
+    var email = req.body.email;
     var username = req.body.username;
     Volunteer.findOne({'email_address': email}, function(err, volunteer_email) {
         var email_exists = (volunteer_email != null);
@@ -261,8 +257,7 @@ exports.check_email_username = function(req, res) {
  * @param volunteer id (taken from session)
  */
 exports.volunteerFinishedTraining = function(req, res) {
-    console.log(req.body.ans1 + " " + req.body.ans2 + " " + req.body.ans3 + " " + req.body.ans4);
-    if (req.body.ans1 != 'red' || req.body.ans2 != '3' || req.body.ans3 !='hack' || req.body.ans4 !='hack') {
+    if (req.body.ans1 != 'small and medium sized enterprises' || req.body.ans2 != 'All of the above') {
         var incorrect = 'Sorry, at least one of your answers is incorrect. Make sure to review all the materials first.';
         res.render('training.ejs', {name: req.session.fullname, finished_training: req.session.finished_training, message: incorrect});
     } else {
@@ -336,28 +331,62 @@ exports.edit_review = function(req, res) {
 
 /********Volunteer Helper Functions********/
 
-
 /*
  * Loads documents for reviewer to edit
  * TODO: Update based on Kiva's system
  * @return Set of links that can be loaded via GoogleDoc iFrame
  */
 
+ function getParameterByName(name, str) {
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(str);
+    if (!results) {
+        str_array = str.split('/');
+        return str_array[str_array.length-1];
+    };
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 /* The goal of this function is to pass the links to the organization's documents
- * to the webpage so they can be rendered in the iframe. Currently, there are a 
- * couple of fake blank documents on a temporary myjson.com site (see func below). 
- * I imagine when you actually implement this you will be pulling the links to the documents 
+ * to the webpage so they can be rendered in the iframe. Currently, there are a
+ * couple of fake blank documents on a temporary myjson.com site (see func below).
+ * I imagine when you actually implement this you will be pulling the links to the documents
  * from a database so the request would be unecessary. Please see the 'load_links'
- * function in review.ejs to see how the dropbox menu is created and the 'dropdown' 
+ * function in review.ejs to see how the dropbox menu is created and the 'dropdown'
  * function below it to see how the iframe src is manipulated.
  */
 
-exports.load_organization_docs = function(req, res) {
-    request('https://api.myjson.com/bins/3sxyz', function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            res.json(body)
-        }
-    });
+exports.load_organization_docs = function(req, response) {
+  Application.findById(req.params.org_id, function(err, application) {
+      var folderId = getParameterByName('id', application.organization_gdocs_url);
+
+      if (folderId && folderId.length > 0){
+        var gAuth = gDocsUtil.readTokenSync();
+        var chunk_num = 0;
+
+        gDocsUtil.getFileInfo(
+          gAuth,
+          folderId,
+          "",
+          handleGDocReturn);
+
+          function handleGDocReturn(path, res, chunk_max){
+            if (chunk_max === undefined || chunk_num < chunk_max){
+              response.write(JSON.stringify({name: res.title, link: res.alternateLink}));
+            } else if (chunk_num === chunk_max) {
+              response.write(JSON.stringify({name: res.title, link: res.alternateLink}));
+              response.end();
+            }
+            chunk_num++;
+
+            if (gDocsUtil.isFolder(res)) {
+              gDocsUtil.getFolderInfo(gAuth, res.id, path+res.title+"/", handleGDocReturn);
+            }
+          };
+      }
+  });
 }
 
 /*
@@ -367,7 +396,6 @@ exports.load_organization_docs = function(req, res) {
  */
 
 exports.load_organization_data = function(req, res) {
-    console.log("loading organization data");
     Application.findById(req.params.org_id, function(err, application) {
         return res.json(application);
     });
@@ -396,12 +424,10 @@ exports.upvote_three_questions = function(req, res) {
     var count = 0;
     for (var id in req.body.box) {
         Question.upvote(id, function(err) {
-            if (err) { 
-                console.log("error in upvoting question");
+            if (err) {
                 return callback(err)
             };
             count++;
-            console.log(count);
             if (count == 3) {
                 return res.redirect('/');
             }
@@ -466,21 +492,17 @@ exports.load_unfinished_review = function(req, res) {
 exports.save_review = function(req, res) {
     Review.update({"_id": ObjectId(req.params.id)},
             {
+                clear_business_model: req.body.clear_business_model,
                 clear_social_impact: req.body.clear_social_impact,
-                kiva_fit: req.body.kiva_fit,
-                sustainable_model: req.body.sustainable_model,
-                kiva_fit_comments: req.body.kiva_fit_comments,
-                q_1: req.body.q_1,
-                q_2: req.body.q_2,
-                q_3: req.body.q_3,
+                loan_well_structured: req.body.loan_well_structured,
+                well_positioned_to_repay: req.body.well_positioned_to_repay,
+                well_positioned_to_communicate: req.body.well_positioned_to_communicate,
                 recommend_rating: req.body.recommend_rating,
-                other_comments: req.body.other_comments
             }, function(err, numAffected) {
                 if(err) {
                     console.log(err);
                     res.send(404);
                 } else {
-                    console.log(numAffected);
                     res.redirect('/review/edit/' + req.params.id);
                 }
             }
@@ -526,13 +548,13 @@ create_achievement = function(achievement_id, volunteer_id, extra_info) {
             string = "achievement error";
             break;
     }
-    
+
     var achievement = new Achievement({
         reviewer_id: volunteer_id,
         achievement_text: string,
         points: numPoints,
         date: dateNow,
-        read: false,                        
+        read: false,
     });
     return achievement;
 }
@@ -573,21 +595,18 @@ exports.submit_review = function(req, res) {
                             "_id": ObjectId(req.params.id)},{
                                 submitted: true,
                                 date_review_submitted: Date.now(),
+                                clear_business_model: req.body.clear_business_model,
                                 clear_social_impact: req.body.clear_social_impact,
-                                kiva_fit: req.body.kiva_fit,
-                                sustainable_model: req.body.sustainable_model,
-                                kiva_fit_comments: req.body.kiva_fit_comments,
-                                q_1: req.body.q_1,
-                                q_2: req.body.q_2,
-                                q_3: req.body.q_3,
+                                loan_well_structured: req.body.loan_well_structured,
+                                well_positioned_to_repay: req.body.well_positioned_to_repay,
+                                well_positioned_to_communicate: req.body.well_positioned_to_communicate,
                                 recommend_rating: req.body.recommend_rating,
-                                other_comments: req.body.other_comments
                             }, function(err) {
                                 if (err) {return callback(err)};
                                 callback();
                             });
                     },
-                    
+
                     //in Application: add to submitted list
                     function(callback) {
                         Application.submit_review(org_id, req.params.id, function(err) {
@@ -599,9 +618,8 @@ exports.submit_review = function(req, res) {
                     function(callback){
                         Volunteer.add_completed_review(req.session.volunteerId, req.params.id, function(err) {
                                 if (err) {return callback(err)};
-                            console.log("added completed review");
                                 callback();
-                        });                        
+                        });
                     },
                     //in Application: add to volunteers list
                     function(callback) {
@@ -611,13 +629,12 @@ exports.submit_review = function(req, res) {
                                                     return callback(err);
                                             }
                                             callback()
-                                        })                          
+                                        })
                         },
                     //in Application: move from in_progress
                     function(callback) {
                         Application.remove_review_in_progress(org_id, req.params.id, function(err) {
                                 if (err) {return callback(err)};
-                                console.log("review removed from application current list");
                                 callback();
                             });
                     },
@@ -626,68 +643,26 @@ exports.submit_review = function(req, res) {
 
                         Volunteer.remove_review_in_progress(req.session.volunteerId, function(err) {
                                 if (err) {return callback(err)};
-                            console.log("review removed from volunteer's current list");
                                 callback();
                             });
                     },
                     function(callback) {
-                            //save q_1
-                            var q_1 = new Question({
-                                reviewer_id: req.session.volunteerId,
-                                organization_id: org_id,
-                                question_text: req.body.q_1,
-                            });
-                            //TODO: do we have to edit the q in the review to make it point to the q_id?
-                            q_1.save(function(err, question) {
-                                if (err) {return callback(err)};
-                                console.log("q1 saved");
-                                callback(err);
-                            });
-                    },
-                    function(callback) {
-                            //save q_2
-                            var q_2 = new Question({
-                                reviewer_id: req.session.volunteerId,
-                                organization_id: org_id,
-                                question_text: req.body.q_2,
-                            });
-                            //TODO: do we have to edit the q in the review to make it point to the q_id?
-                            q_2.save(function(err, question) {
-                                if (err) {return callback(err)};
-                                console.log("q2 saved");
-                                callback(err);
-                            });
-                    },
-                    function(callback) {
-                            //save q_3
-                            var q_3 = new Question({
-                                reviewer_id: req.session.volunteerId,
-                                organization_id: org_id,
-                                question_text: req.body.q_3,
-                            });
-                            //TODO: do we have to edit the q in the review to make it point to the q_id?
-                            q_3.save(function(err, question) {
-                                if (err) {return callback(err)};
-                                console.log("q3 saved");
-                                callback(err);
-                            });
-                    },
-                    function(callback) {
                         //update average score/counts
-                        console.log(req.body.kiva_fit);
-                        var kiva_fit = (req.body.kiva_fit === 'true' ? 1 : 0); 
-                        var clear_social_impact = (req.body.clear_social_impact === 'true' ? 1 : 0); 
-                        var sustainable_model = (req.body.sustainable_model === 'true' ? 1 : 0); 
-                        console.log("kiva fit:" + kiva_fit);
+                        var clear_business_model = (req.body.clear_business_model === 'true' ? 1 : 0);
+                        var clear_social_impact = (req.body.clear_social_impact === 'true' ? 1 : 0);
+                        var loan_well_structured = (req.body.loan_well_structured === 'true' ? 1 : 0);
+                        var well_positioned_to_repay = (req.body.well_positioned_to_repay === 'true' ? 1 : 0);
+                        var well_positioned_to_communicate = (req.body.well_positioned_to_communicate === 'true' ? 1 : 0);
 
-                        Application.update({"_id": org_id}, 
+                        Application.update({"_id": org_id},
                             {$inc: {score_sum: req.body.recommend_rating,
-                                    kiva_fit_count: kiva_fit, 
-                                    sustainable_model_count: sustainable_model, 
+                                    clear_business_model_count: clear_business_model,
+                                    loan_well_structured_count: loan_well_structured,
+                                    well_positioned_to_repay_count: well_positioned_to_repay,
+                                    well_positioned_to_communicate_count: well_positioned_to_communicate,
                                     clear_social_impact_count: clear_social_impact}
                                 }, function(err) {
                             if (err) {return callback(err)};
-                            console.log("score updated");
                             callback(err);
                         })
                     },
@@ -695,19 +670,16 @@ exports.submit_review = function(req, res) {
                         var achievement = create_achievement (1, req.session.volunteerId, 0);
                         achievement.save(function(err, achiev) {
                                 if (err) {return callback(err)};
-                                console.log("achievement saved");
-                                Volunteer.update({"_id": req.session.volunteerId}, 
+                                Volunteer.update({"_id": req.session.volunteerId},
                                     {$inc: {num_points: achievement.points}
                                         }, function(err) {
                                     if (err) {return callback(err)};
-                                    console.log("points updated");                          
                                 })
                                 callback(err);
                             });
                     },
                 ], function(err) {
                     if (err) {res.send(404);};
-                    console.log("submission complete");
                     res.redirect('/review/completed/' + org_id);
                 });
             }
@@ -742,4 +714,3 @@ exports.load_leaderboard = function(req, res) {
         res.send(posts);
     });
 };
-

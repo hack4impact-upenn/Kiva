@@ -28,26 +28,27 @@
     </style>
 
     <body>
+	<% include banner %>
         <h2>Thanks for reviewing! Just one more step...</h2>
 
-        <div id="left">
-            <div class="row">
-                <h2>Choose Top Three Questions</h2>
-                <div class="col-lg-6">
-                    <form id="question-checkboxes" action="/review/upvote_three_questions" method="POST">
-                        <input id="question-submit" type="submit" value="Submit">
-                    </form>
-                </div><!-- /.col-lg-6 -->
+                <p><div id="data">
+			The Google Forum linked below is desgined for Kiva to learn which
+      questions we should ask the organization during the final stages of the due-diligence process. <br></br>
+      <i>Currently you need a gmail to be able to participate in the forum; we are working on this.</i><br><br/>
+			Please head over and follow these instructions:  <br/><br/>
+      <ul style="list-style-type:disc">
+				<li type="disc">Post 3 questions you want to ask the enterprise</li>
+				<li type="disc">Make sure you post on that specific enterprise's thread</li>
+				<li type="disc">Please upvote questions you find valuable</li>
+			<br/>
+			<a href="https://groups.google.com/forum/#!forum/kiva-crowd-vetting" target=_blank>Google Forum - Kiva CrowdVetting</a>
 
-            </div>
-        </div>
-
-        <div id="right">
-                <p><div id="data" ></div></p>
+		</div></p>
                 <br></br>
 
-                <p><div id="completed-table" ><table class='table table-striped'></table></div></p>            
-        </div>
+
+      <h2>Ready for more? </br> Head to the homepage to review the next social enterprise!</h2>
+
     </body>
 
     <script>
@@ -55,59 +56,21 @@
         var org_id = "<%= org_id %>";
 
         var load_page = function() {
-            load_completed_review();
             load_org_info();
             load_questions();
             press_submit();
-        }
-
-       //would like to refactor later
-       var load_org_info = function() {
-            $.getJSON("/load_application/" + org_id, function(application) {
-            $('#data').append(
-                        "<div id='average-reviews'>" + 
-                        "<p>" +  application.kiva_fit_count + " out of " + application.num_reviews + " thought " + application.organization_name + " fit in with Kiva's culture. </p>" + 
-
-                        "<p>" +  application.sustainable_model_count + " out of " + application.num_reviews + " thought " + application.organization_name + " has a sustainable business model. </p>" + 
-
-                        "<p>" +  application.clear_social_impact_count + " out of " + application.num_reviews + " thought " + application.organization_name + " has a clear social impact. </p>" + 
-
-                        "<p> Average rating was: " + (application.score_sum/application.num_reviews).toFixed(1) + " out of 5.0 </p>" +
-                        "</div>"
-                        );
-            });
-        };
-
-        var load_completed_review = function() {
-            $.getJSON('/review/completed/load/' + org_id, function(reviews) {
-                $('#completed-table table').append("<tr>" + 
-                    "<th>" + "Clear Social Impact" + "</th>" +
-                    "<th>" + "Good Kiva Fit" + "</th>" +
-                    "<th>" + "Sustainable Business Model" + "</th>" +
-                    "<th>" + "Recommended Rating" + "</th>" +
-                    "</tr>");
-                 $.each(reviews, function(index, review) {
-                    $('#completed-table table').append("<tr>" + 
-                        "<td>" + review["clear_social_impact"] + "</td>" +
-                        "<td>" + review["kiva_fit"] + "</td>" +
-                        "<td>" + review["sustainable_model"] + "</td>" +
-                        "<td>" + review["recommend_rating"] + "</td>" +
-                        "</tr>"
-                        );
-                }); 
-            });
         }
 
         var load_questions = function() {
             $.getJSON('/get_questions/' + org_id, function(questions) {
                 $.each(questions, function(index, question) {
                     $('<div class="checkbox">' + '<label>' + '<input type="checkbox" name="box[' + question['_id'] + ']">' + question['question_text'] + '</label>' + '</div>').insertBefore('#question-submit');
-                    checkboxes = $("input[type='checkbox']"); 
+                    checkboxes = $("input[type='checkbox']");
                     checkboxes.click(function() {
                         if (checkboxes.filter(":checked").length > 3)
                             $(this).removeAttr("checked");
                     });
-                }); 
+                });
             });
         }
 
